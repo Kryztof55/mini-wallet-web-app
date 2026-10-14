@@ -118,6 +118,13 @@ html[data-theme='dark'] {
     text-size-adjust: 100%;
   }
 
+  /* Keep focused elements clear of the fixed bottom action on small screens (A11Y-04). */
+  @media (width < 48rem) {
+    html {
+      scroll-padding-bottom: 6rem;
+    }
+  }
+
   body {
     min-height: 100dvh;
     background-color: var(--surface);

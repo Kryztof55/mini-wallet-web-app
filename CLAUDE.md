@@ -118,12 +118,11 @@ all green. E2E when the task touches flows (TASK-20 owns the suite).
 
 ## 9. Current state
 
-- Done: TASK-01 to TASK-12. E2E auth suite (TC-E2E-01…07) green in all 4 projects.
-- **Next: TASK-13** (Home screen: balance and activity sections with Suspense, section
-  errors with retry via `/api/me/*`, hide balance, empty states).
+- Done: TASK-01 to TASK-13. E2E auth and home suites green in all 4 projects.
+- **Next: TASK-14** (contacts API: list favorites, save contact with BR-08/09/16).
 - Pending owner decision: demo-accounts hint on login step 1 and no demo code for
   unknown identifiers (non-production only).
-- Then: TASK-14/15/16
+- Then: TASK-15/16
   transfer → TASK-17/18/19 confirmation and receipt → TASK-20/21/22.
 
 ## 10. Known pitfalls
@@ -135,6 +134,10 @@ all green. E2E when the task touches flows (TASK-20 owns the suite).
   `RadioGroup` selects on focus only while an arrow key is held (tests hold the key);
   toast announcements render on the next frame.
 - Setting a cookie in a Server Action re-renders the current route on the server.
+- Anything exported from a `'use client'` module is a client reference on the server: a
+  function can't be called and a constant is not its value (e.g. `buttonClasses` lives in
+  `button-classes.ts`, cookie names in `features/home/constants.ts`). Unit tests and the
+  build don't catch it: check the server log, a static render or E2E.
 - `/login?reason=…` is never bounced by the proxy even with a valid cookie (avoids a loop
   when the session store lost the record). Private controllers:
   `withApi(route, withSession(handler))`.

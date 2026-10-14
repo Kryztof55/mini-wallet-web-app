@@ -5,7 +5,7 @@
 | **ID** | FS-02 |
 | **Module** | HOME |
 | **Status** | Approved |
-| **Version** | 1.2 |
+| **Version** | 1.3 |
 | **Author** | Claude (AI-assisted draft) |
 | **Reviewer** | Project owner |
 | **Last updated** | 2026-10-13 |
@@ -281,10 +281,12 @@ Then I am on Login with the notice "Cerraste sesión."
 | Key | Text | Context |
 |---|---|---|
 | `home.title` | "Inicio" | View title |
-| `home.greeting` | "Hola, {firstName}" / "Hola" | Header |
+| `home.greeting` | "Hola, {firstName}" | Page heading (h1) at the top of the content |
 | `home.balance.label` | "Saldo disponible" | Balance card |
 | `home.balance.hide` | "Ocultar saldo" | Toggle (not pressed) |
-| `home.balance.show` | "Mostrar saldo" | Toggle (pressed) |
+| `home.balance.show` | "Mostrar saldo" | Not used: the toggle keeps the name "Ocultar saldo" and exposes `aria-pressed` (a name that flips together with the pressed state reads as contradictory to screen-reader users) |
+| `home.balance.hidden` | "Saldo oculto" | Accessible text of the masked balance |
+| `home.greeting.anonymous` | "Hola" | Greeting without a name (EC-06) |
 | `home.balance.zero` | "No tienes saldo disponible" | Zero balance note |
 | `home.balance.error` | "No pudimos cargar tu saldo." | Balance error |
 | `home.send` | "Enviar dinero" | Primary action |
@@ -350,3 +352,4 @@ None blocking. OQ-07 (reflect new transaction) and OQ-11 (hide balance) are appl
 | 1.0 | 2026-10-13 | Project owner | Approved |
 | 1.1 | 2026-10-14 | Claude (AI-assisted) | Traceability now points to the written TS (no behavior change) |
 | 1.2 | 2026-10-14 | Claude (AI-assisted) | TASK-04: `common.loading` for loading regions |
+| 1.3 | 2026-10-14 | Claude (AI-assisted) | TASK-13: toggle keeps one name with aria-pressed; greeting is the view's h1; copy keys for hidden balance and anonymous greeting |

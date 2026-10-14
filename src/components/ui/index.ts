@@ -1,4 +1,5 @@
-export { Button, buttonClasses, type ButtonProps } from './button';
+export { Button, type ButtonProps } from './button';
+export { buttonClasses } from './button-classes';
 export { Card } from './card';
 export { Checkbox } from './checkbox';
 export { Dialog, DialogClose } from './dialog';

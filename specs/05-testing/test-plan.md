@@ -104,19 +104,19 @@ Generated from the test cases in §6; every BR, UIR and AC is covered.
 | UIR-CONF-15 | Revisitable receipt | TC-COMP-15 | COMP | ⬜ |
 | UIR-CONF-16 | Leaving during processing | TC-PL-08 | PL | ⬜ |
 | UIR-CONF-17 | Forced outcome (non-production) | TC-INT-10 | INT | ⬜ |
-| UIR-HOME-01 | Independent sections | TC-COMP-08 | COMP | ⬜ |
-| UIR-HOME-02 | Stable loading | TC-COMP-08 | COMP | ⬜ |
-| UIR-HOME-03 | Primary action always visible | TC-COMP-08 | COMP | ⬜ |
-| UIR-HOME-04 | Zero balance hint | TC-COMP-06 | COMP | ⬜ |
-| UIR-HOME-05 | Hide/show balance | TC-PL-04, TC-COMP-06, TC-E2E-10 | COMP, E2E, PL | ⬜ |
-| UIR-HOME-06 | Transaction item content | TC-COMP-07 | COMP | ⬜ |
-| UIR-HOME-07 | Direction is never color-only | TC-UNIT-17, TC-COMP-07 | COMP, UNIT | ⬜ |
-| UIR-HOME-08 | Relative dates | TC-UNIT-17, TC-COMP-07 | COMP, UNIT | ⬜ |
-| UIR-HOME-09 | Long names | TC-COMP-07 | COMP | ⬜ |
+| UIR-HOME-01 | Independent sections | TC-COMP-08 | COMP | ✅ |
+| UIR-HOME-02 | Stable loading | TC-COMP-08 | COMP | ✅ |
+| UIR-HOME-03 | Primary action always visible | TC-COMP-08 | COMP | ✅ |
+| UIR-HOME-04 | Zero balance hint | TC-COMP-06 | COMP | ✅ |
+| UIR-HOME-05 | Hide/show balance | TC-PL-04, TC-COMP-06, TC-E2E-10 | COMP, E2E, PL | ✅ |
+| UIR-HOME-06 | Transaction item content | TC-COMP-07 | COMP | ✅ |
+| UIR-HOME-07 | Direction is never color-only | TC-UNIT-17, TC-COMP-07 | COMP, UNIT | ✅ |
+| UIR-HOME-08 | Relative dates | TC-UNIT-17, TC-COMP-07 | COMP, UNIT | ✅ |
+| UIR-HOME-09 | Long names | TC-COMP-07 | COMP | ✅ |
 | UIR-HOME-10 | Fresh data on every visit | TC-E2E-11 | E2E | ⬜ |
-| UIR-HOME-11 | Just-completed transfer | TC-COMP-08 | COMP | ⬜ |
-| UIR-HOME-12 | Section error | TC-PL-03, TC-COMP-08 | COMP, PL | ⬜ |
-| UIR-HOME-13 | Header actions | TC-COMP-08 | COMP | ⬜ |
+| UIR-HOME-11 | Just-completed transfer | TC-COMP-08 | COMP | ✅ |
+| UIR-HOME-12 | Section error | TC-PL-03, TC-COMP-08 | COMP, PL | ✅ |
+| UIR-HOME-13 | Header actions | TC-COMP-08 | COMP | ✅ |
 | UIR-TX-01 | Step indicator | TC-COMP-09 | COMP | ⬜ |
 | UIR-TX-02 | Focus on step change | TC-COMP-09 | COMP | ⬜ |
 | UIR-TX-03 | Favorites order and content | TC-UNIT-06, TC-COMP-09 | COMP, UNIT | ⬜ |
@@ -157,17 +157,17 @@ Generated from the test cases in §6; every BR, UIR and AC is covered.
 | AC-AUTH-17 | Paste a formatted code | TC-COMP-04 | COMP | ✅ |
 | AC-AUTH-18 | Demo hint only outside production | TC-COMP-04 | COMP | ✅ |
 | AC-AUTH-19 | Server rejects private requests without session | TC-INT-02 | INT | ✅ |
-| AC-HOME-01 | Name and balance | TC-E2E-08 | E2E | ⬜ |
-| AC-HOME-02 | Recent activity bounded to 10 | TC-E2E-08 | E2E | ⬜ |
-| AC-HOME-03 | Transaction item content | TC-COMP-07, TC-E2E-08 | COMP, E2E | ⬜ |
-| AC-HOME-04 | Loading state | TC-COMP-08 | COMP | ⬜ |
-| AC-HOME-05 | Empty state | TC-COMP-07, TC-E2E-09 | COMP, E2E | ⬜ |
-| AC-HOME-06 | Independent section errors | TC-E2E-09 | E2E | ⬜ |
+| AC-HOME-01 | Name and balance | TC-E2E-08 | E2E | ✅ |
+| AC-HOME-02 | Recent activity bounded to 10 | TC-E2E-08 | E2E | ✅ |
+| AC-HOME-03 | Transaction item content | TC-COMP-07, TC-E2E-08 | COMP, E2E | ✅ |
+| AC-HOME-04 | Loading state | TC-COMP-08 | COMP | ✅ |
+| AC-HOME-05 | Empty state | TC-COMP-07, TC-E2E-09 | COMP, E2E | ✅ |
+| AC-HOME-06 | Independent section errors | TC-E2E-09 | E2E | ✅ |
 | AC-HOME-07 | Start a transaction | TC-E2E-11 | E2E | ⬜ |
-| AC-HOME-08 | Hide balance persists | TC-E2E-10 | E2E | ⬜ |
+| AC-HOME-08 | Hide balance persists | TC-E2E-10 | E2E | ✅ |
 | AC-HOME-09 | Reflect a completed transfer | TC-E2E-11 | E2E | ⬜ |
-| AC-HOME-10 | Zero balance | TC-COMP-06, TC-E2E-09 | COMP, E2E | ⬜ |
-| AC-HOME-11 | Pending and failed transactions | TC-COMP-07, TC-E2E-08 | COMP, E2E | ⬜ |
+| AC-HOME-10 | Zero balance | TC-COMP-06, TC-E2E-09 | COMP, E2E | ✅ |
+| AC-HOME-11 | Pending and failed transactions | TC-COMP-07, TC-E2E-08 | COMP, E2E | ✅ |
 | AC-HOME-12 | Logout from Home | TC-E2E-06 | E2E | ✅ |
 | AC-TX-01 | Send to a favorite (happy path) | TC-E2E-11 | E2E | ⬜ |
 | AC-TX-02 | Amount must be greater than zero (BR-01) | TC-COMP-11, TC-E2E-13 | COMP, E2E | ⬜ |
@@ -242,7 +242,7 @@ Generated from the test cases in §6; every BR, UIR and AC is covered.
 | FR-HOME-01 | — | TC-INT-06 | INT | ✅ |
 | FR-HOME-02 | — | TC-INT-06 | INT | ✅ |
 | FR-HOME-03 | — | TC-INT-06 | INT | ✅ |
-| FR-HOME-06 | — | TC-E2E-09 | E2E | ⬜ |
+| FR-HOME-06 | — | TC-E2E-09 | E2E | ✅ |
 | FR-HOME-10 | — | TC-INT-06 | INT | ✅ |
 | FR-TX-02 | — | TC-INT-07 | INT | ⬜ |
 | FR-TX-04 | — | TC-INT-07 | INT | ⬜ |
@@ -296,8 +296,8 @@ Levels and IDs follow the [specs README](../README.md#24-ids). Tests reference t
 |---|---|---|---|---|---|---|---|
 | TC-PL-01 | useLoginFlow | UIR-AUTH-04, UIR-AUTH-09, UIR-AUTH-10, UIR-AUTH-12, UIR-AUTH-13 | identifier → requestingCode → code → verifying → success; incorrect/locked/expired branches; change identifier keeps value; new code resets attempts | `src/features/auth/use-login-flow.test.ts` | High | TASK-11 | ✅ |
 | TC-PL-02 | useCountdown | UIR-AUTH-11 | counts down from server value; exposes `available` at zero once; cleans up on unmount (fake timers) | `src/features/auth/use-countdown.test.ts` | Medium | TASK-11 | ✅ |
-| TC-PL-03 | useSectionRetry | UIR-HOME-12 | retry calls only its endpoint; loading → ready / error with requestId | `src/features/home/use-section-retry.test.ts` | Medium | TASK-13 | ⬜ |
-| TC-PL-04 | useHideBalance | UIR-HOME-05 | toggle writes `hide_balance` cookie; initial value from server prop | `src/features/home/use-hide-balance.test.ts` | Medium | TASK-13 | ⬜ |
+| TC-PL-03 | useSectionRetry | UIR-HOME-12 | retry calls only its endpoint; loading → ready / error with requestId | `src/features/home/use-section-retry.test.ts` | Medium | TASK-13 | ✅ |
+| TC-PL-04 | useHideBalance | UIR-HOME-05 | toggle writes `hide_balance` cookie; initial value from server prop | `src/features/home/use-hide-balance.test.ts` | Medium | TASK-13 | ✅ |
 | TC-PL-05 | useStepGuard | UIR-TX-14, BR-03 | amount without recipient → replace to recipient; summary without amount → amount; completion marker → Home; renders nothing before redirect | `src/features/transfer/use-step-guard.test.ts` | High | TASK-15 | ⬜ |
 | TC-PL-06 | useAmountField | UIR-TX-12 | BR-02 error as soon as exceeded; BR-01 only on continue; errors clear when valid | `src/features/transfer/use-amount-field.test.ts` | High | TASK-16 | ⬜ |
 | TC-PL-07 | useSaveContact | UIR-TX-06, UIR-TX-07, UIR-TX-08 | 201 → saved message; 200 → duplicate message + existing recipient; 503/network → one-off + failure message | `src/features/transfer/use-save-contact.test.ts` | High | TASK-15 | ⬜ |
@@ -313,9 +313,9 @@ Levels and IDs follow the [specs README](../README.md#24-ids). Tests reference t
 | TC-COMP-03 | IdentifierStep | UIR-AUTH-01, UIR-AUTH-02, UIR-AUTH-03, AC-AUTH-03, AC-AUTH-04, AC-AUTH-05 | error on blur not while typing; clears live; Continue enabled when empty → required error + focus; busy blocks second submit | `src/features/auth/identifier-step.test.tsx` | High | TASK-11 | ✅ |
 | TC-COMP-04 | CodeStep and OneTimeCodeField | UIR-AUTH-05, UIR-AUTH-06, UIR-AUTH-07, UIR-AUTH-08, UIR-AUTH-09, UIR-AUTH-10, UIR-AUTH-11, UIR-AUTH-12, UIR-AUTH-13, UIR-AUTH-16, AC-AUTH-07, AC-AUTH-08, AC-AUTH-10, AC-AUTH-11, AC-AUTH-17, AC-AUTH-18 | focus + instructions with masked destination; paste normalized; no auto-submit; attempts-left message with selected content; locked state; cooldown text announced once at zero; demo hint only with flag | `src/features/auth/code-step.test.tsx` | High | TASK-11 | ✅ |
 | TC-COMP-05 | SessionNotice | UIR-AUTH-17 | `reason=logged_out` and `reason=session_ended` messages announced | `src/features/auth/session-notice.test.tsx` | Medium | TASK-11 | ✅ |
-| TC-COMP-06 | BalanceCard and HideBalanceToggle | UIR-HOME-04, UIR-HOME-05, AC-HOME-10 | zero balance note; masked `$ ••••••` with accessible 'Saldo oculto'; toggle aria-pressed | `src/components/wallet/balance-card.test.tsx` | High | TASK-13 | ⬜ |
-| TC-COMP-07 | TransactionItem and ActivityList | UIR-HOME-06, UIR-HOME-07, UIR-HOME-08, UIR-HOME-09, AC-HOME-03, AC-HOME-05, AC-HOME-11 | one accessible sentence per item; sign + direction label; badges only for pending/failed; long names truncated with full accessible name; empty state copy | `src/components/wallet/transaction-item.test.tsx` | High | TASK-13 | ⬜ |
-| TC-COMP-08 | Home sections | UIR-HOME-01, UIR-HOME-02, UIR-HOME-03, UIR-HOME-11, UIR-HOME-12, UIR-HOME-13, AC-HOME-04 | skeleton per section with aria-busy; SectionError with reference and retry; primary action always rendered; header actions; highlight respects reduced motion | `src/features/home/home-sections.test.tsx` | High | TASK-13 | ⬜ |
+| TC-COMP-06 | BalanceCard and HideBalanceToggle | UIR-HOME-04, UIR-HOME-05, AC-HOME-10 | zero balance note; masked `$ ••••••` with accessible 'Saldo oculto'; toggle aria-pressed | `src/components/wallet/balance-card.test.tsx` | High | TASK-13 | ✅ |
+| TC-COMP-07 | TransactionItem and ActivityList | UIR-HOME-06, UIR-HOME-07, UIR-HOME-08, UIR-HOME-09, AC-HOME-03, AC-HOME-05, AC-HOME-11 | one accessible sentence per item; sign + direction label; badges only for pending/failed; long names truncated with full accessible name; empty state copy | `src/components/wallet/transaction-item.test.tsx` | High | TASK-13 | ✅ |
+| TC-COMP-08 | Home sections | UIR-HOME-01, UIR-HOME-02, UIR-HOME-03, UIR-HOME-11, UIR-HOME-12, UIR-HOME-13, AC-HOME-04 | skeleton per section with aria-busy; SectionError with reference and retry; primary action always rendered; header actions; highlight respects reduced motion | `src/features/home/home-sections.test.tsx` | High | TASK-13 | ✅ |
 | TC-COMP-09 | Recipient step | UIR-TX-01, UIR-TX-02, UIR-TX-03, UIR-TX-04, UIR-TX-09, AC-TX-14 | step indicator text; heading focus; favorites order and accessible names; activating a favorite selects and navigates; favorites error keeps 'Nuevo contacto' | `src/features/transfer/recipient-step.test.tsx` | High | TASK-15 | ⬜ |
 | TC-COMP-10 | NewContactForm | UIR-TX-05, UIR-TX-06, UIR-TX-07, UIR-TX-08, AC-TX-09, AC-TX-10 | fields + checkbox checked by default; per-field errors and focus on first; self-transfer error; saved / duplicate / save-failed messages | `src/features/transfer/new-contact-form.test.tsx` | High | TASK-15 | ⬜ |
 | TC-COMP-11 | Amount step | UIR-TX-10, UIR-TX-11, UIR-TX-12, UIR-TX-13, UIR-TX-15, AC-TX-02, AC-TX-03, AC-TX-04, AC-TX-11 | caret preserved while formatting; balance linked as description; BR-02 live, BR-01 on continue; concept counter 40/40; balance error with retry | `src/features/transfer/amount-step.test.tsx` | High | TASK-16 | ⬜ |
@@ -354,9 +354,9 @@ Levels and IDs follow the [specs README](../README.md#24-ids). Tests reference t
 | TC-E2E-05 | Deep link and authenticated redirect | AC-AUTH-13, AC-AUTH-14, UIR-AUTH-14, FR-AUTH-08 | fresh context opens /transfer/recipient → Login → back to it; logged-in user opening /login → Home without form | `tests/e2e/auth.spec.ts` | High | TASK-20 (written in TASK-11) | ✅ |
 | TC-E2E-06 | Session persistence and logout | AC-AUTH-12, AC-AUTH-15, AC-HOME-12 | reload keeps session; logout → 'Cerraste sesión.'; Home redirects to Login; Back doesn't reveal balance | `tests/e2e/auth.spec.ts` | High | TASK-20 (written in TASK-11) | ✅ |
 | TC-E2E-07 | Login service error | AC-AUTH-16 | seeded `falla.login` → error with reference and retry; identifier kept | `tests/e2e/auth.spec.ts` | Medium | TASK-20 (written in TASK-11) | ✅ |
-| TC-E2E-08 | Home — normal user | AC-HOME-01, AC-HOME-02, AC-HOME-03, AC-HOME-11 | greeting, balance, exactly 10 newest items, item content and badges | `tests/e2e/home.spec.ts` | High | TASK-20 | ⬜ |
-| TC-E2E-09 | Home — states and section retry | AC-HOME-05, AC-HOME-06, AC-HOME-10, FR-HOME-06 | empty user; zero-balance user; balance-error and activity-error users; retry reloads only that section | `tests/e2e/home.spec.ts` | High | TASK-20 | ⬜ |
-| TC-E2E-10 | Hide balance | AC-HOME-08, UIR-HOME-05 | toggle, reload: still hidden; summary and receipt balances masked | `tests/e2e/home.spec.ts` | Medium | TASK-20 | ⬜ |
+| TC-E2E-08 | Home — normal user | AC-HOME-01, AC-HOME-02, AC-HOME-03, AC-HOME-11 | greeting, balance, exactly 10 newest items, item content and badges | `tests/e2e/home.spec.ts` | High | TASK-20 (written in TASK-13) | ✅ |
+| TC-E2E-09 | Home — states and section retry | AC-HOME-05, AC-HOME-06, AC-HOME-10, FR-HOME-06 | empty user; zero-balance user; balance-error and activity-error users; retry reloads only that section | `tests/e2e/home.spec.ts` | High | TASK-20 (written in TASK-13) | ✅ |
+| TC-E2E-10 | Hide balance | AC-HOME-08, UIR-HOME-05 | toggle, reload: still hidden; summary and receipt balances masked | `tests/e2e/home.spec.ts` | Medium | TASK-20 (written in TASK-13) | ✅ |
 | TC-E2E-11 | Transfer happy path | AC-TX-01, AC-CONF-01, AC-HOME-07, AC-HOME-09, UIR-HOME-10 | favorite → amount → summary → success receipt → Home shows new balance and first item | `tests/e2e/transfer.spec.ts` | High | TASK-20 | ⬜ |
 | TC-E2E-12 | New contact variants | AC-TX-06, AC-TX-07, AC-TX-08, AC-TX-09, AC-TX-10, AC-TX-16 | saved, one-off, duplicate, invalid fields, self-transfer, save failure (route-level forced 503) continues | `tests/e2e/transfer.spec.ts` | High | TASK-20 | ⬜ |
 | TC-E2E-13 | Amount rules, concept and edit | AC-TX-02, AC-TX-03, AC-TX-04, AC-TX-11, AC-TX-12 | zero, over balance (live), format, concept limit, edit amount from summary keeps recipient and concept | `tests/e2e/transfer.spec.ts` | High | TASK-20 | ⬜ |

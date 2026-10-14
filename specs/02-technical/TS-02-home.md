@@ -5,7 +5,7 @@
 | **ID** | TS-02 |
 | **Module** | HOME |
 | **Status** | Approved |
-| **Version** | 1.2 |
+| **Version** | 1.3 |
 | **Author** | Claude (AI-assisted draft) |
 | **Reviewer** | Project owner |
 | **Last updated** | 2026-10-14 |
@@ -121,6 +121,8 @@ See TS-00 §3.4. No deviations.
 | `/` | Server Components; header renders immediately; Balance and Activity each streamed inside its own `Suspense` | None (logout and theme handled by their modules) | Fast first content; independent failures | Dynamic; `no-store` |
 | Section retry | Client fetch of that section's GET endpoint; same presentational components | — | Retry only the failed section (AC-HOME-06) | `no-store` |
 
+**Implementation (TASK-13):** activity items are turned into display-ready view models (`toActivityItemView`: labels, relative date, one accessible sentence) where the data is fetched — on the server for the first render, on the client after a retry — so server and client HTML always match. The greeting and the balance share one summary request per render (`React.cache`). Constants read by Server Components (`hide_balance`, `highlight`) live in a plain module, not in a client one.
+
 Server sections **catch** expected service errors and render `SectionError` with `{ code, requestId }` instead of throwing, so one failure never triggers the page-level error boundary. Unexpected exceptions still reach `(private)/error.tsx`.
 
 ## 8. State management
@@ -187,6 +189,7 @@ Per FS-02 §13. Technical notes: list as `<ul>` with each `TransactionItem` as `
 ## 16. Known limitations and technical debt
 
 - No pagination or detail view.
+- Streaming race (observed in E2E, Next 16.4 / React 19.3): if a section's streamed content arrives after hydration has started, React renders it on the client and the streamed copy stays in a `<div hidden>` outside `<main>`. Invisible and outside the accessibility tree; E2E assertions are scoped to `<main>`.
 
 ## 17. Traceability
 
@@ -206,3 +209,4 @@ Per FS-02 §13. Technical notes: list as `<ul>` with each `TransactionItem` as `
 | 1.0 | 2026-10-14 | Project owner | Approved |
 | 1.1 | 2026-10-14 | Project owner | Wallet-specific components folder renamed `src/components/domain` → `src/components/wallet` (avoids confusion with `src/core`) |
 | 1.2 | 2026-10-14 | Claude (AI-assisted) | TASK-12: 400 for a non-numeric limit, response without owner ID, outages modelled in repositories |
+| 1.3 | 2026-10-14 | Claude (AI-assisted) | TASK-13: view models built where data is fetched, request dedupe, constants outside client modules |

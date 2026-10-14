@@ -1,5 +1,6 @@
 import 'server-only';
 import { cookies } from 'next/headers';
+import { cache } from 'react';
 import type { UserId } from '@/core/ids';
 import { getConfig } from '@/lib/config';
 import { setContextUserId } from '@/server/logging/context';
@@ -30,10 +31,10 @@ export async function resolveSession(
   return session;
 }
 
-/** For Server Components and layouts. */
-export async function getSession(): Promise<Session | null> {
-  return resolveSession((await cookies()).get(SESSION_COOKIE)?.value);
-}
+/** For Server Components and layouts; cached so the layout and the page share one lookup. */
+export const getSession = cache(async (): Promise<Session | null> =>
+  resolveSession((await cookies()).get(SESSION_COOKIE)?.value),
+);
 
 /** For Route Handlers, which receive the raw request. */
 export function getSessionFromRequest(request: Request): Promise<Session | null> {
