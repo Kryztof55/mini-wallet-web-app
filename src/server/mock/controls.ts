@@ -1,4 +1,5 @@
 import 'server-only';
+import { logEvent } from '@/server/logging/logger';
 
 export const MOCK_OUTCOME_HEADER = 'x-mock-outcome';
 
@@ -21,4 +22,11 @@ export function readForcedOutcome<T extends string>(
     return { value: null, ignored: true };
   }
   return { value: raw as T, ignored: false };
+}
+
+/** Logs a forced or ignored mock outcome so test runs are traceable (TS-05 MOCK events). */
+export function logForcedOutcome(forced: ForcedOutcome<string>, route: string): void {
+  if (forced.value !== null)
+    logEvent('info', 'mock.outcome.forced', { route, outcome: forced.value });
+  else if (forced.ignored) logEvent('warn', 'mock.outcome.ignored', { route });
 }

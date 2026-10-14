@@ -4,6 +4,7 @@ import type { ReactNode } from 'react';
 import { sanitizeReturnTo } from '@/core/return-to';
 import { loginUrl, RETURN_TO_HEADER } from '@/lib/routes';
 import { logEvent } from '@/server/logging/logger';
+import { runInPageContext } from '@/server/logging/page-context';
 import { getSession } from '@/server/session/session';
 
 /**
@@ -11,9 +12,12 @@ import { getSession } from '@/server/session/session';
  * record, so it holds even if the proxy is skipped. Failure → login, then back here.
  */
 export default async function PrivateLayout({ children }: { readonly children: ReactNode }) {
-  const session = await getSession();
+  const session = await runInPageContext(async () => {
+    const found = await getSession();
+    if (!found) logEvent('info', 'auth.session.rejected', { layer: 'layout' });
+    return found;
+  });
   if (!session) {
-    logEvent('info', 'auth.session.rejected', { layer: 'layout' });
     const returnTo = sanitizeReturnTo((await headers()).get(RETURN_TO_HEADER));
     redirect(loginUrl({ returnTo, reason: 'session_ended' }));
   }

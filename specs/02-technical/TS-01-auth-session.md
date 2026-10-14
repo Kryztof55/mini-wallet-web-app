@@ -5,7 +5,7 @@
 | **ID** | TS-01 |
 | **Module** | AUTH |
 | **Status** | Approved |
-| **Version** | 1.2 |
+| **Version** | 1.3 |
 | **Author** | Claude (AI-assisted draft) |
 | **Reviewer** | Project owner |
 | **Last updated** | 2026-10-14 |
@@ -216,6 +216,12 @@ Unknown identifiers also receive `202` (OQ-14); no challenge can ever verify for
   - `/login` with a valid cookie bounces to `returnTo` (or Home) **unless** `reason` is present: the server already found that session invalid (e.g. store lost on restart), so bouncing would loop. The stale cookie is harmless and is replaced on the next login; clearing it from a GET would make logout-by-link possible.
   - Controllers use `withApi(route, withSession(handler))`; `withSession` answers `401` without running the handler.
   - The proxy logs `security.csrf.rejected` (with `reason`) and `auth.session.rejected` (with `layer`: proxy, layout or controller).
+- **Implementation notes (TASK-10):**
+  - Code delivery is a port (`OtpDelivery.send`) next to the repositories; the mock never sends and fails for seeded users with `codeRequestFails`, so a failed delivery issues no challenge and starts no cooldown.
+  - Unknown identifiers get a decoy challenge (`code: null`) and, with mock controls on, a displayed `demoCode` that can never verify — the response shape is identical (OQ-14).
+  - `x-mock-outcome: otp_expired` ages the stored challenge past its TTL, so it stays expired for later attempts.
+  - A verified code is deleted (single use). Invalid `timeZone` falls back to `America/Mexico_City`.
+  - `auth.code.rejected` / `auth.verify.rejected` are logged by the service (it is where the rule is evaluated), with `errorCode`.
 - **Never logged:** code, session ID, full identifier (TS-05).
 
 ## 11. Observability
@@ -286,3 +292,4 @@ Per FS-01 §13. Technical notes: `autocomplete="username"` + `inputmode="email"`
 | 1.0 | 2026-10-14 | Project owner | Approved |
 | 1.1 | 2026-10-14 | Claude (AI-assisted) | One-time code is random per challenge; the demo hint shows the current code outside production (owner decision, resolves conflict between fixed demo code and AC-AUTH-10) |
 | 1.2 | 2026-10-14 | Claude (AI-assisted) | TASK-09: module files, secure-by-default route classification, `x-return-to`, no-bounce rule for `/login?reason=…`, `withSession` |
+| 1.3 | 2026-10-14 | Claude (AI-assisted) | TASK-10: `OtpDelivery` port, decoy behavior, `otp_expired` persistence, single-use codes, log origins |

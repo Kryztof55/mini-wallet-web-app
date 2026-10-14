@@ -8,6 +8,7 @@ import type { Transaction } from '@/core/transaction';
 import type { TransferStatus } from '@/core/transfer-attempt';
 import type { User } from '@/core/user';
 import type { DomainError } from '@/core/errors';
+import type { Result } from '@/core/result';
 
 /**
  * Repository ports (TS-00 §3.1). Services depend on these interfaces only; the in-memory
@@ -87,6 +88,18 @@ export interface ReceiptRepository {
   save(userId: UserId, receipt: Receipt): Promise<void>;
 }
 
+/**
+ * Sends a one-time code to the user (SMS or email in production). The mock never sends;
+ * it fails for seeded users marked `codeRequestFails` (TS-00 §9.3).
+ */
+export interface OtpDelivery {
+  send(
+    userId: UserId,
+    destination: Identifier,
+    code: string,
+  ): Promise<Result<void, DomainError<'SERVICE_UNAVAILABLE'>>>;
+}
+
 export type Repositories = {
   readonly users: UserRepository;
   readonly accounts: AccountRepository;
@@ -96,4 +109,5 @@ export type Repositories = {
   readonly sessions: SessionRepository;
   readonly attempts: AttemptRepository;
   readonly receipts: ReceiptRepository;
+  readonly otpDelivery: OtpDelivery;
 };

@@ -62,9 +62,9 @@ Generated from the test cases in §6; every BR, UIR and AC is covered.
 | BR-08 | No duplicate favorites | TC-UNIT-22, TC-INT-07 | INT, UNIT | ⬜ |
 | BR-09 | No self-transfer | TC-UNIT-04, TC-INT-07, TC-INT-08 | INT, UNIT | ⬜ |
 | BR-10 | Identifier format | TC-UNIT-05, TC-INT-03, TC-INT-07 | INT, UNIT | ⬜ |
-| BR-11 | One-time code format | TC-UNIT-07, TC-INT-04 | INT, UNIT | ⬜ |
-| BR-12 | Code validity | TC-UNIT-08, TC-INT-04 | INT, UNIT | ⬜ |
-| BR-13 | Code throttling | TC-UNIT-09, TC-INT-03 | INT, UNIT | ⬜ |
+| BR-11 | One-time code format | TC-UNIT-07, TC-INT-04 | INT, UNIT | ✅ |
+| BR-12 | Code validity | TC-UNIT-08, TC-INT-04 | INT, UNIT | ✅ |
+| BR-13 | Code throttling | TC-UNIT-09, TC-INT-03 | INT, UNIT | ✅ |
 | BR-14 | Session required | TC-UNIT-15, TC-INT-02 | INT, UNIT | ✅ |
 | BR-15 | Concept format | TC-UNIT-10, TC-INT-08 | INT, UNIT | ⬜ |
 | BR-16 | Contact name | TC-UNIT-11, TC-INT-07 | INT, UNIT | ⬜ |
@@ -226,15 +226,15 @@ Generated from the test cases in §6; every BR, UIR and AC is covered.
 | A11Y-24 | — | TC-COMP-01, TC-COMP-13, TC-MAN-01 | COMP, MAN | ⬜ |
 | A11Y-25 | — | TC-MAN-03 | MAN | ⬜ |
 | A11Y-26 | — | TC-COMP-02, TC-E2E-22 | COMP, E2E | ⬜ |
-| FR-AUTH-01 | — | TC-INT-03 | INT | ⬜ |
-| FR-AUTH-02 | — | TC-INT-03 | INT | ⬜ |
-| FR-AUTH-06 | — | TC-INT-04 | INT | ⬜ |
+| FR-AUTH-01 | — | TC-INT-03 | INT | ✅ |
+| FR-AUTH-02 | — | TC-INT-03 | INT | ✅ |
+| FR-AUTH-06 | — | TC-INT-04 | INT | ✅ |
 | FR-AUTH-07 | — | TC-E2E-01 | E2E | ⬜ |
 | FR-AUTH-08 | — | TC-E2E-05 | E2E | ⬜ |
-| FR-AUTH-10 | — | TC-INT-05 | INT | ⬜ |
-| FR-AUTH-12 | — | TC-INT-03 | INT | ⬜ |
-| FR-AUTH-13 | — | TC-INT-04 | INT | ⬜ |
-| FR-AUTH-14 | — | TC-INT-04 | INT | ⬜ |
+| FR-AUTH-10 | — | TC-INT-05 | INT | ✅ |
+| FR-AUTH-12 | — | TC-INT-03 | INT | ✅ |
+| FR-AUTH-13 | — | TC-INT-04 | INT | ✅ |
+| FR-AUTH-14 | — | TC-INT-04 | INT | ✅ |
 | FR-CONF-01 | — | TC-INT-10 | INT | ⬜ |
 | FR-CONF-08 | — | TC-INT-09 | INT | ⬜ |
 | FR-CONF-11 | — | TC-UNIT-18, TC-INT-10 | INT, UNIT | ⬜ |
@@ -249,7 +249,7 @@ Generated from the test cases in §6; every BR, UIR and AC is covered.
 | NFR-04 | — | TC-UNIT-19, TC-INT-13, TC-E2E-23 | E2E, INT, UNIT | ⬜ |
 | NFR-05 | — | TC-UNIT-20 | UNIT | ✅ |
 | NFR-06 | — | TC-UNIT-23 | UNIT | ✅ |
-| NFR-10 | — | TC-UNIT-21, TC-INT-12 | INT, UNIT | ⬜ |
+| NFR-10 | — | TC-UNIT-21, TC-INT-12 | INT, UNIT | ✅ |
 | NFR-13 | — | TC-UNIT-17 | UNIT | ✅ |
 | NFR-14 | — | TC-E2E-21 | E2E | ⬜ |
 | NFR-16 | — | TC-UNIT-24 | UNIT | ✅ |
@@ -330,16 +330,16 @@ Levels and IDs follow the [specs README](../README.md#24-ids). Tests reference t
 |---|---|---|---|---|---|---|---|
 | TC-INT-01 | CSRF protection matrix | NFR-17, ADR-004 | state-changing request with foreign Origin → 403; no Origin + Sec-Fetch-Site cross-site → 403; form-encoded → 415; missing x-request-id → 403; no CORS headers; GET never mutates | `src/proxy.int.test.ts` | High | TASK-09 | ✅ |
 | TC-INT-02 | Session gate and authority | BR-14, UIR-AUTH-15, AC-AUTH-19, AC-AUTH-14 | private page without cookie → /login?returnTo; with cookie on /login → /; private API without session → 401; tampered cookie → 401; handler called directly (middleware bypassed) still → 401 | `src/server/session/session.int.test.ts` | High | TASK-09 | ✅ |
-| TC-INT-03 | POST /api/auth/code | FR-AUTH-01, FR-AUTH-02, FR-AUTH-12, BR-10, BR-13, AC-AUTH-16 | 202 with masked destination; 422 INVALID_IDENTIFIER; 429 CODE_THROTTLED with retryAfterSec; unknown identifier → same 202; seeded `falla.login` → 503; no identifier/code in logs | `src/app/api/auth/code/route.int.test.ts` | High | TASK-10 | ⬜ |
-| TC-INT-04 | POST /api/auth/verify | FR-AUTH-06, FR-AUTH-13, FR-AUTH-14, BR-11, BR-12, AC-AUTH-09 | 200 + cookie attributes; INVALID_CODE_FORMAT consumes no attempt; CODE_INCORRECT attemptsLeft; CODE_LOCKED; `otp_expired` forced → CODE_EXPIRED; redirectTo sanitized; timeZone stored | `src/app/api/auth/verify/route.int.test.ts` | High | TASK-10 | ⬜ |
-| TC-INT-05 | POST /api/auth/logout | FR-AUTH-10 | 204; session deleted; replaying old cookie → 401; idempotent without session | `src/app/api/auth/logout/route.int.test.ts` | High | TASK-10 | ⬜ |
+| TC-INT-03 | POST /api/auth/code | FR-AUTH-01, FR-AUTH-02, FR-AUTH-12, BR-10, BR-13, AC-AUTH-16 | 202 with masked destination; 422 INVALID_IDENTIFIER; 429 CODE_THROTTLED with retryAfterSec; unknown identifier → same 202; seeded `falla.login` → 503; no identifier/code in logs | `src/app/api/auth/code/route.int.test.ts` | High | TASK-10 | ✅ |
+| TC-INT-04 | POST /api/auth/verify | FR-AUTH-06, FR-AUTH-13, FR-AUTH-14, BR-11, BR-12, AC-AUTH-09 | 200 + cookie attributes; INVALID_CODE_FORMAT consumes no attempt; CODE_INCORRECT attemptsLeft; CODE_LOCKED; `otp_expired` forced → CODE_EXPIRED; redirectTo sanitized; timeZone stored | `src/app/api/auth/verify/route.int.test.ts` | High | TASK-10 | ✅ |
+| TC-INT-05 | POST /api/auth/logout | FR-AUTH-10 | 204; session deleted; replaying old cookie → 401; idempotent without session | `src/app/api/auth/logout/route.int.test.ts` | High | TASK-10 | ✅ |
 | TC-INT-06 | Home endpoints | FR-HOME-01, FR-HOME-02, FR-HOME-03, FR-HOME-10 | summary and transactions for seeded users; limit clamped to 10; seeded failures → 503; Cache-Control no-store | `src/app/api/me/me.int.test.ts` | High | TASK-12 | ⬜ |
 | TC-INT-07 | Contacts endpoints | BR-08, BR-09, BR-10, BR-16, FR-TX-02, FR-TX-04 | GET ordered by lastUsedAt; POST 201 new / 200 duplicate; 422 INVALID_CONTACT_NAME, INVALID_IDENTIFIER, SELF_TRANSFER; forced 503 | `src/app/api/contacts/route.int.test.ts` | High | TASK-14 | ⬜ |
 | TC-INT-08 | POST /api/transfers — rules | BR-01, BR-02, BR-03, BR-04, BR-05, BR-06, BR-09, BR-15, AC-TX-15 | each rule violated directly against the API → specific 422; foreign contactId → RECIPIENT_REQUIRED; no debit on any failure | `src/app/api/transfers/rules.int.test.ts` | High | TASK-17 | ⬜ |
 | TC-INT-09 | POST /api/transfers — idempotency | BR-07, FR-CONF-08, AC-CONF-04 | same key + payload → stored 201 replay; same key + other payload → 409; concurrent same key → one debit, other 202; not_processed re-processed on retry | `src/app/api/transfers/idempotency.int.test.ts` | High | TASK-17 | ⬜ |
 | TC-INT-10 | Forced outcomes and attempt status | FR-CONF-01, FR-CONF-11, FR-CONF-13, BR-17, UIR-CONF-17, AC-CONF-15, AC-CONF-16 | each outcome and timeout sub-case via x-mock-outcome; status endpoint reports in_progress/completed/failed/not_processed; unknown key → not_processed | `src/app/api/transfers/outcomes.int.test.ts` | High | TASK-17 | ⬜ |
 | TC-INT-11 | Receipt ownership | AC-CONF-17 | getReceipt for another user's transfer → NOT_FOUND, indistinguishable from missing | `src/server/services/transfers.service.int.test.ts` | High | TASK-17 | ⬜ |
-| TC-INT-12 | Mock controls disabled | NFR-10 | with MOCK_CONTROLS_ENABLED=false: x-mock-outcome ignored (logged), /api/mock/reset → 404, demo hint flag false | `src/server/mock/mock-controls.int.test.ts` | High | TASK-06 | ⬜ |
+| TC-INT-12 | Mock controls disabled | NFR-10 | with MOCK_CONTROLS_ENABLED=false: x-mock-outcome ignored (logged), /api/mock/reset → 404, demo hint flag false | `src/server/mock/mock-controls.int.test.ts` | High | TASK-06 | ✅ |
 | TC-INT-13 | Correlation and client logs | NFR-04 | every API response has x-request-id; error bodies include requestId; client-logs: >10 events → 400, >2 KB → 413, rate limit → 429 | `src/app/api/client-logs/route.int.test.ts`, `src/proxy.int.test.ts`, `src/server/http/http.test.ts` | Medium | TASK-07, TASK-09 | ✅ |
 | TC-INT-14 | Theme Server Action | ADR-007, UX-22 | sets `theme` cookie (light/dark/system) and rejects other values | `src/server/actions/set-theme.int.test.ts` | Medium | TASK-03 | ✅ |
 

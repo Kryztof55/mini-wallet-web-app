@@ -76,6 +76,7 @@ npm run format:check   # Prettier (npm run format to fix)
 npm test               # Vitest: projects "node" (unit/integration) and "dom" (jsdom components)
 npm run build          # must compile with no warnings
 npm run test:e2e       # Playwright: builds and serves on :3100, 4 projects (light/dark × desktop/mobile)
+                       # first time on a machine: npx playwright install chromium webkit
 ```
 
 Before reporting a task done: lint, typecheck, format check, `npm test` and `npm run build`
@@ -117,11 +118,10 @@ all green. E2E when the task touches flows (TASK-20 owns the suite).
 
 ## 9. Current state
 
-- Done: TASK-01, 03, 04, 05, 06, 07, 08, 09. TASK-02 is **In review** until
-  `npm run test:e2e` passes on the owner's machine.
-- **Next: TASK-10** (auth API: request code with random OTP + `demoCode`, verify →
-  `createSession`, logout → `destroySession`). It also finishes TC-INT-12.
-- Then: TASK-11 login screens → TASK-12/13 Home → TASK-14/15/16
+- Done: TASK-01 to TASK-10 (E2E smoke green in all 4 projects).
+- **Next: TASK-11** (login screens: identifier step → code step with demo hint, resend
+  countdown, lock/expired states, session notices; `src/features/auth`, `/login`).
+- Then: TASK-12/13 Home → TASK-14/15/16
   transfer → TASK-17/18/19 confirmation and receipt → TASK-20/21/22.
 
 ## 10. Known pitfalls

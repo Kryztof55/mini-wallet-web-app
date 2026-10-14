@@ -1,5 +1,7 @@
 import 'server-only';
 import type { Contact } from '@/core/contact';
+import { domainError } from '@/core/errors';
+import { err, ok } from '@/core/result';
 import { identifierKey, type Identifier } from '@/core/identifier';
 import type { AttemptKey, ContactId, TransferId, UserId } from '@/core/ids';
 import type { MockDb } from '@/server/mock/db';
@@ -128,6 +130,14 @@ export function createInMemoryRepositories(db: MockDb, latency: Latency): Reposi
       },
       async save(userId, receipt) {
         db.receipts.set(receiptKey(userId, receipt.transferId), receipt);
+      },
+    },
+    otpDelivery: {
+      async send(userId) {
+        await latency();
+        return db.behaviors.get(userId)?.codeRequestFails
+          ? err(domainError('SERVICE_UNAVAILABLE'))
+          : ok(undefined);
       },
     },
   };
