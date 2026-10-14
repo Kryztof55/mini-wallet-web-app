@@ -6,7 +6,7 @@ import { useAnnounce } from '@/components/ui/live-announcer';
 import { BalanceCard } from '@/components/wallet/balance-card';
 import { t } from '@/lib/i18n/t';
 import { homeApi, type HomeApi } from './api';
-import { useSectionRetry } from './use-section-retry';
+import { useSectionRetry } from '@/lib/hooks/use-section-retry';
 
 /** Balance section after a server-side failure: error with reference and its own retry. */
 export function BalanceRetry({

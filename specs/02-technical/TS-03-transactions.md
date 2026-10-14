@@ -64,6 +64,8 @@ src/server/services/contacts.service.ts
 src/core/{money,transfer-rules,contact}.ts
 ```
 
+**As built (TASK-15):** `FavoritesList` → `favorites-section.tsx`; `CancelTransferDialog` → `CancelTransfer` (`cancel-transfer.tsx`); `useTransferDraft` → `useDraft` / `useDraftDispatch`; `contactsApi.create` → `contactsApi.save`. Added `TransferDataProvider` (server data as `Loaded<T>`), `StepHeading`, `Avatar` and `MaskedIdentifierText` (`src/components/wallet/masked-identifier.tsx`, spoken form via `parseMaskedIdentifier` in `src/core/identifier.ts`). The draft also carries `notice` (saved / duplicate / save-failed, shown once on the amount step) and `completed` (UIR-TX-21).
+
 ### 3.4 Technology bindings
 
 See TS-00 §3.4. Cancel dialog uses the Radix Dialog wrapper (ADR-008).
@@ -228,3 +230,4 @@ Per FS-03 §13. Technical notes: `MoneyInput` keeps a visible label and `aria-de
 | 0.1 | 2026-10-14 | Claude (AI-assisted) | First draft |
 | 1.0 | 2026-10-14 | Project owner | Approved |
 | 1.1 | 2026-10-14 | Project owner | Wallet-specific components folder renamed `src/components/domain` → `src/components/wallet` (avoids confusion with `src/core`) |
+| 1.2 | 2026-10-14 | Claude (AI-assisted) | TASK-15: §3.3 as-built names; draft adds `notice` and `completed` (no behavior change to the contracts) |

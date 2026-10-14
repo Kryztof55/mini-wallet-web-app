@@ -75,3 +75,19 @@ export function maskIdentifier(identifier: Identifier): MaskedIdentifier {
   const [local = '', domain = ''] = identifier.value.split('@');
   return `${local.slice(0, 1)}•••@${domain}` as MaskedIdentifier;
 }
+
+export type MaskedParts =
+  | { readonly kind: 'phone'; readonly last4: string }
+  | { readonly kind: 'email'; readonly first: string; readonly domain: string };
+
+/**
+ * Reads back a mask produced by `maskIdentifier` so the UI can give screen readers words
+ * instead of bullets (FS-03 §13: "celular terminación 5678"). `null` for anything else.
+ */
+export function parseMaskedIdentifier(masked: string): MaskedParts | null {
+  const phone = /^•••• (\d{4})$/u.exec(masked);
+  if (phone?.[1]) return { kind: 'phone', last4: phone[1] };
+  const email = /^(.)•••@(.+)$/u.exec(masked);
+  if (email?.[1] && email[2]) return { kind: 'email', first: email[1], domain: email[2] };
+  return null;
+}

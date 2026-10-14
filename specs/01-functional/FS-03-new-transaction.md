@@ -361,6 +361,8 @@ And I am on the amount step with that contact as recipient
 | `tx.recipient.title` | "¿A quién le envías?" | Step 1 heading |
 | `tx.recipient.favorites` | "Favoritos" | List heading |
 | `tx.recipient.send_to` | "Enviar a {name}" | Favorite accessible name |
+| `identifier.spoken.phone` | "celular terminación {last4}" | Spoken form of a masked phone (A11Y-17) |
+| `identifier.spoken.email` | "correo que empieza con {first}, en {domain}" | Spoken form of a masked email (A11Y-17) |
 | `tx.recipient.empty` | "Aún no tienes favoritos. Agrega un contacto para enviarle dinero." | Empty state |
 | `tx.recipient.error` | "No pudimos cargar tus favoritos." | Error |
 | `tx.contact.new` | "Nuevo contacto" | Action |
@@ -368,6 +370,7 @@ And I am on the amount step with that contact as recipient
 | `tx.contact.name.error.required` | "Ingresa el nombre del contacto." | BR-16 |
 | `tx.contact.name.error.length` | "El nombre puede tener hasta 50 caracteres." | BR-16 |
 | `tx.contact.identifier.label` | "Celular o correo electrónico" | Field |
+| `tx.contact.identifier.error.required` | "Ingresa el celular o correo del contacto." | BR-05 (empty) |
 | `tx.contact.identifier.error.format` | "Revisa el dato: usa un celular a 10 dígitos o un correo como nombre@correo.com." | BR-10 |
 | `tx.contact.identifier.error.self` | "No puedes enviarte dinero a ti mismo." | BR-09 |
 | `tx.contact.save` | "Guardar en favoritos" | Checkbox |
@@ -393,6 +396,8 @@ And I am on the amount step with that contact as recipient
 | `tx.summary.change_amount` | "Cambiar monto" | Edit action |
 | `tx.summary.confirm` | "Enviar {amount}" | Primary action |
 | `tx.change` | "Cambiar" | Recipient context action |
+| `tx.change_recipient_aria` | "Cambiar destinatario" | Accessible name of "Cambiar" |
+| `tx.step.recipient` / `tx.step.amount` / `tx.step.summary` | "Destinatario" / "Monto" / "Resumen" | Step indicator labels |
 | `common.continue` | "Continuar" | Primary action steps 1–2 |
 | `common.back` | "Atrás" | Back |
 | `tx.cancel` | "Cancelar" | Cancel |
@@ -451,3 +456,4 @@ None blocking. Decisions applied: OQ-06 (save optional, on by default), OQ-08 (R
 | 1.0 | 2026-10-13 | Project owner | Approved |
 | 1.1 | 2026-10-14 | Claude (AI-assisted) | Traceability now points to the written TS (no behavior change) |
 | 1.2 | 2026-10-14 | Claude (AI-assisted) | TASK-04: step indicator copy key generalized to `common.step` (same text) |
+| 1.3 | 2026-10-14 | Claude (AI-assisted) | TASK-15: §12 adds the keys the build needed (step labels, empty identifier, spoken masks, "Cambiar destinatario"); no behavior change |

@@ -2,11 +2,11 @@ import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { describe, expect, it } from 'vitest';
 import type { Money } from '@/core/money';
-
-const mxn = (amountMinor: number): Money => ({ amountMinor, currency: 'MXN' });
 import { HideBalanceProvider } from '@/features/home/hide-balance';
 import { getA11yViolations } from '@/test/axe';
 import { BalanceCard } from './balance-card';
+
+const mxn = (amountMinor: number): Money => ({ amountMinor, currency: 'MXN' });
 
 function setup(amountMinor: number, hidden = false) {
   return render(

@@ -4,6 +4,7 @@ import {
   identifierKey,
   inferIdentifierKind,
   maskIdentifier,
+  parseMaskedIdentifier,
   parseIdentifier,
   type Identifier,
 } from './identifier';
@@ -86,5 +87,24 @@ describe('[TC-UNIT-06][UIR-AUTH-06][UIR-TX-03] maskIdentifier', () => {
     expect(maskIdentifier({ kind: 'email', value: 'ana@correo.com' } as Identifier)).toBe(
       'a•••@correo.com',
     );
+  });
+});
+
+describe('[TC-UNIT-06][UIR-TX-03] parseMaskedIdentifier', () => {
+  it('reads back a masked phone and a masked email', () => {
+    const phone = maskIdentifier({ kind: 'phone', value: '5512345678' } as Identifier);
+    const email = maskIdentifier({ kind: 'email', value: 'ana@correo.com' } as Identifier);
+    expect(parseMaskedIdentifier(phone)).toEqual({ kind: 'phone', last4: '5678' });
+    expect(parseMaskedIdentifier(email)).toEqual({
+      kind: 'email',
+      first: 'a',
+      domain: 'correo.com',
+    });
+  });
+
+  it('returns null for anything that is not one of our masks', () => {
+    expect(parseMaskedIdentifier('5512345678')).toBeNull();
+    expect(parseMaskedIdentifier('•••• 56')).toBeNull();
+    expect(parseMaskedIdentifier('')).toBeNull();
   });
 });

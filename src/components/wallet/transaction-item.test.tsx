@@ -1,15 +1,12 @@
 import { render, screen, within } from '@testing-library/react';
 import { describe, expect, it } from 'vitest';
 import type { Money } from '@/core/money';
+import { ActivityList } from '@/features/home/activity-list';
+import { toActivityItemView, type ActivityItemData } from '@/features/home/activity-view';
+import { initialsOf } from '@/lib/format/initials';
+import { getA11yViolations } from '@/test/axe';
 
 const mxn = (amountMinor: number): Money => ({ amountMinor, currency: 'MXN' });
-import { ActivityList } from '@/features/home/activity-list';
-import {
-  initialsOf,
-  toActivityItemView,
-  type ActivityItemData,
-} from '@/features/home/activity-view';
-import { getA11yViolations } from '@/test/axe';
 
 const NOW = new Date('2026-10-14T20:40:00Z'); // 14:40 in Mexico City
 const TZ = 'America/Mexico_City';

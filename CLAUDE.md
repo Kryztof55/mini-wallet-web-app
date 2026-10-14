@@ -118,13 +118,12 @@ all green. E2E when the task touches flows (TASK-20 owns the suite).
 
 ## 9. Current state
 
-- Done: TASK-01 to TASK-14. E2E auth and home suites green in all 4 projects.
-- **Next: TASK-15** (transfer layout with draft state (Context + reducer), step guard,
-  recipient step: favorites list + new contact form, cancel dialog).
+- Done: TASK-01 to TASK-15. E2E auth and home suites green in all 4 projects.
+- **Next: TASK-16** (amount step: `MoneyInput`, concept, BR-01/02/04/15, balance error;
+  summary step with edit links and attempt key). `/transfer/amount` is a placeholder today.
 - Pending owner decision: demo-accounts hint on login step 1 and no demo code for
   unknown identifiers (non-production only).
-- Then: TASK-16
-  transfer → TASK-17/18/19 confirmation and receipt → TASK-20/21/22.
+- Then: TASK-17 transfers API → TASK-18/19 confirmation and receipt → TASK-20/21/22.
 
 ## 10. Known pitfalls
 

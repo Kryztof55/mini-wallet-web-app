@@ -7,7 +7,7 @@ import { t } from '@/lib/i18n/t';
 import { ActivityList } from './activity-list';
 import { toActivityItemView } from './activity-view';
 import { homeApi, type HomeApi } from './api';
-import { useSectionRetry } from './use-section-retry';
+import { useSectionRetry } from '@/lib/hooks/use-section-retry';
 
 /** Activity section after a server-side failure: error with reference and its own retry. */
 export function ActivityRetry({

@@ -2,6 +2,7 @@ import type { Money } from '@/core/money';
 import type { TransactionDirection, TransactionStatus } from '@/core/transaction';
 import { formatFullDateTime, formatRelativeDate } from '@/lib/format/date';
 import { formatSignedAmount } from '@/lib/format/money';
+import { initialsOf } from '@/lib/format/initials';
 import { t } from '@/lib/i18n/t';
 
 /** What the API returns for an activity item (TS-02 §4). */
@@ -32,12 +33,6 @@ export type ActivityItemView = {
   /** One coherent sentence for assistive technology (A11Y-17). */
   readonly accessibleText: string;
 };
-
-export function initialsOf(name: string): string {
-  const words = name.trim().split(/\s+/).filter(Boolean);
-  const letters = words.length > 1 ? [words[0], words[words.length - 1]] : words;
-  return letters.map((word) => Array.from(word ?? '')[0]?.toUpperCase() ?? '').join('');
-}
 
 export function toActivityItemView(
   item: ActivityItemData,
