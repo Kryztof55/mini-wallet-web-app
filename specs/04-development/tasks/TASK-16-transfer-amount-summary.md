@@ -32,7 +32,7 @@ Follow the referenced specs; if the implementation needs to deviate, update the 
 | Path | Change |
 |---|---|
 | `src/app/(private)/transfer/{amount,summary}/page.tsx` | New |
-| `src/components/domain/MoneyInput.tsx` | New |
+| `src/components/wallet/MoneyInput.tsx` | New |
 | `src/features/transfer/*` | Modify |
 
 ## 4. Acceptance criteria

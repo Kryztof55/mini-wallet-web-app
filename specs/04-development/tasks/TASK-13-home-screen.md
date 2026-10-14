@@ -33,7 +33,7 @@ Follow the referenced specs; if the implementation needs to deviate, update the 
 |---|---|
 | `src/app/(private)/page.tsx` | New |
 | `src/features/home/*` | New |
-| `src/components/domain/{BalanceCard,TransactionItem,MoneyText}.tsx` | New |
+| `src/components/wallet/{BalanceCard,TransactionItem,MoneyText}.tsx` | New |
 
 ## 4. Acceptance criteria
 

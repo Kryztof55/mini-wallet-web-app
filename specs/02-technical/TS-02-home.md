@@ -5,7 +5,7 @@
 | **ID** | TS-02 |
 | **Module** | HOME |
 | **Status** | Approved |
-| **Version** | 1.0 |
+| **Version** | 1.1 |
 | **Author** | Claude (AI-assisted draft) |
 | **Reviewer** | Project owner |
 | **Last updated** | 2026-10-14 |
@@ -55,7 +55,7 @@ flowchart TD
 ```
 src/app/(private)/page.tsx
 src/features/home/            # sections, SectionError, useSectionRetry, useHideBalance
-src/components/domain/        # BalanceCard, TransactionItem, MoneyText
+src/components/wallet/        # BalanceCard, TransactionItem, MoneyText
 src/app/api/me/{summary,transactions}/route.ts
 src/server/services/account.service.ts
 src/server/repositories/{account,transaction}.repository.ts
@@ -202,3 +202,4 @@ Per FS-02 §13. Technical notes: list as `<ul>` with each `TransactionItem` as `
 |---|---|---|---|
 | 0.1 | 2026-10-14 | Claude (AI-assisted) | First draft |
 | 1.0 | 2026-10-14 | Project owner | Approved |
+| 1.1 | 2026-10-14 | Project owner | Wallet-specific components folder renamed `src/components/domain` → `src/components/wallet` (avoids confusion with `src/core`) |

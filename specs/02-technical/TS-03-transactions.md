@@ -5,7 +5,7 @@
 | **ID** | TS-03 |
 | **Module** | TX |
 | **Status** | Approved |
-| **Version** | 1.0 |
+| **Version** | 1.1 |
 | **Author** | Claude (AI-assisted draft) |
 | **Reviewer** | Project owner |
 | **Last updated** | 2026-10-14 |
@@ -58,7 +58,7 @@ stateDiagram-v2
 src/app/(private)/transfer/layout.tsx           # server: session, initial balance + favorites; client provider
 src/app/(private)/transfer/{recipient,amount,summary}/page.tsx
 src/features/transfer/                           # steps, draft reducer, hooks
-src/components/domain/{MoneyInput,ContactItem,RecipientContext}.tsx
+src/components/wallet/{MoneyInput,ContactItem,RecipientContext}.tsx
 src/app/api/contacts/route.ts
 src/server/services/contacts.service.ts
 src/core/{money,transfer-rules,contact}.ts
@@ -227,3 +227,4 @@ Per FS-03 §13. Technical notes: `MoneyInput` keeps a visible label and `aria-de
 |---|---|---|---|
 | 0.1 | 2026-10-14 | Claude (AI-assisted) | First draft |
 | 1.0 | 2026-10-14 | Project owner | Approved |
+| 1.1 | 2026-10-14 | Project owner | Wallet-specific components folder renamed `src/components/domain` → `src/components/wallet` (avoids confusion with `src/core`) |

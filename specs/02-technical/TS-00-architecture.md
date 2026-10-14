@@ -5,7 +5,7 @@
 | **ID** | TS-00 |
 | **Module** | CORE |
 | **Status** | Approved |
-| **Version** | 1.5 |
+| **Version** | 1.6 |
 | **Author** | Claude (AI-assisted draft) |
 | **Reviewer** | Project owner |
 | **Last updated** | 2026-10-14 |
@@ -99,7 +99,7 @@ src/
     format/                       # money, dates, masking (shared, pure)
   components/
     ui/                           # base components (ADR-008)
-    domain/                       # MoneyText, MoneyInput, TransactionItem…
+    wallet/                       # wallet-specific: MoneyText, MoneyInput, TransactionItem…
   features/
     auth/ home/ transfer/ confirmation/ theme/   # screen components, hooks, reducers
 tests/e2e/                        # Playwright
@@ -381,3 +381,4 @@ Per ADR-005 and the test plan. TS-00-specific: unit tests for `Money`, `parseIde
 | 1.3 | 2026-10-14 | Claude (AI-assisted) | One-time code is random per challenge; the demo hint shows the current code outside production (owner decision, resolves conflict between fixed demo code and AC-AUTH-10) |
 | 1.4 | 2026-10-14 | Claude (AI-assisted) | TASK-08: `PAYLOAD_TOO_LARGE` (413) added to the catalog (client-logs already answered 413 without a code); client-only `ABORTED`; HTTP client contract details in §5.3 |
 | 1.5 | 2026-10-14 | Project owner | Domain layer folder renamed `src/domain` → `src/core` (owner preference); dependency rule now enforced by ESLint |
+| 1.6 | 2026-10-14 | Project owner | Wallet-specific components folder renamed `src/components/domain` → `src/components/wallet` (avoids confusion with `src/core`) |
