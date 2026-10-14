@@ -118,13 +118,14 @@ all green. E2E when the task touches flows (TASK-20 owns the suite).
 
 ## 9. Current state
 
-- Done: TASK-01 to TASK-16. E2E auth, home and transfer (TC-E2E-13/14) suites.
-- **Next: TASK-17** (transfers API: `POST /api/transfers` with idempotency key, rules
-  re-validated on the server, forced outcomes; `GET /api/transfers/attempts/{key}`).
-  `SummaryStep` already hands a `ConfirmableDraft` (with attempt key) to `onConfirm`.
+- Done: TASK-01 to TASK-17. E2E auth, home and transfer (TC-E2E-13/14) suites.
+- **Next: TASK-18** (confirmation flow: `useConfirmTransfer` state machine with slow message,
+  10 s timeout, status checks, outcome views; wire `SummaryStep.onConfirm`). Branch
+  `feat/m4-confirmation-receipt`. API ready: `POST /api/transfers` (header `idempotency-key`),
+  `GET /api/transfers/attempts/{key}`.
 - Pending owner decision: demo-accounts hint on login step 1 and no demo code for
   unknown identifiers (non-production only).
-- Then: TASK-18/19 confirmation and receipt → TASK-20/21/22.
+- Then: TASK-19 receipt → TASK-20/21/22.
 
 ## 10. Known pitfalls
 
@@ -150,5 +151,8 @@ all green. E2E when the task touches flows (TASK-20 owns the suite).
   (`@next/swc-linux-*`, `lightningcss-linux-*`, `@tailwindcss/oxide-linux-*`,
   `@rolldown/binding-linux-*`, `@unrs/resolver-binding-linux-*`) must be installed with
   `--no-save` after every `npm install`. Not needed on the Mac itself.
+- Fake timers + route handlers: the request reaches its `setTimeout` only after real async
+  work (session HMAC), and `vi.waitFor` advances fake timers while polling. Wait with
+  `setImmediate` turns until `vi.getTimerCount() > 0` (see `outcomes.int.test.ts`).
 - E2E: logout redirects with `location.replace`; wait for `/login?reason=logged_out`
   before the next `page.goto`, or WebKit reports the goto as interrupted (`logout` in `tests/e2e/session.ts`).

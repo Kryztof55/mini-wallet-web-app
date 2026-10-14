@@ -1,7 +1,14 @@
 import 'server-only';
 import type { Contact } from '@/core/contact';
-import type { Identifier } from '@/core/identifier';
-import type { AttemptKey, ContactId, SessionId, TransferId, UserId } from '@/core/ids';
+import type { Identifier, MaskedIdentifier } from '@/core/identifier';
+import type {
+  AttemptKey,
+  ContactId,
+  SessionId,
+  TransactionId,
+  TransferId,
+  UserId,
+} from '@/core/ids';
 import type { Money } from '@/core/money';
 import type { OtpChallenge } from '@/core/otp';
 import type { Transaction } from '@/core/transaction';
@@ -83,14 +90,49 @@ export type Attempt = {
   readonly updatedAt: string;
 };
 
+/** Result of trying to start processing an attempt (BR-07, TS-04 §10). */
+export type ClaimResult =
+  | { readonly claimed: true; readonly attempt: Attempt }
+  | { readonly claimed: false; readonly existing: Attempt };
+
 export interface AttemptRepository {
   get(userId: UserId, key: AttemptKey): Promise<Attempt | null>;
+  /**
+   * Atomic check-and-set: marks the attempt `in_progress` and returns `claimed: true` when the
+   * key is new, or known with the same payload and `not_processed` (a retry may process it).
+   * Otherwise returns the stored attempt untouched. Two concurrent calls never both claim.
+   */
+  claim(userId: UserId, key: AttemptKey, payloadHash: string, now: string): Promise<ClaimResult>;
   save(attempt: Attempt): Promise<void>;
 }
 
 export interface ReceiptRepository {
   get(userId: UserId, transferId: TransferId): Promise<Receipt | null>;
-  save(userId: UserId, receipt: Receipt): Promise<void>;
+}
+
+export type TransferCommit = {
+  readonly userId: UserId;
+  readonly transferId: TransferId;
+  readonly transactionId: TransactionId;
+  readonly folio: string;
+  readonly amount: Money;
+  readonly recipient: {
+    readonly name: string;
+    readonly maskedIdentifier: MaskedIdentifier;
+    readonly contactId: ContactId | null;
+  };
+  readonly concept: string | null;
+  readonly at: string;
+};
+
+export interface LedgerRepository {
+  /**
+   * One atomic operation (TS-04 §10): checks BR-02 against the current balance, debits,
+   * records the outgoing transaction and stores the receipt. Nothing changes on failure.
+   */
+  commitTransfer(
+    commit: TransferCommit,
+  ): Promise<Result<Receipt, DomainError<'INSUFFICIENT_FUNDS'>>>;
 }
 
 /**
@@ -114,5 +156,6 @@ export type Repositories = {
   readonly sessions: SessionRepository;
   readonly attempts: AttemptRepository;
   readonly receipts: ReceiptRepository;
+  readonly ledger: LedgerRepository;
   readonly otpDelivery: OtpDelivery;
 };

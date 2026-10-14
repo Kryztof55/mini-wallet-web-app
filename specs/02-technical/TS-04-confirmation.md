@@ -73,6 +73,8 @@ src/server/repositories/{attempt,transfer}.repository.ts
 src/server/mock/outcome-simulator.ts
 ```
 
+**As built (TASK-17):** no separate repository files; the ports in `src/server/repositories/ports.ts` gain `attempts.claim(userId, key, payloadHash, now)` (atomic check-and-set: claims a new key or a same-payload `not_processed` one, otherwise returns the stored attempt) and `ledger.commitTransfer(…)` (one atomic step: BR-02 against the current balance, debit, outgoing transaction, favorite `lastUsedAt`, receipt). In memory, atomicity comes from doing the check and the write with no `await` in between. Service order: claim → rules (BR-03/10/16 → BR-09 → BR-04/01 → BR-15) → BR-02 against the balance → simulated outcome → commit. A rule failure is stored as `failed`, so a retry with the same key returns the same `422`. `payloadHash` is SHA-256 of a fixed-order array (recipient, amount, currency, trimmed concept). Folio: `MW-` + 6 characters without 0/O/1/I/L. Timeout sub-cases sleep `simulatedDelays()` derived from the client timings: `late` = timeout + half the first check delay (11 s by default: after the client gives up, before its first check); `unresolved` = timeout + all check delays + 5 s (29 s), then `not_processed`. The status endpoint answers `not_processed` for a malformed key too.
+
 ### 3.4 Technology bindings
 
 See TS-00 §3.4. Clipboard via the platform Clipboard API.
@@ -256,6 +258,8 @@ Per FS-04 §13. Technical notes: one polite live region announces "Enviando", th
 ## 16. Known limitations and technical debt
 
 - `unknown_error` in the mock never moves money; production would require status verification for that case too.
+- The recipient is never credited, even when the identifier belongs to a seeded user (the mock has no inter-account ledger).
+- A request holds its connection during a simulated timeout (up to 29 s); a real backend would process asynchronously.
 - Completion marker in `sessionStorage` is a pragmatic history fix; a router-level history API would be cleaner.
 
 ## 17. Traceability
@@ -273,3 +277,4 @@ Per FS-04 §13. Technical notes: one polite live region announces "Enviando", th
 |---|---|---|---|
 | 0.1 | 2026-10-14 | Claude (AI-assisted) | First draft |
 | 1.0 | 2026-10-14 | Project owner | Approved |
+| 1.1 | 2026-10-14 | Claude (AI-assisted) | TASK-17: §3.3 as-built (claim/commit ports, service order, delays), §16 two mock limitations |

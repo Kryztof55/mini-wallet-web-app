@@ -52,23 +52,23 @@ Generated from the test cases in §6; every BR, UIR and AC is covered.
 
 | Requirement / rule / AC | Short description | TC | Levels | Status |
 |---|---|---|---|---|
-| BR-01 | Minimum amount | TC-UNIT-03, TC-INT-08 | INT, UNIT | ⬜ |
-| BR-02 | Sufficient balance | TC-UNIT-03, TC-INT-08 | INT, UNIT | ⬜ |
-| BR-03 | Recipient required | TC-UNIT-04, TC-PL-05, TC-INT-08 | INT, PL, UNIT | ⬜ |
-| BR-04 | Amount format | TC-UNIT-01, TC-UNIT-02, TC-INT-08 | INT, UNIT | ⬜ |
-| BR-05 | Recipient identifier format | TC-UNIT-05, TC-INT-08 | INT, UNIT | ⬜ |
-| BR-06 | Rules are authoritative on the server | TC-INT-08 | INT | ⬜ |
-| BR-07 | Idempotent confirmation | TC-UNIT-13, TC-INT-09 | INT, UNIT | ⬜ |
+| BR-01 | Minimum amount | TC-UNIT-03, TC-INT-08 | INT, UNIT | ✅ |
+| BR-02 | Sufficient balance | TC-UNIT-03, TC-INT-08 | INT, UNIT | ✅ |
+| BR-03 | Recipient required | TC-UNIT-04, TC-PL-05, TC-INT-08 | INT, PL, UNIT | ✅ |
+| BR-04 | Amount format | TC-UNIT-01, TC-UNIT-02, TC-INT-08 | INT, UNIT | ✅ |
+| BR-05 | Recipient identifier format | TC-UNIT-05, TC-INT-08 | INT, UNIT | ✅ |
+| BR-06 | Rules are authoritative on the server | TC-INT-08 | INT | ✅ |
+| BR-07 | Idempotent confirmation | TC-UNIT-13, TC-INT-09 | INT, UNIT | ✅ |
 | BR-08 | No duplicate favorites | TC-UNIT-22, TC-INT-07 | INT, UNIT | ✅ |
-| BR-09 | No self-transfer | TC-UNIT-04, TC-INT-07, TC-INT-08 | INT, UNIT | ⬜ |
+| BR-09 | No self-transfer | TC-UNIT-04, TC-INT-07, TC-INT-08 | INT, UNIT | ✅ |
 | BR-10 | Identifier format | TC-UNIT-05, TC-INT-03, TC-INT-07 | INT, UNIT | ✅ |
 | BR-11 | One-time code format | TC-UNIT-07, TC-INT-04 | INT, UNIT | ✅ |
 | BR-12 | Code validity | TC-UNIT-08, TC-INT-04 | INT, UNIT | ✅ |
 | BR-13 | Code throttling | TC-UNIT-09, TC-INT-03 | INT, UNIT | ✅ |
 | BR-14 | Session required | TC-UNIT-15, TC-INT-02 | INT, UNIT | ✅ |
-| BR-15 | Concept format | TC-UNIT-10, TC-INT-08 | INT, UNIT | ⬜ |
+| BR-15 | Concept format | TC-UNIT-10, TC-INT-08 | INT, UNIT | ✅ |
 | BR-16 | Contact name | TC-UNIT-11, TC-INT-07 | INT, UNIT | ✅ |
-| BR-17 | Single final outcome | TC-UNIT-12, TC-INT-10 | INT, UNIT | ⬜ |
+| BR-17 | Single final outcome | TC-UNIT-12, TC-INT-10 | INT, UNIT | ✅ |
 | UIR-AUTH-01 | Identifier type inference | TC-UNIT-05, TC-COMP-03 | COMP, UNIT | ✅ |
 | UIR-AUTH-02 | Validation timing | TC-COMP-03 | COMP | ✅ |
 | UIR-AUTH-03 | Primary actions stay enabled | TC-COMP-01, TC-COMP-03 | COMP | ✅ |
@@ -103,7 +103,7 @@ Generated from the test cases in §6; every BR, UIR and AC is covered.
 | UIR-CONF-14 | Receipt actions | TC-COMP-15 | COMP | ⬜ |
 | UIR-CONF-15 | Revisitable receipt | TC-COMP-15 | COMP | ⬜ |
 | UIR-CONF-16 | Leaving during processing | TC-PL-08 | PL | ⬜ |
-| UIR-CONF-17 | Forced outcome (non-production) | TC-INT-10 | INT | ⬜ |
+| UIR-CONF-17 | Forced outcome (non-production) | TC-INT-10 | INT | ✅ |
 | UIR-HOME-01 | Independent sections | TC-COMP-08 | COMP | ✅ |
 | UIR-HOME-02 | Stable loading | TC-COMP-08 | COMP | ✅ |
 | UIR-HOME-03 | Primary action always visible | TC-COMP-08 | COMP | ✅ |
@@ -183,7 +183,7 @@ Generated from the test cases in §6; every BR, UIR and AC is covered.
 | AC-TX-12 | Edit from summary keeps data | TC-E2E-13 | E2E | ✅ |
 | AC-TX-13 | Cancel with data asks for confirmation | TC-E2E-14 | E2E | ✅ |
 | AC-TX-14 | Favorites error keeps new contact available | TC-COMP-09 | COMP | ✅ |
-| AC-TX-15 | Server enforces the rules (BR-06) | TC-INT-08 | INT | ⬜ |
+| AC-TX-15 | Server enforces the rules (BR-06) | TC-INT-08 | INT | ✅ |
 | AC-TX-16 | Save failure does not block the transfer | TC-E2E-12 | E2E | ⬜ |
 | AC-CONF-01 | Success shows the receipt | TC-E2E-11 | E2E | ⬜ |
 | AC-CONF-02 | Processing cannot be triggered twice | TC-PL-08, TC-E2E-20 | E2E, PL | ⬜ |
@@ -199,8 +199,8 @@ Generated from the test cases in §6; every BR, UIR and AC is covered.
 | AC-CONF-12 | Revisit receipt | TC-E2E-19 | E2E | ⬜ |
 | AC-CONF-13 | Copy folio | TC-E2E-19 | E2E | ⬜ |
 | AC-CONF-14 | Send again | TC-E2E-19 | E2E | ⬜ |
-| AC-CONF-15 | Forced outcomes only outside production | TC-INT-10 | INT | ⬜ |
-| AC-CONF-16 | Random outcomes in normal use | TC-INT-10 | INT | ⬜ |
+| AC-CONF-15 | Forced outcomes only outside production | TC-INT-10 | INT | ✅ |
+| AC-CONF-16 | Random outcomes in normal use | TC-INT-10 | INT | ✅ |
 | AC-CONF-17 | Receipt of another user | TC-INT-11, TC-E2E-19 | E2E, INT | ⬜ |
 | A11Y-01 | — | TC-E2E-21 | E2E | ⬜ |
 | A11Y-02 | — | TC-E2E-21 | E2E | ⬜ |
@@ -235,10 +235,10 @@ Generated from the test cases in §6; every BR, UIR and AC is covered.
 | FR-AUTH-12 | — | TC-INT-03 | INT | ✅ |
 | FR-AUTH-13 | — | TC-INT-04 | INT | ✅ |
 | FR-AUTH-14 | — | TC-INT-04 | INT | ✅ |
-| FR-CONF-01 | — | TC-INT-10 | INT | ⬜ |
-| FR-CONF-08 | — | TC-INT-09 | INT | ⬜ |
-| FR-CONF-11 | — | TC-UNIT-18, TC-INT-10 | INT, UNIT | ⬜ |
-| FR-CONF-13 | — | TC-INT-10 | INT | ⬜ |
+| FR-CONF-01 | — | TC-INT-10 | INT | ✅ |
+| FR-CONF-08 | — | TC-INT-09 | INT | ✅ |
+| FR-CONF-11 | — | TC-UNIT-18, TC-INT-10 | INT, UNIT | ✅ |
+| FR-CONF-13 | — | TC-INT-10 | INT | ✅ |
 | FR-HOME-01 | — | TC-INT-06 | INT | ✅ |
 | FR-HOME-02 | — | TC-INT-06 | INT | ✅ |
 | FR-HOME-03 | — | TC-INT-06 | INT | ✅ |
@@ -335,10 +335,10 @@ Levels and IDs follow the [specs README](../README.md#24-ids). Tests reference t
 | TC-INT-05 | POST /api/auth/logout | FR-AUTH-10 | 204; session deleted; replaying old cookie → 401; idempotent without session | `src/app/api/auth/logout/route.int.test.ts` | High | TASK-10 | ✅ |
 | TC-INT-06 | Home endpoints | FR-HOME-01, FR-HOME-02, FR-HOME-03, FR-HOME-10 | summary and transactions for seeded users; limit clamped to 10; seeded failures → 503; Cache-Control no-store | `src/app/api/me/me.int.test.ts` | High | TASK-12 | ✅ |
 | TC-INT-07 | Contacts endpoints | BR-08, BR-09, BR-10, BR-16, FR-TX-02, FR-TX-04 | GET ordered by lastUsedAt; POST 201 new / 200 duplicate; 422 INVALID_CONTACT_NAME, INVALID_IDENTIFIER, SELF_TRANSFER; forced 503 | `src/app/api/contacts/route.int.test.ts` | High | TASK-14 | ✅ |
-| TC-INT-08 | POST /api/transfers — rules | BR-01, BR-02, BR-03, BR-04, BR-05, BR-06, BR-09, BR-15, AC-TX-15 | each rule violated directly against the API → specific 422; foreign contactId → RECIPIENT_REQUIRED; no debit on any failure | `src/app/api/transfers/rules.int.test.ts` | High | TASK-17 | ⬜ |
-| TC-INT-09 | POST /api/transfers — idempotency | BR-07, FR-CONF-08, AC-CONF-04 | same key + payload → stored 201 replay; same key + other payload → 409; concurrent same key → one debit, other 202; not_processed re-processed on retry | `src/app/api/transfers/idempotency.int.test.ts` | High | TASK-17 | ⬜ |
-| TC-INT-10 | Forced outcomes and attempt status | FR-CONF-01, FR-CONF-11, FR-CONF-13, BR-17, UIR-CONF-17, AC-CONF-15, AC-CONF-16 | each outcome and timeout sub-case via x-mock-outcome; status endpoint reports in_progress/completed/failed/not_processed; unknown key → not_processed | `src/app/api/transfers/outcomes.int.test.ts` | High | TASK-17 | ⬜ |
-| TC-INT-11 | Receipt ownership | AC-CONF-17 | getReceipt for another user's transfer → NOT_FOUND, indistinguishable from missing | `src/server/services/transfers.service.int.test.ts` | High | TASK-17 | ⬜ |
+| TC-INT-08 | POST /api/transfers — rules | BR-01, BR-02, BR-03, BR-04, BR-05, BR-06, BR-09, BR-15, AC-TX-15 | each rule violated directly against the API → specific 422; foreign contactId → RECIPIENT_REQUIRED; no debit on any failure | `src/app/api/transfers/rules.int.test.ts` | High | TASK-17 | ✅ |
+| TC-INT-09 | POST /api/transfers — idempotency | BR-07, FR-CONF-08, AC-CONF-04 | same key + payload → stored 201 replay; same key + other payload → 409; concurrent same key → one debit, other 202; not_processed re-processed on retry | `src/app/api/transfers/idempotency.int.test.ts` | High | TASK-17 | ✅ |
+| TC-INT-10 | Forced outcomes and attempt status | FR-CONF-01, FR-CONF-11, FR-CONF-13, BR-17, UIR-CONF-17, AC-CONF-15, AC-CONF-16 | each outcome and timeout sub-case via x-mock-outcome; status endpoint reports in_progress/completed/failed/not_processed; unknown key → not_processed | `src/app/api/transfers/outcomes.int.test.ts` | High | TASK-17 | ✅ |
+| TC-INT-11 | Receipt ownership | AC-CONF-17 | getReceipt for another user's transfer → NOT_FOUND, indistinguishable from missing | `src/server/services/transfers.service.int.test.ts` | High | TASK-17 | ✅ |
 | TC-INT-12 | Mock controls disabled | NFR-10 | with MOCK_CONTROLS_ENABLED=false: x-mock-outcome ignored (logged), /api/mock/reset → 404, demo hint flag false | `src/server/mock/mock-controls.int.test.ts` | High | TASK-06 | ✅ |
 | TC-INT-13 | Correlation and client logs | NFR-04 | every API response has x-request-id; error bodies include requestId; client-logs: >10 events → 400, >2 KB → 413, rate limit → 429 | `src/app/api/client-logs/route.int.test.ts`, `src/proxy.int.test.ts`, `src/server/http/http.test.ts` | Medium | TASK-07, TASK-09 | ✅ |
 | TC-INT-14 | Theme Server Action | ADR-007, UX-22 | sets `theme` cookie (light/dark/system) and rejects other values | `src/server/actions/set-theme.int.test.ts` | Medium | TASK-03 | ✅ |
