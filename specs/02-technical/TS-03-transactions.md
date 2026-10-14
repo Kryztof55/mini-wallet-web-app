@@ -4,8 +4,8 @@
 |---|---|
 | **ID** | TS-03 |
 | **Module** | TX |
-| **Status** | Draft |
-| **Version** | 0.1 |
+| **Status** | Approved |
+| **Version** | 1.0 |
 | **Author** | Claude (AI-assisted draft) |
 | **Reviewer** | Project owner |
 | **Last updated** | 2026-10-14 |
@@ -226,3 +226,4 @@ Per FS-03 §13. Technical notes: `MoneyInput` keeps a visible label and `aria-de
 | Version | Date | Author | Change |
 |---|---|---|---|
 | 0.1 | 2026-10-14 | Claude (AI-assisted) | First draft |
+| 1.0 | 2026-10-14 | Project owner | Approved |

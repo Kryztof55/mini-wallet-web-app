@@ -4,8 +4,8 @@
 |---|---|
 | **ID** | TS-01 |
 | **Module** | AUTH |
-| **Status** | Draft |
-| **Version** | 0.1 |
+| **Status** | Approved |
+| **Version** | 1.1 |
 | **Author** | Claude (AI-assisted draft) |
 | **Reviewer** | Project owner |
 | **Last updated** | 2026-10-14 |
@@ -67,7 +67,7 @@ sequenceDiagram
 src/features/auth/            # components, useLoginFlow, useCountdown
 src/app/(public)/login/page.tsx
 src/app/api/auth/{code,verify,logout}/route.ts
-src/middleware.ts
+src/proxy.ts
 src/server/session/           # sign/verify, getSession, cookie options
 src/server/services/auth.service.ts
 src/server/repositories/{user,otp-challenge,session}.repository.ts
@@ -113,6 +113,7 @@ See TS-00 §3.4. No module-specific deviations.
 | `destination` | string | Masked identifier (UIR-AUTH-06) |
 | `expiresInSec` | number | `OTP_TTL_SEC` |
 | `resendAvailableInSec` | number | `OTP_RESEND_COOLDOWN_SEC` |
+| `demoCode` | string, optional | Present **only** when mock controls are enabled (never with `APP_ENV=production`); feeds the demo hint (UIR-AUTH-16) and E2E |
 
 Unknown identifiers also receive `202` (OQ-14); no challenge can ever verify for them.
 
@@ -254,7 +255,7 @@ Per FS-01 §13. Technical notes: `autocomplete="username"` + `inputmode="email"`
 
 ## 16. Known limitations and technical debt
 
-- Fixed demo code; no hashing of codes (production: hash + per-challenge random code).
+- Codes stored in plain text in memory (production: store a hash, deliver by SMS/email, never return it to the client).
 - Sessions lost on restart; no expiry warning (A11Y-16 path documented).
 
 ## 17. Traceability
@@ -272,3 +273,5 @@ Per FS-01 §13. Technical notes: `autocomplete="username"` + `inputmode="email"`
 | Version | Date | Author | Change |
 |---|---|---|---|
 | 0.1 | 2026-10-14 | Claude (AI-assisted) | First draft |
+| 1.0 | 2026-10-14 | Project owner | Approved |
+| 1.1 | 2026-10-14 | Claude (AI-assisted) | One-time code is random per challenge; the demo hint shows the current code outside production (owner decision, resolves conflict between fixed demo code and AC-AUTH-10) |

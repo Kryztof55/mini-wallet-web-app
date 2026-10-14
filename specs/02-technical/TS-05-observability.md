@@ -4,8 +4,8 @@
 |---|---|
 | **ID** | TS-05 |
 | **Module** | OBS |
-| **Status** | Draft |
-| **Version** | 0.1 |
+| **Status** | Approved |
+| **Version** | 1.0 |
 | **Author** | Claude (AI-assisted draft) |
 | **Reviewer** | Project owner |
 | **Last updated** | 2026-10-14 |
@@ -53,7 +53,7 @@ flowchart LR
 ### 3.3 Module structure
 
 ```
-src/middleware.ts                 # ensureRequestId
+src/proxy.ts                 # ensureRequestId
 src/instrumentation.ts
 src/server/logging/{logger,context,events,redaction}.ts
 src/app/api/client-logs/route.ts
@@ -205,3 +205,4 @@ Logging never throws into business code: logger failures are swallowed after a b
 | Version | Date | Author | Change |
 |---|---|---|---|
 | 0.1 | 2026-10-14 | Claude (AI-assisted) | First draft |
+| 1.0 | 2026-10-14 | Project owner | Approved |

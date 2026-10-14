@@ -3,7 +3,7 @@
 | Field | Value |
 |---|---|
 | **Status** | Approved |
-| **Version** | 1.0 |
+| **Version** | 1.1 |
 | **Author** | Claude (AI-assisted draft) |
 | **Reviewer** | Project owner |
 | **Last updated** | 2026-10-13 |
@@ -33,7 +33,7 @@
 | ASM-12 | **Session lasts until logout**; no forced expiry in scope, but an invalid session is handled gracefully everywhere. | Source: "persistencia simple" | Expiry warning required (A11Y-16) | FR-AUTH-06, FR-AUTH-11 |
 | ASM-13 | **Supported browsers**: latest two versions of evergreen browsers on desktop and mobile (Chrome, Safari, Firefox, Edge). | Industry default | Polyfills / testing matrix | TS-00, test plan |
 | ASM-14 | **No existing brand or design system**: a neutral visual design built on our own **semantic design tokens**, with **light and dark themes** (dark mode is required — see decision log). | Not provided | Rework of visual layer | TS-00, UI primitives, UX-22, NFR-16 |
-| ASM-15 | **Mock one-time code**: fixed demo code `123456` (documented in the README), 6 digits, valid for 5 minutes, max 3 attempts, resend cooldown 30 seconds. | OQ-02 decision; values chosen for demo and tests | Adjust values in config | FR-AUTH-12…16 |
+| ASM-15 | **Mock one-time code**: a **random** 6-digit code per issued challenge; outside production the current code is returned to the client and shown in the demo hint (never in production); valid for 5 minutes, max 3 attempts, resend cooldown 30 seconds. | OQ-02 decision; random code needed so AC-AUTH-10 (old code rejected) holds | Adjust values in config | FR-AUTH-12…16 |
 | ASM-16 | **Outcome distribution** when not forced: success 60 %, network error 10 %, insufficient funds 10 %, timeout 10 %, unknown error 10 % (configurable); timeout sub-case by default: completed late. A forcing mechanism exists outside production for every outcome and timeout sub-case (completed, not processed, unresolved). | OQ-04 recommendation | Different demo/test behavior | FR-CONF-01, FR-CONF-11, FS-04 |
 | ASM-17 | **Confirmation timing** (configurable): slow message after 3 s; client timeout 10 s; up to 3 status checks at 2 s, 4 s and 8 s. | Pragmatic defaults | Different waits | FR-CONF-06, FR-CONF-13, FS-04 |
 
@@ -61,6 +61,7 @@
 | OQ | Date | Decision | Decided by | Updated items |
 |---|---|---|---|---|
 | OQ-01 | 2026-10-13 | **Spanish (es-MX)** for UI copy; code and docs in English; copy externalized | Project owner | NFR-13, A11Y-21, UX §7 |
+| — | 2026-10-14 | **Random one-time code per challenge**, shown in the non-production demo hint (replaces the fixed `123456`) | Project owner | ASM-15, FS-01 UIR-AUTH-16, TS-01 §5 |
 | OQ-02 | 2026-10-13 | **Identifier + one-time code (mocked)**, two steps | Project owner (chose c over the recommended b) | FR-AUTH-12…16, UX-21, A11Y-14, A11Y-16, ASM-15 |
 | OQ-05 | 2026-10-13 | **"Verifying" state + automatic status check**, falling back to safe retry | Project owner | FR-CONF-06, FR-CONF-13, §4.2 |
 | OQ-08 | 2026-10-13 | **Recipient → Amount → Summary**, as steps | Project owner | UX §8, FS-03 |
@@ -81,3 +82,4 @@
 | 0.3 | 2026-10-13 | Claude (AI-assisted) | Dark mode required (ASM-14 updated) |
 | 0.4 | 2026-10-13 | Claude (AI-assisted) | Resolved OQ-06, OQ-09, OQ-11, OQ-12, OQ-14; ASM-16, ASM-17 from FS-04 |
 | 1.0 | 2026-10-13 | Project owner | Approved |
+| 1.1 | 2026-10-14 | Claude (AI-assisted) | One-time code is random per challenge; the demo hint shows the current code outside production (owner decision, resolves conflict between fixed demo code and AC-AUTH-10) |

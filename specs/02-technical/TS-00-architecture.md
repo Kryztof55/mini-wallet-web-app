@@ -4,13 +4,13 @@
 |---|---|
 | **ID** | TS-00 |
 | **Module** | CORE |
-| **Status** | Draft |
-| **Version** | 0.1 |
+| **Status** | Approved |
+| **Version** | 1.3 |
 | **Author** | Claude (AI-assisted draft) |
 | **Reviewer** | Project owner |
 | **Last updated** | 2026-10-14 |
 | **Implements** | NFR-01…03, 05…07, 11…13, 16, 17 · CON-01…08 · cross-cutting parts of FS-01…FS-04 |
-| **Related decisions** | ADR-001…ADR-008 · ADR-009 (proposed) |
+| **Related decisions** | ADR-001…ADR-009 |
 
 > This is the only TS that names technologies outside of ADRs: §3.4 is the **technology bindings** table that every module TS refers to.
 
@@ -81,7 +81,7 @@ src/
     api/transfers/attempts/[key]/route.ts
     api/client-logs/route.ts
     api/__mock/reset/route.ts     # non-production only
-  middleware.ts                   # or proxy.ts (ADR-001 note)
+  proxy.ts                        # route gate: requestId, CSRF, session (Next.js 16 name for middleware; ADR-001)
   instrumentation.ts              # logger init (ADR-006)
   domain/                         # money, identifier, otp, contact, transfer, errors, result
   server/                         # server-only
@@ -111,7 +111,7 @@ tests/e2e/                        # Playwright
 |---|---|---|
 | Language | TypeScript (strict) | CON-01 |
 | Framework | Next.js, App Router | ADR-001 |
-| Route groups / protected views | `(public)` / `(private)` + middleware (`proxy` convention in recent versions) + `getSession()` in private layout and controllers | ADR-001 |
+| Route groups / protected views | `(public)` / `(private)` + Next.js `proxy` (`src/proxy.ts`, the Next.js 16 name for middleware) + `getSession()` in private layout and controllers | ADR-001 |
 | Server-rendered reads | React Server Components, dynamic, `no-store`, Suspense per section | ADR-002 |
 | Server entry points for client calls | Route Handlers under `/api` | ADR-002 |
 | Server-only boundary | `server-only` package | ADR-002 |
@@ -120,7 +120,7 @@ tests/e2e/                        # Playwright
 | Client state | React Context + `useReducer` (transfer draft, theme) | ADR-003 |
 | Session | Signed opaque ID, `HttpOnly; Secure; SameSite=Lax` cookie; in-memory session store | ADR-004 |
 | CSRF | Origin / `Sec-Fetch-Site` check, JSON + custom header, no CORS, safe GETs | ADR-004 |
-| Runtime validation at boundaries | Zod schemas in controllers and the HTTP client | ADR-009 (proposed) |
+| Runtime validation at boundaries | Zod schemas in controllers and the HTTP client | ADR-009 |
 | Logging | pino + `x-request-id` + `AsyncLocalStorage` | ADR-006 |
 | Theming | CSS custom properties per `data-theme`, `theme` cookie, `prefers-color-scheme` | ADR-007 |
 | UI primitives | Radix UI (Dialog, Toast, theme selector) | ADR-008 |
@@ -226,10 +226,10 @@ Typed, validated at startup; defaults from ASM-15…ASM-17.
 
 | Key | Default | Notes |
 |---|---|---|
+| `APP_ENV` | `development` | `development` \| `test` \| `production`. E2E runs a production build with `APP_ENV=test` |
 | `SESSION_SECRET` | — (required) | HMAC key (ADR-004) |
 | `APP_ORIGIN` | `http://localhost:3000` | Used by CSRF origin check |
-| `MOCK_CONTROLS_ENABLED` | `true` in dev/test, **forced `false` in production builds** | Enables `x-mock-outcome`, `/api/__mock/reset`, demo code hint |
-| `OTP_DEMO_CODE` | `123456` | ASM-15 |
+| `MOCK_CONTROLS_ENABLED` | `true` in development/test; **always off when `APP_ENV=production`** | Enables `x-mock-outcome`, `/api/__mock/reset`, demo code hint |
 | `OTP_TTL_SEC` / `OTP_MAX_ATTEMPTS` / `OTP_RESEND_COOLDOWN_SEC` | `300` / `3` / `30` | BR-12, BR-13 |
 | `TRANSFER_SLOW_MS` / `TRANSFER_TIMEOUT_MS` | `3000` / `10000` | ASM-17 |
 | `TRANSFER_STATUS_CHECK_DELAYS_MS` | `2000,4000,8000` | ASM-17 |
@@ -272,7 +272,8 @@ All other well-formed identifiers proceed to the code step and fail verification
 - Real business rules still apply first: a genuinely insufficient balance always yields `INSUFFICIENT_FUNDS`.
 
 ### 9.3 Other simulations
-- Home/contacts: failures driven by seeded users; `x-mock-outcome: service_unavailable` also supported.
+- Home/contacts: failures driven by seeded users; `x-mock-outcome: service_unavailable` also supported (`GET /api/me/*`, `GET/POST /api/contacts`).
+- Auth: `x-mock-outcome: service_unavailable` on `POST /api/auth/code` and `POST /api/auth/verify`; `x-mock-outcome: otp_expired` on `POST /api/auth/verify` makes the current challenge expire (tests AC-AUTH-09 without waiting 5 minutes).
 - Latency on every repository call (`MOCK_LATENCY_MS`) to make loading states visible.
 - `POST /api/__mock/reset` restores seed data (tests).
 
@@ -345,9 +346,9 @@ Per ADR-005 and the test plan. TS-00-specific: unit tests for `Money`, `parseIde
 | Risk | Likelihood | Impact | Mitigation |
 |---|---|---|---|
 | In-memory state differs between middleware and server runtime | Medium | Session gate inconsistent | Middleware only verifies cookie signature (no store); store lookups happen in server code |
-| Mock controls leak to production | Low | Outcome manipulation | Build-time flag forced off in production; integration test |
+| Mock controls leak to production | Low | Outcome manipulation | Forced off whenever `APP_ENV=production`; integration test |
 | Scope exceeds 3 days | Medium | Missing Musts | Scope-cut list in the plan; Should/Could items isolated |
-| Framework convention changes (middleware → proxy) | Medium | Setup friction | Verify at scaffolding (ADR-001) |
+| Framework convention changes (middleware → proxy) | — | — | Resolved in TASK-01: Next.js 16.4 deprecates `middleware`; we use `src/proxy.ts` |
 
 ## 17. Known limitations and technical debt
 
@@ -372,3 +373,7 @@ Per ADR-005 and the test plan. TS-00-specific: unit tests for `Money`, `parseIde
 | Version | Date | Author | Change |
 |---|---|---|---|
 | 0.1 | 2026-10-14 | Claude (AI-assisted) | First draft |
+| 1.0 | 2026-10-14 | Project owner | Approved |
+| 1.1 | 2026-10-14 | Claude (AI-assisted) | ADR-009 accepted; mock outcomes for auth and contacts listed (needed by the test plan) |
+| 1.2 | 2026-10-14 | Claude (AI-assisted) | TASK-01 findings: `src/proxy.ts` (Next.js 16.4 deprecates `middleware`); `APP_ENV` decouples mock controls from `NODE_ENV` so E2E can run a production build |
+| 1.3 | 2026-10-14 | Claude (AI-assisted) | One-time code is random per challenge; the demo hint shows the current code outside production (owner decision, resolves conflict between fixed demo code and AC-AUTH-10) |

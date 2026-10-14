@@ -5,7 +5,7 @@
 | **ID** | FS-01 |
 | **Module** | AUTH |
 | **Status** | Approved |
-| **Version** | 1.1 |
+| **Version** | 1.2 |
 | **Author** | Claude (AI-assisted draft) |
 | **Reviewer** | Project owner |
 | **Last updated** | 2026-10-13 |
@@ -80,7 +80,7 @@ Let a returning user get into their wallet with only their phone number or email
 | BR-13 | Business | **Code throttling.** A new code for the same identifier cannot be issued sooner than 30 seconds after the previous one, unless the previous one is locked by failed attempts. | On resend (server) | Request rejected with the remaining wait time |
 | BR-14 | Business | **Session required.** Every private view and every private operation requires a valid session; the server rejects requests without one. | Every private request (server) | Redirect to Login / `UNAUTHENTICATED` error |
 
-Values (5 minutes, 3 attempts, 30 seconds, demo code `123456`) come from ASM-15 and are configuration, not hard-coded behavior.
+Values (5 minutes, 3 attempts, 30 seconds) come from ASM-15; codes are random per challenge and are configuration, not hard-coded behavior.
 
 ### 5.2 UI rules
 
@@ -101,7 +101,7 @@ Values (5 minutes, 3 attempts, 30 seconds, demo code `123456`) come from ASM-15 
 | UIR-AUTH-13 | Change identifier | User chooses "Change phone or email" or browser Back from the code step | Returns to step 1 with the identifier pre-filled and focused. | FR-AUTH-15, UX-06 |
 | UIR-AUTH-14 | Post-login navigation | Verification succeeds | Navigate to the originally requested private view if any, otherwise Home; Login is replaced in the history so Back does not return to it. | FR-AUTH-07, FR-AUTH-08, UX-18 |
 | UIR-AUTH-15 | No flash for authenticated users | Authenticated user opens Login | Redirect to Home before the login form is ever rendered. | FR-AUTH-09 |
-| UIR-AUTH-16 | Demo code hint | Environment is not production | A clearly labeled hint shows the demo code on the code step. Never rendered in production. | FR-AUTH-16 |
+| UIR-AUTH-16 | Demo code hint | Environment is not production | A clearly labeled hint shows the code issued for the current challenge (it changes with every new code). Never rendered in production. | FR-AUTH-16 |
 | UIR-AUTH-17 | Session-ended notice | User arrives at Login because the session expired/was invalid, or after logging out | A notice explains why ("Your session ended…" / "You have logged out"). | FR-AUTH-10, FR-AUTH-11, UX-18 |
 | UIR-AUTH-18 | Theme control | Any login step | The theme switcher is available, as on every screen. | UX-22, A11Y-26 |
 
@@ -194,7 +194,7 @@ flowchart TD
 | Masked destination | `•••• 5678` / `a•••@correo.com` | Normalized identifier (UIR-AUTH-06) |
 | Remaining attempts | "Te quedan 2 intentos" / "Te queda 1 intento" | Server response to a failed verification |
 | Resend cooldown | `m:ss` | Server response (time until a new code is allowed) |
-| Demo code hint | `123456` | Configuration; non-production only |
+| Demo code hint | Current code, e.g. `482915` | Server response, non-production only |
 | Reference code (on errors) | Short monospaced code | Correlation ID (NFR-04) |
 
 ## 10. Acceptance criteria
@@ -433,7 +433,7 @@ Applies: A11Y-01, 02, 03, 04, 05, 06, 07, 08, 10, 12, 13, 14, 16, 21, 23, 25, 26
 | ASM-04 | Seeded test users and identifiers to demonstrate every state | Error states harder to demo |
 | ASM-05 | Simulated login errors are triggered deterministically by specific test identifiers or a wrong code | Flaky tests |
 | ASM-12 | Session lasts until logout; no forced expiry, but invalid sessions are handled | Expiry warning needed |
-| ASM-15 | Demo code `123456`, 5-minute validity, 3 attempts, 30-second cooldown | Configuration values change |
+| ASM-15 | Random code per challenge (shown in the demo hint outside production), 5-minute validity, 3 attempts, 30-second cooldown | Configuration values change |
 
 ## 15. Open questions
 
@@ -460,3 +460,4 @@ Applies: A11Y-01, 02, 03, 04, 05, 06, 07, 08, 10, 12, 13, 14, 16, 21, 23, 25, 26
 | 0.2 | 2026-10-13 | Claude (AI-assisted) | Approach approved; BR-10…14 registered in 00-context; OQ-14 resolved |
 | 1.0 | 2026-10-13 | Project owner | Approved |
 | 1.1 | 2026-10-14 | Claude (AI-assisted) | Traceability now points to the written TS (no behavior change) |
+| 1.2 | 2026-10-14 | Claude (AI-assisted) | One-time code is random per challenge; the demo hint shows the current code outside production (owner decision, resolves conflict between fixed demo code and AC-AUTH-10) |
