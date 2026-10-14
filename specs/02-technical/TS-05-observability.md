@@ -5,7 +5,7 @@
 | **ID** | TS-05 |
 | **Module** | OBS |
 | **Status** | Approved |
-| **Version** | 1.2 |
+| **Version** | 1.3 |
 | **Author** | Claude (AI-assisted draft) |
 | **Reviewer** | Project owner |
 | **Last updated** | 2026-10-14 |
@@ -151,7 +151,7 @@ Logging never throws into business code: logger failures are swallowed after a b
 | TX | `tx.contacts.loaded`, `tx.contacts.failed`, `tx.contact.created`, `tx.contact.duplicate`, `tx.contact.rejected`, `tx.contact.save_failed` (TS-03) |
 | CONF | `tx.confirm.requested`, `tx.confirm.completed`, `tx.confirm.failed`, `tx.confirm.rejected`, `tx.confirm.network_unavailable`, `tx.confirm.error`, `tx.confirm.replayed`, `tx.confirm.idempotency_conflict`, `tx.status.checked`, `tx.confirm.timeout`*, `tx.confirm.unresolved`*, `receipt.viewed`, `receipt.not_found` (TS-04) |
 | MOCK | `mock.outcome.forced`, `mock.outcome.ignored`, `mock.reset` (TS-04, TS-00) |
-| PREFS | `prefs.theme.changed` (Server Action) |
+| PREFS | `prefs.theme.changed`, `prefs.theme.rejected` (Server Action) |
 | CLIENT | `client.render.error`*, `client.http.network_error`* |
 
 \* Client-origin events received through `/api/client-logs`.
@@ -208,3 +208,4 @@ Logging never throws into business code: logger failures are swallowed after a b
 | 1.0 | 2026-10-14 | Project owner | Approved |
 | 1.1 | 2026-10-14 | Claude (AI-assisted) | TASK-07: error code field renamed `errorCode` (conflicted with the redacted `code` path); redaction paths listed as implemented |
 | 1.2 | 2026-10-14 | Claude (AI-assisted) | TASK-08: client-logs error codes made explicit (`PAYLOAD_TOO_LARGE`, `UNSUPPORTED_MEDIA_TYPE`); the request summary line is written by the `withApi` controller wrapper |
+| 1.3 | 2026-10-14 | Claude (AI-assisted) | TASK-03: `prefs.theme.rejected` for invalid theme values sent to the Server Action |

@@ -163,4 +163,4 @@ Links are relative (`[FS-03](../01-functional/FS-03-new-transaction.md)`) so the
 | ADR-009 | Runtime validation at boundaries (Zod) | 3 | Accepted | — |
 | — | Implementation plan (`03-plan/implementation-plan.md`) | 4 | Draft | 0.1 |
 | TASK-01…22 | Task cards (`04-development/tasks/`) | 4 | Pending | — |
-| — | Test plan (`05-testing/test-plan.md`) — 88 TCs, full BR/UIR/AC matrix | 5 | Draft | 0.1 |
+| — | Test plan (`05-testing/test-plan.md`) — 89 TCs, full BR/UIR/AC matrix | 5 | Draft | 0.2 |

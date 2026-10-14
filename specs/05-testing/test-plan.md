@@ -3,7 +3,7 @@
 | Field | Value |
 |---|---|
 | **Status** | Draft |
-| **Version** | 0.1 |
+| **Version** | 0.2 |
 | **Author** | Claude (AI-assisted draft) |
 | **Reviewer** | Project owner |
 | **Last updated** | 2026-10-14 |
@@ -21,7 +21,7 @@
 
 | Level | Covers | Tool (per ADR-005) | Rationale | Cases |
 |---|---|---|---|---|
-| Unit | Domain rules, value objects, formatters, mapping, simulator, signing, redaction | Vitest | Fast, exhaustive, table-driven | 23 |
+| Unit | Domain rules, value objects, formatters, mapping, simulator, signing, redaction | Vitest | Fast, exhaustive, table-driven | 24 |
 | Presentation logic | Hooks and reducers that drive UI rules and timelines | Vitest + Testing Library `renderHook`, fake timers | Deterministic timing without a browser | 9 |
 | Component | UI rules (UIR-*) and accessibility contracts of components | Vitest + Testing Library + user-event + axe (jsdom) | Behavior as users see it, by role and label | 15 |
 | Integration | Route Handlers + services + in-memory repositories; middleware | Vitest with real `Request` objects | Server authority, contracts, security | 14 |
@@ -86,7 +86,7 @@ Generated from the test cases in §6; every BR, UIR and AC is covered.
 | UIR-AUTH-15 | No flash for authenticated users | TC-INT-02 | INT | ⬜ |
 | UIR-AUTH-16 | Demo code hint | TC-COMP-04 | COMP | ⬜ |
 | UIR-AUTH-17 | Session-ended notice | TC-COMP-05 | COMP | ⬜ |
-| UIR-AUTH-18 | Theme control | TC-COMP-02 | COMP | ⬜ |
+| UIR-AUTH-18 | Theme control | TC-COMP-02 | COMP | ✅ |
 | UIR-CONF-01 | Processing lock | TC-PL-08, TC-COMP-14 | COMP, PL | ⬜ |
 | UIR-CONF-02 | Slow-response message | TC-PL-08, TC-COMP-14 | COMP, PL | ⬜ |
 | UIR-CONF-03 | Bounded wait | TC-PL-08 | PL | ⬜ |
@@ -210,7 +210,7 @@ Generated from the test cases in §6; every BR, UIR and AC is covered.
 | A11Y-06 | — | TC-E2E-21 | E2E | ⬜ |
 | A11Y-07 | — | TC-COMP-01 | COMP | ⬜ |
 | A11Y-08 | — | TC-COMP-01, TC-MAN-02 | COMP, MAN | ⬜ |
-| A11Y-10 | — | TC-E2E-21, TC-MAN-04 | E2E, MAN | ⬜ |
+| A11Y-10 | — | TC-UNIT-24, TC-E2E-21, TC-MAN-04 | E2E, MAN, UNIT | ⬜ |
 | A11Y-11 | — | TC-E2E-21 | E2E | ⬜ |
 | A11Y-12 | — | TC-MAN-03 | MAN | ⬜ |
 | A11Y-13 | — | TC-COMP-01, TC-MAN-03 | COMP, MAN | ⬜ |
@@ -252,6 +252,7 @@ Generated from the test cases in §6; every BR, UIR and AC is covered.
 | NFR-10 | — | TC-UNIT-21, TC-INT-12 | INT, UNIT | ⬜ |
 | NFR-13 | — | TC-UNIT-17 | UNIT | ⬜ |
 | NFR-14 | — | TC-E2E-21 | E2E | ⬜ |
+| NFR-16 | — | TC-UNIT-24 | UNIT | ✅ |
 | NFR-17 | — | TC-INT-01 | INT | ⬜ |
 | UX-01 | — | TC-MAN-03 | MAN | ⬜ |
 | UX-22 | — | TC-PL-09, TC-COMP-02, TC-INT-14, TC-E2E-22 | COMP, E2E, INT, PL | ⬜ |
@@ -287,6 +288,7 @@ Levels and IDs follow the [specs README](../README.md#24-ids). Tests reference t
 | TC-UNIT-21 | Configuration | NFR-10 | defaults from ASM-15…17; missing SESSION_SECRET fails; production forces MOCK_CONTROLS_ENABLED=false | `src/lib/config.test.ts` | High | TASK-06 | ✅ |
 | TC-UNIT-22 | Contact repository uniqueness | BR-08 | same normalized identifier → existing contact returned, no duplicate (FS-03 EC-08) | `src/server/repositories/contact.repository.test.ts` | High | TASK-06 | ✅ |
 | TC-UNIT-23 | Browser HTTP client | NFR-06, ADR-009 | timeout aborts and returns TIMEOUT; fetch TypeError → NETWORK_ERROR; schema mismatch → INTERNAL_ERROR; sends x-request-id, idempotency-key, JSON content type; 401 triggers session-ended redirect | `src/lib/http/client.test.ts` | High | TASK-08 | ✅ |
+| TC-UNIT-24 | Theme token contrast | A11Y-10, NFR-16 | every semantic text/background pair ≥ 4.5:1 and every boundary/focus/action color ≥ 3:1 in light AND dark, read from the real token file; default palette removed | `src/app/theme-tokens.test.ts` | High | TASK-03 | ✅ |
 
 ### 6.2 Presentation logic
 
@@ -300,14 +302,14 @@ Levels and IDs follow the [specs README](../README.md#24-ids). Tests reference t
 | TC-PL-06 | useAmountField | UIR-TX-12 | BR-02 error as soon as exceeded; BR-01 only on continue; errors clear when valid | `src/features/transfer/use-amount-field.test.ts` | High | TASK-16 | ⬜ |
 | TC-PL-07 | useSaveContact | UIR-TX-06, UIR-TX-07, UIR-TX-08 | 201 → saved message; 200 → duplicate message + existing recipient; 503/network → one-off + failure message | `src/features/transfer/use-save-contact.test.ts` | High | TASK-15 | ⬜ |
 | TC-PL-08 | useConfirmTransfer | UIR-CONF-01, UIR-CONF-02, UIR-CONF-03, UIR-CONF-04, UIR-CONF-05, UIR-CONF-06, UIR-CONF-16, AC-CONF-02, AC-CONF-07, AC-CONF-08, AC-CONF-10 | every row of TS-04 §8 mapping table; slow at 3 s; abort at 10 s; checks at +2/+4/+8 s; unresolved after limit; same key on retry; timers and requests cleared on unmount (fake timers) | `src/features/confirmation/use-confirm-transfer.test.ts` | High | TASK-18 | ⬜ |
-| TC-PL-09 | Theme state | UX-22 | system/light/dark selection updates `data-theme` immediately and calls the Server Action | `src/features/theme/theme-provider.test.tsx` | Medium | TASK-03 | ⬜ |
+| TC-PL-09 | Theme state | UX-22 | system/light/dark selection updates `data-theme` immediately and calls the Server Action | `src/features/theme/theme-provider.test.tsx` | Medium | TASK-03 | ✅ |
 
 ### 6.3 Component
 
 | TC | Title | Covers | Key cases → expected result | Location | Priority | Built in | Status |
 |---|---|---|---|---|---|---|---|
 | TC-COMP-01 | Base components accessibility contracts | A11Y-03, A11Y-05, A11Y-07, A11Y-08, A11Y-13, A11Y-18, A11Y-19, A11Y-24, UIR-AUTH-03, UIR-TX-13 | Button busy ≠ disabled-for-invalid; TextField label/hint/error/invalid; Dialog focus trap + Escape + return focus; Toast polite; Skeleton hidden; ReferenceCode; axe clean | `src/components/ui/*.test.tsx` | High | TASK-04 | ⬜ |
-| TC-COMP-02 | ThemeSwitcher | A11Y-26, UIR-AUTH-18, UX-22 | accessible name and current value; keyboard operable; focus stays after change | `src/features/theme/theme-switcher.test.tsx` | High | TASK-03 | ⬜ |
+| TC-COMP-02 | ThemeSwitcher | A11Y-26, UIR-AUTH-18, UX-22 | accessible name and current value; keyboard operable; focus stays after change | `src/features/theme/theme-switcher.test.tsx` | High | TASK-03 | ✅ |
 | TC-COMP-03 | IdentifierStep | UIR-AUTH-01, UIR-AUTH-02, UIR-AUTH-03, AC-AUTH-03, AC-AUTH-04, AC-AUTH-05 | error on blur not while typing; clears live; Continue enabled when empty → required error + focus; busy blocks second submit | `src/features/auth/identifier-step.test.tsx` | High | TASK-11 | ⬜ |
 | TC-COMP-04 | CodeStep and OneTimeCodeField | UIR-AUTH-05, UIR-AUTH-06, UIR-AUTH-07, UIR-AUTH-08, UIR-AUTH-09, UIR-AUTH-10, UIR-AUTH-11, UIR-AUTH-12, UIR-AUTH-13, UIR-AUTH-16, AC-AUTH-07, AC-AUTH-08, AC-AUTH-10, AC-AUTH-11, AC-AUTH-17, AC-AUTH-18 | focus + instructions with masked destination; paste normalized; no auto-submit; attempts-left message with selected content; locked state; cooldown text announced once at zero; demo hint only with flag | `src/features/auth/code-step.test.tsx` | High | TASK-11 | ⬜ |
 | TC-COMP-05 | SessionNotice | UIR-AUTH-17 | `reason=logged_out` and `reason=session_ended` messages announced | `src/features/auth/session-notice.test.tsx` | Medium | TASK-11 | ⬜ |
@@ -339,7 +341,7 @@ Levels and IDs follow the [specs README](../README.md#24-ids). Tests reference t
 | TC-INT-11 | Receipt ownership | AC-CONF-17 | getReceipt for another user's transfer → NOT_FOUND, indistinguishable from missing | `src/server/services/transfers.service.int.test.ts` | High | TASK-17 | ⬜ |
 | TC-INT-12 | Mock controls disabled | NFR-10 | with MOCK_CONTROLS_ENABLED=false: x-mock-outcome ignored (logged), /api/mock/reset → 404, demo hint flag false | `src/server/mock/mock-controls.int.test.ts` | High | TASK-06 | ⬜ |
 | TC-INT-13 | Correlation and client logs | NFR-04 | every API response has x-request-id; error bodies include requestId; client-logs: >10 events → 400, >2 KB → 413, rate limit → 429 | `src/app/api/client-logs/route.int.test.ts` | Medium | TASK-07 | ⬜ |
-| TC-INT-14 | Theme Server Action | ADR-007, UX-22 | sets `theme` cookie (light/dark/system) and rejects other values | `src/server/actions/set-theme.int.test.ts` | Medium | TASK-03 | ⬜ |
+| TC-INT-14 | Theme Server Action | ADR-007, UX-22 | sets `theme` cookie (light/dark/system) and rejects other values | `src/server/actions/set-theme.int.test.ts` | Medium | TASK-03 | ✅ |
 
 ### 6.5 E2E
 
@@ -441,3 +443,4 @@ Edge cases from FS-01…FS-04 §11 are folded into the cases above (see the "Key
 | Version | Date | Author | Change |
 |---|---|---|---|
 | 0.1 | 2026-10-14 | Claude (AI-assisted) | First draft generated from FS/TS; coverage verified for every BR, UIR and AC |
+| 0.2 | 2026-10-14 | Claude (AI-assisted) | TASK-03: TC-UNIT-24 (theme token contrast) added; 89 cases |

@@ -5,7 +5,7 @@
 | **ID** | TS-00 |
 | **Module** | CORE |
 | **Status** | Approved |
-| **Version** | 1.6 |
+| **Version** | 1.7 |
 | **Author** | Claude (AI-assisted draft) |
 | **Reviewer** | Project owner |
 | **Last updated** | 2026-10-14 |
@@ -308,12 +308,14 @@ Standard and event catalog in TS-05 (ADR-006). Every module TS lists its events.
 | Surfaces | `surface`, `surface-raised`, `surface-sunken`, `overlay` |
 | Text | `text-primary`, `text-secondary`, `text-inverse`, `text-link` |
 | Borders / focus | `border`, `border-strong`, `focus-ring` |
-| Actions | `action-primary`, `action-primary-hover`, `action-primary-text`, `action-secondary` |
+| Actions | `action-primary`, `action-primary-hover`, `action-primary-text`, `action-secondary`, `action-secondary-hover`, `action-secondary-text` |
 | Status | `status-success`, `status-error`, `status-warning`, `status-info` (+ `*-surface` variants) |
 | Money | `amount-in`, `amount-out` |
 | Spacing / radius / type | 4-px spacing scale; radius `sm/md/lg`; type scale with rem units |
 
-Every text/background pair is contrast-checked in both themes (A11Y-10).
+Every text/background pair is contrast-checked in both themes (A11Y-10) by an automated test that reads the token file (TC-UNIT-24).
+
+**Implementation (TASK-03):** each token is defined once as `light-dark(<light>, <dark>)` on `:root`; `data-theme` on `<html>` only sets `color-scheme` (`system` → `light dark`, `light`, `dark`), so the server-rendered attribute alone selects the theme with zero JavaScript. Tailwind's default palette is removed (`--color-*: initial`) and replaced with utilities mapped to these tokens, so components cannot use raw colors (also guarded by a test). Palette: cool slate neutrals, añil (indigo) actions, jade for money in and success, grana (cochineal) for errors, maize for warnings. System font stack (no web-font download on the critical path).
 
 ### 13.2 Layout foundations
 
@@ -382,3 +384,4 @@ Per ADR-005 and the test plan. TS-00-specific: unit tests for `Money`, `parseIde
 | 1.4 | 2026-10-14 | Claude (AI-assisted) | TASK-08: `PAYLOAD_TOO_LARGE` (413) added to the catalog (client-logs already answered 413 without a code); client-only `ABORTED`; HTTP client contract details in §5.3 |
 | 1.5 | 2026-10-14 | Project owner | Domain layer folder renamed `src/domain` → `src/core` (owner preference); dependency rule now enforced by ESLint |
 | 1.6 | 2026-10-14 | Project owner | Wallet-specific components folder renamed `src/components/domain` → `src/components/wallet` (avoids confusion with `src/core`) |
+| 1.7 | 2026-10-14 | Claude (AI-assisted) | TASK-03: token implementation with `light-dark()` + `color-scheme`; secondary action tokens; contrast verified by TC-UNIT-24 |

@@ -41,6 +41,7 @@ export const LOG_EVENTS = [
   'mock.outcome.ignored',
   'mock.reset',
   'prefs.theme.changed',
+  'prefs.theme.rejected',
   'client.render.error',
   'client.http.network_error',
 ] as const;

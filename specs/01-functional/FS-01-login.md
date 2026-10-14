@@ -5,7 +5,7 @@
 | **ID** | FS-01 |
 | **Module** | AUTH |
 | **Status** | Approved |
-| **Version** | 1.2 |
+| **Version** | 1.3 |
 | **Author** | Claude (AI-assisted draft) |
 | **Reviewer** | Project owner |
 | **Last updated** | 2026-10-13 |
@@ -410,6 +410,11 @@ UI copy is in Spanish (es-MX), per OQ-01. Keys are stable; texts may be refined 
 | `common.retry` | "Intentar de nuevo" | Retry action |
 | `auth.session.ended` | "Tu sesión terminó. Inicia sesión de nuevo para continuar." | Expired/invalid session |
 | `auth.logout.done` | "Cerraste sesión." | After logout |
+| `common.skip_to_content` | "Saltar al contenido" | Skip link, every screen (A11Y-03) |
+| `theme.label` | "Tema" | Theme switcher accessible name (UIR-AUTH-18) |
+| `theme.system` | "Sistema" | Follow the OS |
+| `theme.light` | "Claro" | Light theme |
+| `theme.dark` | "Oscuro" | Dark theme |
 
 ## 13. Accessibility and responsive behavior
 
@@ -461,3 +466,4 @@ Applies: A11Y-01, 02, 03, 04, 05, 06, 07, 08, 10, 12, 13, 14, 16, 21, 23, 25, 26
 | 1.0 | 2026-10-13 | Project owner | Approved |
 | 1.1 | 2026-10-14 | Claude (AI-assisted) | Traceability now points to the written TS (no behavior change) |
 | 1.2 | 2026-10-14 | Claude (AI-assisted) | One-time code is random per challenge; the demo hint shows the current code outside production (owner decision, resolves conflict between fixed demo code and AC-AUTH-10) |
+| 1.3 | 2026-10-14 | Claude (AI-assisted) | TASK-03: copy keys for the skip link and the theme switcher (shared by every screen) |
