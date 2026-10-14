@@ -118,11 +118,12 @@ all green. E2E when the task touches flows (TASK-20 owns the suite).
 
 ## 9. Current state
 
-- Done: TASK-01 to TASK-13. E2E auth and home suites green in all 4 projects.
-- **Next: TASK-14** (contacts API: list favorites, save contact with BR-08/09/16).
+- Done: TASK-01 to TASK-14. E2E auth and home suites green in all 4 projects.
+- **Next: TASK-15** (transfer layout with draft state (Context + reducer), step guard,
+  recipient step: favorites list + new contact form, cancel dialog).
 - Pending owner decision: demo-accounts hint on login step 1 and no demo code for
   unknown identifiers (non-production only).
-- Then: TASK-15/16
+- Then: TASK-16
   transfer → TASK-17/18/19 confirmation and receipt → TASK-20/21/22.
 
 ## 10. Known pitfalls

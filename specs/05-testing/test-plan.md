@@ -59,15 +59,15 @@ Generated from the test cases in §6; every BR, UIR and AC is covered.
 | BR-05 | Recipient identifier format | TC-UNIT-05, TC-INT-08 | INT, UNIT | ⬜ |
 | BR-06 | Rules are authoritative on the server | TC-INT-08 | INT | ⬜ |
 | BR-07 | Idempotent confirmation | TC-UNIT-13, TC-INT-09 | INT, UNIT | ⬜ |
-| BR-08 | No duplicate favorites | TC-UNIT-22, TC-INT-07 | INT, UNIT | ⬜ |
+| BR-08 | No duplicate favorites | TC-UNIT-22, TC-INT-07 | INT, UNIT | ✅ |
 | BR-09 | No self-transfer | TC-UNIT-04, TC-INT-07, TC-INT-08 | INT, UNIT | ⬜ |
-| BR-10 | Identifier format | TC-UNIT-05, TC-INT-03, TC-INT-07 | INT, UNIT | ⬜ |
+| BR-10 | Identifier format | TC-UNIT-05, TC-INT-03, TC-INT-07 | INT, UNIT | ✅ |
 | BR-11 | One-time code format | TC-UNIT-07, TC-INT-04 | INT, UNIT | ✅ |
 | BR-12 | Code validity | TC-UNIT-08, TC-INT-04 | INT, UNIT | ✅ |
 | BR-13 | Code throttling | TC-UNIT-09, TC-INT-03 | INT, UNIT | ✅ |
 | BR-14 | Session required | TC-UNIT-15, TC-INT-02 | INT, UNIT | ✅ |
 | BR-15 | Concept format | TC-UNIT-10, TC-INT-08 | INT, UNIT | ⬜ |
-| BR-16 | Contact name | TC-UNIT-11, TC-INT-07 | INT, UNIT | ⬜ |
+| BR-16 | Contact name | TC-UNIT-11, TC-INT-07 | INT, UNIT | ✅ |
 | BR-17 | Single final outcome | TC-UNIT-12, TC-INT-10 | INT, UNIT | ⬜ |
 | UIR-AUTH-01 | Identifier type inference | TC-UNIT-05, TC-COMP-03 | COMP, UNIT | ✅ |
 | UIR-AUTH-02 | Validation timing | TC-COMP-03 | COMP | ✅ |
@@ -244,8 +244,8 @@ Generated from the test cases in §6; every BR, UIR and AC is covered.
 | FR-HOME-03 | — | TC-INT-06 | INT | ✅ |
 | FR-HOME-06 | — | TC-E2E-09 | E2E | ✅ |
 | FR-HOME-10 | — | TC-INT-06 | INT | ✅ |
-| FR-TX-02 | — | TC-INT-07 | INT | ⬜ |
-| FR-TX-04 | — | TC-INT-07 | INT | ⬜ |
+| FR-TX-02 | — | TC-INT-07 | INT | ✅ |
+| FR-TX-04 | — | TC-INT-07 | INT | ✅ |
 | NFR-04 | — | TC-UNIT-19, TC-INT-13, TC-E2E-23 | E2E, INT, UNIT | ⬜ |
 | NFR-05 | — | TC-UNIT-20 | UNIT | ✅ |
 | NFR-06 | — | TC-UNIT-23 | UNIT | ✅ |
@@ -334,7 +334,7 @@ Levels and IDs follow the [specs README](../README.md#24-ids). Tests reference t
 | TC-INT-04 | POST /api/auth/verify | FR-AUTH-06, FR-AUTH-13, FR-AUTH-14, BR-11, BR-12, AC-AUTH-09 | 200 + cookie attributes; INVALID_CODE_FORMAT consumes no attempt; CODE_INCORRECT attemptsLeft; CODE_LOCKED; `otp_expired` forced → CODE_EXPIRED; redirectTo sanitized; timeZone stored | `src/app/api/auth/verify/route.int.test.ts` | High | TASK-10 | ✅ |
 | TC-INT-05 | POST /api/auth/logout | FR-AUTH-10 | 204; session deleted; replaying old cookie → 401; idempotent without session | `src/app/api/auth/logout/route.int.test.ts` | High | TASK-10 | ✅ |
 | TC-INT-06 | Home endpoints | FR-HOME-01, FR-HOME-02, FR-HOME-03, FR-HOME-10 | summary and transactions for seeded users; limit clamped to 10; seeded failures → 503; Cache-Control no-store | `src/app/api/me/me.int.test.ts` | High | TASK-12 | ✅ |
-| TC-INT-07 | Contacts endpoints | BR-08, BR-09, BR-10, BR-16, FR-TX-02, FR-TX-04 | GET ordered by lastUsedAt; POST 201 new / 200 duplicate; 422 INVALID_CONTACT_NAME, INVALID_IDENTIFIER, SELF_TRANSFER; forced 503 | `src/app/api/contacts/route.int.test.ts` | High | TASK-14 | ⬜ |
+| TC-INT-07 | Contacts endpoints | BR-08, BR-09, BR-10, BR-16, FR-TX-02, FR-TX-04 | GET ordered by lastUsedAt; POST 201 new / 200 duplicate; 422 INVALID_CONTACT_NAME, INVALID_IDENTIFIER, SELF_TRANSFER; forced 503 | `src/app/api/contacts/route.int.test.ts` | High | TASK-14 | ✅ |
 | TC-INT-08 | POST /api/transfers — rules | BR-01, BR-02, BR-03, BR-04, BR-05, BR-06, BR-09, BR-15, AC-TX-15 | each rule violated directly against the API → specific 422; foreign contactId → RECIPIENT_REQUIRED; no debit on any failure | `src/app/api/transfers/rules.int.test.ts` | High | TASK-17 | ⬜ |
 | TC-INT-09 | POST /api/transfers — idempotency | BR-07, FR-CONF-08, AC-CONF-04 | same key + payload → stored 201 replay; same key + other payload → 409; concurrent same key → one debit, other 202; not_processed re-processed on retry | `src/app/api/transfers/idempotency.int.test.ts` | High | TASK-17 | ⬜ |
 | TC-INT-10 | Forced outcomes and attempt status | FR-CONF-01, FR-CONF-11, FR-CONF-13, BR-17, UIR-CONF-17, AC-CONF-15, AC-CONF-16 | each outcome and timeout sub-case via x-mock-outcome; status endpoint reports in_progress/completed/failed/not_processed; unknown key → not_processed | `src/app/api/transfers/outcomes.int.test.ts` | High | TASK-17 | ⬜ |

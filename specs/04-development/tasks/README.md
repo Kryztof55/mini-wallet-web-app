@@ -17,7 +17,7 @@ File name: `TASK-NN-kebab-case-name.md`. Generated from the [implementation plan
 | [TASK-11](./TASK-11-login-screens.md) | Build the login screens | M1 | Done |
 | [TASK-12](./TASK-12-home-api.md) | Implement the Home API and services | M2 | Done |
 | [TASK-13](./TASK-13-home-screen.md) | Build the Home screen | M2 | Done |
-| [TASK-14](./TASK-14-contacts-api.md) | Implement the contacts API | M3 | Pending |
+| [TASK-14](./TASK-14-contacts-api.md) | Implement the contacts API | M3 | Done |
 | [TASK-15](./TASK-15-transfer-recipient.md) | Build the transfer layout, draft state and recipient step | M3 | Pending |
 | [TASK-16](./TASK-16-transfer-amount-summary.md) | Build the amount and summary steps | M3 | Pending |
 | [TASK-17](./TASK-17-transfers-api.md) | Implement the transfers API | M4 | Pending |
