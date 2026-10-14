@@ -3,7 +3,7 @@
 | Field | Value |
 |---|---|
 | **ID** | TASK-02 |
-| **Status** | In review |
+| **Status** | Done |
 | **Milestone** | M0 — Foundations |
 | **Covers** | ADR-005 · NFR-08, NFR-09 |
 | **Specs** | ADR-005, TS-00 |
@@ -36,9 +36,9 @@ Follow the referenced specs; if the implementation needs to deviate, update the 
 
 ## 4. Acceptance criteria
 
-- [ ] `npm test` and `npm run test:e2e` pass with the example tests.
+- [x] `npm test` and `npm run test:e2e` pass with the example tests.
 - [x] E2E fixture can set `x-mock-outcome` and reset mock data.
-- [ ] Definition of Done in [specs README §5](../../README.md#5-quality-gates) met.
+- [x] Definition of Done in [specs README §5](../../README.md#5-quality-gates) met.
 
 ## 5. Required tests
 
@@ -67,6 +67,7 @@ See the [test plan](../../05-testing/test-plan.md).
 | 2026-10-14 | Fixtures: auto `resetMocks`, `forceOutcome(urlGlob, outcome)` via route-level header injection, `expectNoA11yViolations` (WCAG 2.x A/AA tags). |
 | 2026-10-14 | Added `GET /api/health` used by Playwright readiness and as integration smoke test. |
 | 2026-10-14 | Checks: `vitest run` ✅ 3/3 (node + dom). E2E smoke pending owner run (`npm run test:e2e`) — browsers live on the owner machine. |
+| 2026-10-14 | Owner run on macOS after `npx playwright install webkit` (WebKit was missing): `npm run test:e2e` passed in all 4 projects (Chromium/WebKit × light/dark), on the TASK-09 build — which also confirms the app hydrates under the nonce CSP and `/` redirects to `/login`. |
 
 ## 8. AI usage
 
