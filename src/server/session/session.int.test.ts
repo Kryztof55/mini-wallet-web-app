@@ -98,7 +98,8 @@ describe('[TC-INT-02][BR-14][UIR-AUTH-15][AC-AUTH-19][AC-AUTH-14] session gate a
 
   it('private API with a tampered cookie → 401', async () => {
     const { cookie } = await loggedIn();
-    const tampered = `${cookie.slice(0, -1)}${cookie.endsWith('A') ? 'B' : 'A'}`;
+    const at = cookie.indexOf('.') + 5;
+    const tampered = `${cookie.slice(0, at)}${cookie[at] === 'A' ? 'B' : 'A'}${cookie.slice(at + 1)}`;
     expect((await proxy(page('/api/home/summary', tampered))).status).toBe(401);
   });
 

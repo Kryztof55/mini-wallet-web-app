@@ -50,10 +50,14 @@ export async function verifySessionCookie(
   if (!id || !signature || rest.length > 0) return null;
   if (!SESSION_ID_PATTERN.test(id) || !SIGNATURE_PATTERN.test(signature)) return null;
 
+  const signatureBytes = new Uint8Array(Buffer.from(signature, 'base64url'));
+  // The last base64url character carries 2 unused bits, so several spellings decode to the
+  // same bytes; only the canonical one is accepted.
+  if (toBase64Url(signatureBytes) !== signature) return null;
   const valid = await crypto.subtle.verify(
     'HMAC',
     await hmacKey(secret),
-    new Uint8Array(Buffer.from(signature, 'base64url')),
+    signatureBytes,
     encoder.encode(id),
   );
   return valid ? (id as SessionId) : null;

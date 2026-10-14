@@ -5,7 +5,7 @@
 | **ID** | TS-02 |
 | **Module** | HOME |
 | **Status** | Approved |
-| **Version** | 1.1 |
+| **Version** | 1.2 |
 | **Author** | Claude (AI-assisted draft) |
 | **Reviewer** | Project owner |
 | **Last updated** | 2026-10-14 |
@@ -91,7 +91,9 @@ See TS-00 §3.4. No deviations.
 
 **Request:** `limit` optional integer 1–10 (clamped to `ACTIVITY_LIMIT`).
 **Success `200`:** `{ items: Transaction[] }` (empty array for no activity).
-**Errors:** `401` · `503 SERVICE_UNAVAILABLE` (seeded `falla.movs` or forced) · `500`.
+**Errors:** `400 VALIDATION_ERROR` (non-numeric `limit`) · `401` · `503 SERVICE_UNAVAILABLE` (seeded `falla.movs` or forced) · `500`.
+
+**Implementation notes (TASK-12):** items never include the internal owner ID. Seeded outages are modelled in the data source: `AccountRepository.getBalance` and `TransactionRepository.listRecent` return `Result<…, SERVICE_UNAVAILABLE>`, so the service maps a failing dependency instead of checking for test users. A user with no stored balance has $0.00.
 
 ## 6. Rules: where they are enforced
 
@@ -203,3 +205,4 @@ Per FS-02 §13. Technical notes: list as `<ul>` with each `TransactionItem` as `
 | 0.1 | 2026-10-14 | Claude (AI-assisted) | First draft |
 | 1.0 | 2026-10-14 | Project owner | Approved |
 | 1.1 | 2026-10-14 | Project owner | Wallet-specific components folder renamed `src/components/domain` → `src/components/wallet` (avoids confusion with `src/core`) |
+| 1.2 | 2026-10-14 | Claude (AI-assisted) | TASK-12: 400 for a non-numeric limit, response without owner ID, outages modelled in repositories |

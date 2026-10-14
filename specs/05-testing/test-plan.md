@@ -82,7 +82,7 @@ Generated from the test cases in §6; every BR, UIR and AC is covered.
 | UIR-AUTH-11 | Resend cooldown | TC-PL-02, TC-COMP-04 | COMP, PL | ✅ |
 | UIR-AUTH-12 | New code issued | TC-PL-01, TC-COMP-04 | COMP, PL | ✅ |
 | UIR-AUTH-13 | Change identifier | TC-PL-01, TC-COMP-04 | COMP, PL | ✅ |
-| UIR-AUTH-14 | Post-login navigation | TC-UNIT-14, TC-E2E-05 | E2E, UNIT | ⬜ |
+| UIR-AUTH-14 | Post-login navigation | TC-UNIT-14, TC-E2E-05 | E2E, UNIT | ✅ |
 | UIR-AUTH-15 | No flash for authenticated users | TC-INT-02 | INT | ✅ |
 | UIR-AUTH-16 | Demo code hint | TC-COMP-04 | COMP | ✅ |
 | UIR-AUTH-17 | Session-ended notice | TC-COMP-05 | COMP | ✅ |
@@ -138,22 +138,22 @@ Generated from the test cases in §6; every BR, UIR and AC is covered.
 | UIR-TX-19 | Draft preserved in the flow | TC-UNIT-13 | UNIT | ⬜ |
 | UIR-TX-20 | Cancel | TC-COMP-13 | COMP | ⬜ |
 | UIR-TX-21 | Draft reset after completion | TC-UNIT-13 | UNIT | ⬜ |
-| AC-AUTH-01 | Log in with a phone number | TC-E2E-01 | E2E | ⬜ |
-| AC-AUTH-02 | Log in with an email | TC-E2E-02 | E2E | ⬜ |
+| AC-AUTH-01 | Log in with a phone number | TC-E2E-01 | E2E | ✅ |
+| AC-AUTH-02 | Log in with an email | TC-E2E-02 | E2E | ✅ |
 | AC-AUTH-03 | Empty identifier | TC-COMP-03 | COMP | ✅ |
 | AC-AUTH-04 | Invalid identifier format | TC-COMP-03 | COMP | ✅ |
 | AC-AUTH-05 | No double submission | TC-COMP-03, TC-E2E-20 | COMP, E2E | ⬜ |
-| AC-AUTH-06 | Correct code creates a session | TC-E2E-01 | E2E | ⬜ |
-| AC-AUTH-07 | Incorrect code | TC-COMP-04, TC-E2E-03 | COMP, E2E | ⬜ |
-| AC-AUTH-08 | Code locked after 3 failures | TC-COMP-04, TC-E2E-03 | COMP, E2E | ⬜ |
-| AC-AUTH-09 | Expired code | TC-INT-04, TC-E2E-04 | E2E, INT | ⬜ |
-| AC-AUTH-10 | Resend cooldown and invalidation | TC-COMP-04, TC-E2E-03 | COMP, E2E | ⬜ |
+| AC-AUTH-06 | Correct code creates a session | TC-E2E-01 | E2E | ✅ |
+| AC-AUTH-07 | Incorrect code | TC-COMP-04, TC-E2E-03 | COMP, E2E | ✅ |
+| AC-AUTH-08 | Code locked after 3 failures | TC-COMP-04, TC-E2E-03 | COMP, E2E | ✅ |
+| AC-AUTH-09 | Expired code | TC-INT-04, TC-E2E-04 | E2E, INT | ✅ |
+| AC-AUTH-10 | Resend cooldown and invalidation | TC-COMP-04, TC-E2E-03 | COMP, E2E | ✅ |
 | AC-AUTH-11 | Change identifier keeps input | TC-COMP-04 | COMP | ✅ |
-| AC-AUTH-12 | Session persists on reload | TC-E2E-06 | E2E | ⬜ |
-| AC-AUTH-13 | Protected view and return to destination | TC-E2E-05 | E2E | ⬜ |
-| AC-AUTH-14 | Authenticated user opens Login | TC-INT-02, TC-E2E-05 | E2E, INT | ⬜ |
-| AC-AUTH-15 | Logout | TC-E2E-06 | E2E | ⬜ |
-| AC-AUTH-16 | Simulated service error is recoverable | TC-INT-03, TC-E2E-07 | E2E, INT | ⬜ |
+| AC-AUTH-12 | Session persists on reload | TC-E2E-06 | E2E | ✅ |
+| AC-AUTH-13 | Protected view and return to destination | TC-E2E-05 | E2E | ✅ |
+| AC-AUTH-14 | Authenticated user opens Login | TC-INT-02, TC-E2E-05 | E2E, INT | ✅ |
+| AC-AUTH-15 | Logout | TC-E2E-06 | E2E | ✅ |
+| AC-AUTH-16 | Simulated service error is recoverable | TC-INT-03, TC-E2E-07 | E2E, INT | ✅ |
 | AC-AUTH-17 | Paste a formatted code | TC-COMP-04 | COMP | ✅ |
 | AC-AUTH-18 | Demo hint only outside production | TC-COMP-04 | COMP | ✅ |
 | AC-AUTH-19 | Server rejects private requests without session | TC-INT-02 | INT | ✅ |
@@ -168,7 +168,7 @@ Generated from the test cases in §6; every BR, UIR and AC is covered.
 | AC-HOME-09 | Reflect a completed transfer | TC-E2E-11 | E2E | ⬜ |
 | AC-HOME-10 | Zero balance | TC-COMP-06, TC-E2E-09 | COMP, E2E | ⬜ |
 | AC-HOME-11 | Pending and failed transactions | TC-COMP-07, TC-E2E-08 | COMP, E2E | ⬜ |
-| AC-HOME-12 | Logout from Home | TC-E2E-06 | E2E | ⬜ |
+| AC-HOME-12 | Logout from Home | TC-E2E-06 | E2E | ✅ |
 | AC-TX-01 | Send to a favorite (happy path) | TC-E2E-11 | E2E | ⬜ |
 | AC-TX-02 | Amount must be greater than zero (BR-01) | TC-COMP-11, TC-E2E-13 | COMP, E2E | ⬜ |
 | AC-TX-03 | Amount cannot exceed balance (BR-02) | TC-COMP-11, TC-E2E-13 | COMP, E2E | ⬜ |
@@ -229,8 +229,8 @@ Generated from the test cases in §6; every BR, UIR and AC is covered.
 | FR-AUTH-01 | — | TC-INT-03 | INT | ✅ |
 | FR-AUTH-02 | — | TC-INT-03 | INT | ✅ |
 | FR-AUTH-06 | — | TC-INT-04 | INT | ✅ |
-| FR-AUTH-07 | — | TC-E2E-01 | E2E | ⬜ |
-| FR-AUTH-08 | — | TC-E2E-05 | E2E | ⬜ |
+| FR-AUTH-07 | — | TC-E2E-01 | E2E | ✅ |
+| FR-AUTH-08 | — | TC-E2E-05 | E2E | ✅ |
 | FR-AUTH-10 | — | TC-INT-05 | INT | ✅ |
 | FR-AUTH-12 | — | TC-INT-03 | INT | ✅ |
 | FR-AUTH-13 | — | TC-INT-04 | INT | ✅ |
@@ -239,11 +239,11 @@ Generated from the test cases in §6; every BR, UIR and AC is covered.
 | FR-CONF-08 | — | TC-INT-09 | INT | ⬜ |
 | FR-CONF-11 | — | TC-UNIT-18, TC-INT-10 | INT, UNIT | ⬜ |
 | FR-CONF-13 | — | TC-INT-10 | INT | ⬜ |
-| FR-HOME-01 | — | TC-INT-06 | INT | ⬜ |
-| FR-HOME-02 | — | TC-INT-06 | INT | ⬜ |
-| FR-HOME-03 | — | TC-INT-06 | INT | ⬜ |
+| FR-HOME-01 | — | TC-INT-06 | INT | ✅ |
+| FR-HOME-02 | — | TC-INT-06 | INT | ✅ |
+| FR-HOME-03 | — | TC-INT-06 | INT | ✅ |
 | FR-HOME-06 | — | TC-E2E-09 | E2E | ⬜ |
-| FR-HOME-10 | — | TC-INT-06 | INT | ⬜ |
+| FR-HOME-10 | — | TC-INT-06 | INT | ✅ |
 | FR-TX-02 | — | TC-INT-07 | INT | ⬜ |
 | FR-TX-04 | — | TC-INT-07 | INT | ⬜ |
 | NFR-04 | — | TC-UNIT-19, TC-INT-13, TC-E2E-23 | E2E, INT, UNIT | ⬜ |
@@ -333,7 +333,7 @@ Levels and IDs follow the [specs README](../README.md#24-ids). Tests reference t
 | TC-INT-03 | POST /api/auth/code | FR-AUTH-01, FR-AUTH-02, FR-AUTH-12, BR-10, BR-13, AC-AUTH-16 | 202 with masked destination; 422 INVALID_IDENTIFIER; 429 CODE_THROTTLED with retryAfterSec; unknown identifier → same 202; seeded `falla.login` → 503; no identifier/code in logs | `src/app/api/auth/code/route.int.test.ts` | High | TASK-10 | ✅ |
 | TC-INT-04 | POST /api/auth/verify | FR-AUTH-06, FR-AUTH-13, FR-AUTH-14, BR-11, BR-12, AC-AUTH-09 | 200 + cookie attributes; INVALID_CODE_FORMAT consumes no attempt; CODE_INCORRECT attemptsLeft; CODE_LOCKED; `otp_expired` forced → CODE_EXPIRED; redirectTo sanitized; timeZone stored | `src/app/api/auth/verify/route.int.test.ts` | High | TASK-10 | ✅ |
 | TC-INT-05 | POST /api/auth/logout | FR-AUTH-10 | 204; session deleted; replaying old cookie → 401; idempotent without session | `src/app/api/auth/logout/route.int.test.ts` | High | TASK-10 | ✅ |
-| TC-INT-06 | Home endpoints | FR-HOME-01, FR-HOME-02, FR-HOME-03, FR-HOME-10 | summary and transactions for seeded users; limit clamped to 10; seeded failures → 503; Cache-Control no-store | `src/app/api/me/me.int.test.ts` | High | TASK-12 | ⬜ |
+| TC-INT-06 | Home endpoints | FR-HOME-01, FR-HOME-02, FR-HOME-03, FR-HOME-10 | summary and transactions for seeded users; limit clamped to 10; seeded failures → 503; Cache-Control no-store | `src/app/api/me/me.int.test.ts` | High | TASK-12 | ✅ |
 | TC-INT-07 | Contacts endpoints | BR-08, BR-09, BR-10, BR-16, FR-TX-02, FR-TX-04 | GET ordered by lastUsedAt; POST 201 new / 200 duplicate; 422 INVALID_CONTACT_NAME, INVALID_IDENTIFIER, SELF_TRANSFER; forced 503 | `src/app/api/contacts/route.int.test.ts` | High | TASK-14 | ⬜ |
 | TC-INT-08 | POST /api/transfers — rules | BR-01, BR-02, BR-03, BR-04, BR-05, BR-06, BR-09, BR-15, AC-TX-15 | each rule violated directly against the API → specific 422; foreign contactId → RECIPIENT_REQUIRED; no debit on any failure | `src/app/api/transfers/rules.int.test.ts` | High | TASK-17 | ⬜ |
 | TC-INT-09 | POST /api/transfers — idempotency | BR-07, FR-CONF-08, AC-CONF-04 | same key + payload → stored 201 replay; same key + other payload → 409; concurrent same key → one debit, other 202; not_processed re-processed on retry | `src/app/api/transfers/idempotency.int.test.ts` | High | TASK-17 | ⬜ |
@@ -347,13 +347,13 @@ Levels and IDs follow the [specs README](../README.md#24-ids). Tests reference t
 
 | TC | Title | Covers | Key cases → expected result | Location | Priority | Built in | Status |
 |---|---|---|---|---|---|---|---|
-| TC-E2E-01 | Login with phone | AC-AUTH-01, AC-AUTH-06, FR-AUTH-07 | phone → code step `•••• 5678` → demo code → Home; Back does not show Login | `tests/e2e/auth.spec.ts` | High | TASK-20 (written in TASK-11) | ⬜ |
-| TC-E2E-02 | Login with email | AC-AUTH-02 | email with spaces/uppercase → masked email → Home | `tests/e2e/auth.spec.ts` | Medium | TASK-20 (written in TASK-11) | ⬜ |
-| TC-E2E-03 | Wrong code, lock and new code | AC-AUTH-07, AC-AUTH-08, AC-AUTH-10 | two wrong codes with attempts left; third locks; new code after cooldown (shortened); old code rejected | `tests/e2e/auth.spec.ts` | High | TASK-20 (written in TASK-11) | ⬜ |
-| TC-E2E-04 | Expired code | AC-AUTH-09 | `otp_expired` forced on verify → expired message → request new code | `tests/e2e/auth.spec.ts` | Medium | TASK-20 (written in TASK-11) | ⬜ |
-| TC-E2E-05 | Deep link and authenticated redirect | AC-AUTH-13, AC-AUTH-14, UIR-AUTH-14, FR-AUTH-08 | fresh context opens /transfer/recipient → Login → back to it; logged-in user opening /login → Home without form | `tests/e2e/auth.spec.ts` | High | TASK-20 (written in TASK-11) | ⬜ |
-| TC-E2E-06 | Session persistence and logout | AC-AUTH-12, AC-AUTH-15, AC-HOME-12 | reload keeps session; logout → 'Cerraste sesión.'; Home redirects to Login; Back doesn't reveal balance | `tests/e2e/auth.spec.ts` | High | TASK-20 (written in TASK-11) | ⬜ |
-| TC-E2E-07 | Login service error | AC-AUTH-16 | seeded `falla.login` → error with reference and retry; identifier kept | `tests/e2e/auth.spec.ts` | Medium | TASK-20 (written in TASK-11) | ⬜ |
+| TC-E2E-01 | Login with phone | AC-AUTH-01, AC-AUTH-06, FR-AUTH-07 | phone → code step `•••• 5678` → demo code → Home; Back does not show Login | `tests/e2e/auth.spec.ts` | High | TASK-20 (written in TASK-11) | ✅ |
+| TC-E2E-02 | Login with email | AC-AUTH-02 | email with spaces/uppercase → masked email → Home | `tests/e2e/auth.spec.ts` | Medium | TASK-20 (written in TASK-11) | ✅ |
+| TC-E2E-03 | Wrong code, lock and new code | AC-AUTH-07, AC-AUTH-08, AC-AUTH-10 | two wrong codes with attempts left; third locks; new code after cooldown (shortened); old code rejected | `tests/e2e/auth.spec.ts` | High | TASK-20 (written in TASK-11) | ✅ |
+| TC-E2E-04 | Expired code | AC-AUTH-09 | `otp_expired` forced on verify → expired message → request new code | `tests/e2e/auth.spec.ts` | Medium | TASK-20 (written in TASK-11) | ✅ |
+| TC-E2E-05 | Deep link and authenticated redirect | AC-AUTH-13, AC-AUTH-14, UIR-AUTH-14, FR-AUTH-08 | fresh context opens /transfer/recipient → Login → back to it; logged-in user opening /login → Home without form | `tests/e2e/auth.spec.ts` | High | TASK-20 (written in TASK-11) | ✅ |
+| TC-E2E-06 | Session persistence and logout | AC-AUTH-12, AC-AUTH-15, AC-HOME-12 | reload keeps session; logout → 'Cerraste sesión.'; Home redirects to Login; Back doesn't reveal balance | `tests/e2e/auth.spec.ts` | High | TASK-20 (written in TASK-11) | ✅ |
+| TC-E2E-07 | Login service error | AC-AUTH-16 | seeded `falla.login` → error with reference and retry; identifier kept | `tests/e2e/auth.spec.ts` | Medium | TASK-20 (written in TASK-11) | ✅ |
 | TC-E2E-08 | Home — normal user | AC-HOME-01, AC-HOME-02, AC-HOME-03, AC-HOME-11 | greeting, balance, exactly 10 newest items, item content and badges | `tests/e2e/home.spec.ts` | High | TASK-20 | ⬜ |
 | TC-E2E-09 | Home — states and section retry | AC-HOME-05, AC-HOME-06, AC-HOME-10, FR-HOME-06 | empty user; zero-balance user; balance-error and activity-error users; retry reloads only that section | `tests/e2e/home.spec.ts` | High | TASK-20 | ⬜ |
 | TC-E2E-10 | Hide balance | AC-HOME-08, UIR-HOME-05 | toggle, reload: still hidden; summary and receipt balances masked | `tests/e2e/home.spec.ts` | Medium | TASK-20 | ⬜ |

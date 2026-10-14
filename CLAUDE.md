@@ -118,11 +118,12 @@ all green. E2E when the task touches flows (TASK-20 owns the suite).
 
 ## 9. Current state
 
-- Done: TASK-01 to TASK-11. `tests/e2e/auth.spec.ts` (TC-E2E-01…06) written early;
-  pending a run on the owner's machine.
-- **Next: TASK-12** (Home API: summary and activity services + `GET` endpoints, seeded
-  failures for Beto/Marta).
-- Then: TASK-13 Home screen → TASK-14/15/16
+- Done: TASK-01 to TASK-12. E2E auth suite (TC-E2E-01…07) green in all 4 projects.
+- **Next: TASK-13** (Home screen: balance and activity sections with Suspense, section
+  errors with retry via `/api/me/*`, hide balance, empty states).
+- Pending owner decision: demo-accounts hint on login step 1 and no demo code for
+  unknown identifiers (non-production only).
+- Then: TASK-14/15/16
   transfer → TASK-17/18/19 confirmation and receipt → TASK-20/21/22.
 
 ## 10. Known pitfalls

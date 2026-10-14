@@ -1,6 +1,7 @@
 import 'server-only';
 import type { Contact } from '@/core/contact';
 import { domainError } from '@/core/errors';
+import { Money } from '@/core/money';
 import { err, ok } from '@/core/result';
 import { identifierKey, type Identifier } from '@/core/identifier';
 import type { AttemptKey, ContactId, TransferId, UserId } from '@/core/ids';
@@ -44,7 +45,8 @@ export function createInMemoryRepositories(db: MockDb, latency: Latency): Reposi
     accounts: {
       async getBalance(userId) {
         await latency();
-        return db.balances.get(userId) ?? null;
+        if (db.behaviors.get(userId)?.summaryFails) return err(domainError('SERVICE_UNAVAILABLE'));
+        return ok(db.balances.get(userId) ?? Money.zero());
       },
       async setBalance(userId, balance) {
         db.balances.set(userId, balance);
@@ -53,7 +55,8 @@ export function createInMemoryRepositories(db: MockDb, latency: Latency): Reposi
     transactions: {
       async listRecent(userId, limit) {
         await latency();
-        return (db.transactions.get(userId) ?? []).slice(0, limit);
+        if (db.behaviors.get(userId)?.activityFails) return err(domainError('SERVICE_UNAVAILABLE'));
+        return ok((db.transactions.get(userId) ?? []).slice(0, limit));
       },
       async add(transaction) {
         const list = db.transactions.get(transaction.userId) ?? [];

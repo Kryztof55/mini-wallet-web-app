@@ -5,7 +5,7 @@
 | **ID** | TS-01 |
 | **Module** | AUTH |
 | **Status** | Approved |
-| **Version** | 1.3 |
+| **Version** | 1.4 |
 | **Author** | Claude (AI-assisted draft) |
 | **Reviewer** | Project owner |
 | **Last updated** | 2026-10-14 |
@@ -222,6 +222,7 @@ Unknown identifiers also receive `202` (OQ-14); no challenge can ever verify for
   - `x-mock-outcome: otp_expired` ages the stored challenge past its TTL, so it stays expired for later attempts.
   - A verified code is deleted (single use). Invalid `timeZone` falls back to `America/Mexico_City`.
   - `auth.code.rejected` / `auth.verify.rejected` are logged by the service (it is where the rule is evaluated), with `errorCode`.
+- **Hardening (TASK-12):** only the canonical base64url spelling of the signature is accepted (the last character has two unused bits, so several spellings decode to the same bytes); found through a flaky tamper test.
 - **Implementation notes (TASK-11):** after a successful verification the client does a full navigation (`location.replace`), not a router navigation: the client router cache would otherwise restore `/login` on Back without asking the server. `BfcacheGuard` reloads Login and private pages restored from the back/forward cache, so the proxy and `getSession()` always decide.
 - **Never logged:** code, session ID, full identifier (TS-05).
 
@@ -294,3 +295,4 @@ Per FS-01 §13. Technical notes: `autocomplete="username"` + `inputmode="email"`
 | 1.1 | 2026-10-14 | Claude (AI-assisted) | One-time code is random per challenge; the demo hint shows the current code outside production (owner decision, resolves conflict between fixed demo code and AC-AUTH-10) |
 | 1.2 | 2026-10-14 | Claude (AI-assisted) | TASK-09: module files, secure-by-default route classification, `x-return-to`, no-bounce rule for `/login?reason=…`, `withSession` |
 | 1.3 | 2026-10-14 | Claude (AI-assisted) | TASK-10: `OtpDelivery` port, decoy behavior, `otp_expired` persistence, single-use codes, log origins |
+| 1.4 | 2026-10-14 | Claude (AI-assisted) | Canonical signature encoding required |

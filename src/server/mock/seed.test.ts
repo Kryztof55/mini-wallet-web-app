@@ -22,7 +22,9 @@ describe('[TS-00 §9.1] seed data demonstrates every state', () => {
   });
 
   it('gives Ana more than 10 transactions, newest first, with pending and failed ones', async () => {
-    const list = await repos().transactions.listRecent(SEED_USER_IDS.ana, 100);
+    const result = await repos().transactions.listRecent(SEED_USER_IDS.ana, 100);
+    if (!result.ok) throw new Error('expected transactions');
+    const list = result.value;
     expect(list.length).toBe(25);
     expect([...list].sort((a, b) => b.occurredAt.localeCompare(a.occurredAt))).toEqual(list);
     expect(list.some((t) => t.status === 'pending')).toBe(true);

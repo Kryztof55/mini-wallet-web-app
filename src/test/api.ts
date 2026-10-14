@@ -1,3 +1,4 @@
+import type { UserId } from '@/core/ids';
 import { vi } from 'vitest';
 import { resetConfigCache } from '@/lib/config';
 import { resetMockDb } from '@/server/mock/db';
@@ -45,4 +46,18 @@ export function jsonPost(
 /** `session=<value>` from a Set-Cookie header, ready for a Cookie header. */
 export function cookieFrom(response: Response): string {
   return response.headers.get('set-cookie')?.split(';')[0] ?? '';
+}
+
+/** A real session for a seeded user, as a Cookie header value (route-handler tests). */
+export async function sessionCookieFor(userId: string): Promise<string> {
+  const { createSession } = await import('@/server/session/session');
+  const { setCookie } = await createSession(userId as UserId, 'America/Mexico_City');
+  return setCookie.split(';')[0] ?? '';
+}
+
+/** A same-origin GET like the browser client sends. */
+export function jsonGet(path: string, headers: Record<string, string> = {}): Request {
+  return new Request(`${TEST_ORIGIN}${path}`, {
+    headers: { 'x-request-id': crypto.randomUUID(), ...headers },
+  });
 }

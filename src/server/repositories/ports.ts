@@ -19,13 +19,18 @@ export interface UserRepository {
   findById(id: UserId): Promise<User | null>;
 }
 
+/** A data source that can be down (seeded failing users, TS-00 §9.1). */
+export type SourceError = DomainError<'SERVICE_UNAVAILABLE'>;
+
 export interface AccountRepository {
-  getBalance(userId: UserId): Promise<Money | null>;
+  /** A user without a stored balance has $0.00. */
+  getBalance(userId: UserId): Promise<Result<Money, SourceError>>;
   setBalance(userId: UserId, balance: Money): Promise<void>;
 }
 
 export interface TransactionRepository {
-  listRecent(userId: UserId, limit: number): Promise<readonly Transaction[]>;
+  /** Newest first. */
+  listRecent(userId: UserId, limit: number): Promise<Result<readonly Transaction[], SourceError>>;
   add(transaction: Transaction): Promise<void>;
 }
 

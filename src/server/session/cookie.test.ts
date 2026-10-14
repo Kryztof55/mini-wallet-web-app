@@ -38,8 +38,22 @@ describe('[TC-UNIT-15][ADR-004][BR-14] session cookie signing', () => {
   it('rejects a tampered signature', async () => {
     const id = newSessionId();
     const cookie = await signSessionId(id, SECRET);
-    const last = cookie.at(-1) === 'A' ? 'B' : 'A';
-    expect(await verifySessionCookie(`${cookie.slice(0, -1)}${last}`, SECRET)).toBeNull();
+    const at = id.length + 5;
+    const flipped = cookie[at] === 'A' ? 'B' : 'A';
+    expect(
+      await verifySessionCookie(`${cookie.slice(0, at)}${flipped}${cookie.slice(at + 1)}`, SECRET),
+    ).toBeNull();
+  });
+
+  it('rejects a non-canonical spelling of a valid signature', async () => {
+    // Flipping the unused low bits of the last character keeps the decoded bytes identical.
+    const ALPHABET = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-_';
+    for (let i = 0; i < 20; i += 1) {
+      const cookie = await signSessionId(newSessionId(), SECRET);
+      const last = ALPHABET.indexOf(cookie.at(-1) ?? 'A');
+      const sibling = ALPHABET[last ^ 1] ?? 'A';
+      expect(await verifySessionCookie(`${cookie.slice(0, -1)}${sibling}`, SECRET)).toBeNull();
+    }
   });
 
   it('rejects a cookie signed with another secret', async () => {
