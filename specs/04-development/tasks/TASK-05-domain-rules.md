@@ -31,13 +31,13 @@ Follow the referenced specs; if the implementation needs to deviate, update the 
 
 | Path | Change |
 |---|---|
-| `src/domain/*` | New |
+| `src/core/*` (originally `src/domain`) | New |
 | `src/lib/format/*` | New |
 
 ## 4. Acceptance criteria
 
 - [x] 100 % branch coverage on rule functions.
-- [x] No imports from React, Next or server modules in `src/domain`.
+- [x] No imports from React, Next or server modules in `src/core` (enforced by ESLint since the rename).
 - [x] Definition of Done in [specs README §5](../../README.md#5-quality-gates) met.
 
 ## 5. Required tests
@@ -75,9 +75,10 @@ Defined in the [test plan](../../05-testing/test-plan.md); a task is done when t
 
 | Date | Note |
 |---|---|
-| 2026-10-14 | `src/domain`: Result, Brand, error catalog, Money (integer minor units), amount input parsing/cleaning/formatting, Identifier (BR-10) + masking, OTP rules (BR-11…13), transfer rules (BR-01…03, 09, 15), contact name (BR-16), attempt transitions (BR-17), sanitizeReturnTo. `src/lib/format`: es-MX money, signed amounts, relative and full dates in the user time zone. |
+| 2026-10-14 | `src/domain` (now `src/core`): Result, Brand, error catalog, Money (integer minor units), amount input parsing/cleaning/formatting, Identifier (BR-10) + masking, OTP rules (BR-11…13), transfer rules (BR-01…03, 09, 15), contact name (BR-16), attempt transitions (BR-17), sanitizeReturnTo. `src/lib/format`: es-MX money, signed amounts, relative and full dates in the user time zone. |
 | 2026-10-14 | 140 unit tests (14 TCs) pass; all rule files at 100 % branches. Uncovered: defensive origin check in `sanitizeReturnTo` (kept on purpose) and `Intl` fallbacks. Lint, typecheck, Prettier ✅. |
 | 2026-10-14 | Characters counted as graphemes (`Intl.Segmenter`) so accents and emoji count as one (FS-03 EC-07). OTP challenge supports `code: null` decoys for unknown identifiers (OQ-14). |
+| 2026-10-14 | Folder renamed `src/domain` → `src/core` (owner decision, TS-00 1.5) with `git mv`; `@/core/*` imports; ESLint `no-restricted-imports` blocks outer layers, React/Next and I/O inside `src/core`. |
 
 ## 8. AI usage
 

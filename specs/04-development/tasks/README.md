@@ -9,9 +9,9 @@ File name: `TASK-NN-kebab-case-name.md`. Generated from the [implementation plan
 | [TASK-03](./TASK-03-themes-and-tokens.md) | Implement design tokens, themes and theme switching | M0 | Pending |
 | [TASK-04](./TASK-04-base-ui-components.md) | Build the base UI components | M0 | Pending |
 | [TASK-05](./TASK-05-domain-rules.md) | Implement the domain types and business rules | M0 | Done |
-| [TASK-06](./TASK-06-config-and-mocks.md) | Implement configuration and the mock layer | M0 | Pending |
-| [TASK-07](./TASK-07-observability.md) | Implement the observability foundation | M0 | Pending |
-| [TASK-08](./TASK-08-http-layers.md) | Build the server HTTP helpers and the browser HTTP client | M0 | Pending |
+| [TASK-06](./TASK-06-config-and-mocks.md) | Implement configuration and the mock layer | M0 | Done |
+| [TASK-07](./TASK-07-observability.md) | Implement the observability foundation | M0 | Done |
+| [TASK-08](./TASK-08-http-layers.md) | Build the server HTTP helpers and the browser HTTP client | M0 | Done |
 | [TASK-09](./TASK-09-session-and-security.md) | Implement session handling and request security | M1 | Pending |
 | [TASK-10](./TASK-10-auth-api.md) | Implement the auth API | M1 | Pending |
 | [TASK-11](./TASK-11-login-screens.md) | Build the login screens | M1 | Pending |

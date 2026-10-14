@@ -8,6 +8,7 @@ export const ERROR_CODES = [
   'CSRF_REJECTED',
   'NOT_FOUND',
   'IDEMPOTENCY_KEY_REUSED',
+  'PAYLOAD_TOO_LARGE',
   'UNSUPPORTED_MEDIA_TYPE',
   'INVALID_IDENTIFIER',
   'INVALID_CODE_FORMAT',
@@ -29,8 +30,11 @@ export const ERROR_CODES = [
 
 export type ErrorCode = (typeof ERROR_CODES)[number];
 
-/** Codes produced only by the browser HTTP client (no server response). */
-export type ClientOnlyErrorCode = 'NETWORK_ERROR' | 'TIMEOUT';
+/**
+ * Codes produced only by the browser HTTP client (no server response).
+ * `ABORTED` means the caller cancelled (e.g. unmount); it is never shown to users.
+ */
+export type ClientOnlyErrorCode = 'NETWORK_ERROR' | 'TIMEOUT' | 'ABORTED';
 
 export type ErrorDetails = Readonly<Record<string, string | number | boolean | null>>;
 

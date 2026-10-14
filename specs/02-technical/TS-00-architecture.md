@@ -5,7 +5,7 @@
 | **ID** | TS-00 |
 | **Module** | CORE |
 | **Status** | Approved |
-| **Version** | 1.3 |
+| **Version** | 1.5 |
 | **Author** | Claude (AI-assisted draft) |
 | **Reviewer** | Project owner |
 | **Last updated** | 2026-10-14 |
@@ -36,10 +36,10 @@ Define the structure every module follows so that business rules live once, ever
 | HTTP client (browser) | Typed calls, timeout/cancellation, correlation + idempotency headers, response → `Result` | `src/lib/http` | Domain |
 | Interface (controllers) | Route Handlers: session, input parsing, call service, map errors to HTTP | `src/app/api/**/route.ts` | Server helpers, services |
 | Application (services) | Use cases; enforce BR-*; idempotency; logging | `src/server/services` (server-only) | Domain, repository ports |
-| Domain | Types, value objects, pure rules and validators | `src/domain` | Nothing |
+| Core (domain) | Types, value objects, pure rules and validators | `src/core` | Nothing |
 | Infrastructure (repositories, mocks) | In-memory data, simulated latency/outcomes, session/OTP stores | `src/server/repositories`, `src/server/mock` (server-only) | Domain (ports) |
 
-**Dependency rule:** arrows point inward (UI → logic → client → controllers → services → domain). The domain imports nothing. Services depend on repository **ports** (interfaces), not on the in-memory implementations. Server-only modules cannot be imported from client code (build fails).
+**Dependency rule:** arrows point inward (UI → logic → client → controllers → services → domain). The core imports nothing from the project, the framework or I/O; an ESLint `no-restricted-imports` rule on `src/core/**` enforces it. Services depend on repository **ports** (interfaces), not on the in-memory implementations. Server-only modules cannot be imported from client code (build fails).
 
 ### 3.2 Diagram
 
@@ -80,10 +80,10 @@ src/
     api/transfers/route.ts
     api/transfers/attempts/[key]/route.ts
     api/client-logs/route.ts
-    api/__mock/reset/route.ts     # non-production only
+    api/mock/reset/route.ts     # non-production only
   proxy.ts                        # route gate: requestId, CSRF, session (Next.js 16 name for middleware; ADR-001)
   instrumentation.ts              # logger init (ADR-006)
-  domain/                         # money, identifier, otp, contact, transfer, errors, result
+  core/                           # domain: money, identifier, otp, contact, transfer, errors, result
   server/                         # server-only
     services/                     # auth, account, contacts, transfers, preferences
     repositories/                 # ports + in-memory implementations
@@ -164,6 +164,7 @@ Rules are exposed as pure functions returning `Result` (e.g. `validateAmount(amo
 | `CSRF_REJECTED` | 403 | Origin / fetch-metadata / custom header check failed | No | All mutations |
 | `NOT_FOUND` | 404 | Resource absent **or not owned** (never reveal which) | No | Receipts, attempts |
 | `IDEMPOTENCY_KEY_REUSED` | 409 | Same key, different payload | No | Transfers |
+| `PAYLOAD_TOO_LARGE` | 413 | Body or item over its size limit | No | Client logs |
 | `UNSUPPORTED_MEDIA_TYPE` | 415 | Mutation not `application/json` | No | All mutations |
 | `INVALID_IDENTIFIER` | 422 | BR-10 / BR-05 | No | Auth, contacts, transfers |
 | `INVALID_CODE_FORMAT` | 422 | BR-11 | No | Auth |
@@ -183,12 +184,13 @@ Rules are exposed as pure functions returning `Result` (e.g. `validateAmount(amo
 | `SERVICE_UNAVAILABLE` | 503 | Simulated dependency outage (login, home data) | Yes | Auth, home, contacts |
 | `NETWORK_ERROR` | — | Client: request failed to reach the server | Yes | HTTP client |
 | `TIMEOUT` | — | Client: no response within the configured timeout | Yes (same key / status check) | HTTP client |
+| `ABORTED` | — | Client: the caller cancelled (unmount, navigation); never shown to users | — | HTTP client |
 
 ### 5.3 Error flow
 
 - Domain/services return `Result` with a `DomainError`; they do not throw for expected failures.
 - Controllers map `DomainError.code` → HTTP status via one table (`toResponse`); unexpected exceptions become `INTERNAL_ERROR` and are logged with the stack.
-- The HTTP client maps every response (or failure) to `Result<T, ClientError>` where `ClientError` adds `NETWORK_ERROR` and `TIMEOUT`.
+- The HTTP client maps every response (or failure) to `Result<T, ClientError>` where `ClientError` adds `NETWORK_ERROR`, `TIMEOUT` and `ABORTED`; every result carries the `requestId`. A `401` triggers one global handler (full navigation to `/login?reason=session_ended&returnTo=…`). A 2xx that fails the response schema is `INTERNAL_ERROR`.
 - UI chooses copy by `code` (i18n keys), never displays `message` from the server.
 - Error containment: `error.tsx` in `(private)` and per Home section boundaries; `global-error.tsx` as last resort with the reference code.
 
@@ -229,7 +231,7 @@ Typed, validated at startup; defaults from ASM-15…ASM-17.
 | `APP_ENV` | `development` | `development` \| `test` \| `production`. E2E runs a production build with `APP_ENV=test` |
 | `SESSION_SECRET` | — (required) | HMAC key (ADR-004) |
 | `APP_ORIGIN` | `http://localhost:3000` | Used by CSRF origin check |
-| `MOCK_CONTROLS_ENABLED` | `true` in development/test; **always off when `APP_ENV=production`** | Enables `x-mock-outcome`, `/api/__mock/reset`, demo code hint |
+| `MOCK_CONTROLS_ENABLED` | `true` in development/test; **always off when `APP_ENV=production`** | Enables `x-mock-outcome`, `/api/mock/reset`, demo code hint |
 | `OTP_TTL_SEC` / `OTP_MAX_ATTEMPTS` / `OTP_RESEND_COOLDOWN_SEC` | `300` / `3` / `30` | BR-12, BR-13 |
 | `TRANSFER_SLOW_MS` / `TRANSFER_TIMEOUT_MS` | `3000` / `10000` | ASM-17 |
 | `TRANSFER_STATUS_CHECK_DELAYS_MS` | `2000,4000,8000` | ASM-17 |
@@ -275,7 +277,7 @@ All other well-formed identifiers proceed to the code step and fail verification
 - Home/contacts: failures driven by seeded users; `x-mock-outcome: service_unavailable` also supported (`GET /api/me/*`, `GET/POST /api/contacts`).
 - Auth: `x-mock-outcome: service_unavailable` on `POST /api/auth/code` and `POST /api/auth/verify`; `x-mock-outcome: otp_expired` on `POST /api/auth/verify` makes the current challenge expire (tests AC-AUTH-09 without waiting 5 minutes).
 - Latency on every repository call (`MOCK_LATENCY_MS`) to make loading states visible.
-- `POST /api/__mock/reset` restores seed data (tests).
+- `POST /api/mock/reset` restores seed data (tests).
 
 ## 10. Security, session and permissions
 
@@ -332,7 +334,7 @@ Every text/background pair is contrast-checked in both themes (A11Y-10).
 
 - TypeScript `strict`, `noUncheckedIndexedAccess`, `noImplicitOverride`; ESLint forbids `any`, non-null assertions and unused exports.
 - Exhaustive `switch` over unions with a `never` check.
-- No business logic in components; no HTTP concerns in services; no I/O in domain.
+- No business logic in components; no HTTP concerns in services; no I/O or framework imports in `src/core` (domain).
 - Files and folders in kebab-case; components in PascalCase; one component per file.
 - Every UIR implemented in a component or hook has a test referencing its ID in the test name.
 - Commits follow the plan's Conventional Commits rule with task IDs.
@@ -377,3 +379,5 @@ Per ADR-005 and the test plan. TS-00-specific: unit tests for `Money`, `parseIde
 | 1.1 | 2026-10-14 | Claude (AI-assisted) | ADR-009 accepted; mock outcomes for auth and contacts listed (needed by the test plan) |
 | 1.2 | 2026-10-14 | Claude (AI-assisted) | TASK-01 findings: `src/proxy.ts` (Next.js 16.4 deprecates `middleware`); `APP_ENV` decouples mock controls from `NODE_ENV` so E2E can run a production build |
 | 1.3 | 2026-10-14 | Claude (AI-assisted) | One-time code is random per challenge; the demo hint shows the current code outside production (owner decision, resolves conflict between fixed demo code and AC-AUTH-10) |
+| 1.4 | 2026-10-14 | Claude (AI-assisted) | TASK-08: `PAYLOAD_TOO_LARGE` (413) added to the catalog (client-logs already answered 413 without a code); client-only `ABORTED`; HTTP client contract details in §5.3 |
+| 1.5 | 2026-10-14 | Project owner | Domain layer folder renamed `src/domain` → `src/core` (owner preference); dependency rule now enforced by ESLint |

@@ -5,7 +5,7 @@
 | **ID** | TS-05 |
 | **Module** | OBS |
 | **Status** | Approved |
-| **Version** | 1.0 |
+| **Version** | 1.2 |
 | **Author** | Claude (AI-assisted draft) |
 | **Reviewer** | Project owner |
 | **Last updated** | 2026-10-14 |
@@ -85,7 +85,7 @@ See TS-00 §3.4 (pino, `AsyncLocalStorage`, Next.js instrumentation).
 | **Limits** | ≤ 10 events per request; ≤ 2 KB per event; 20 requests/min per session or IP |
 
 **Request:** `{ events: ClientEvent[] }` — only catalog events with `client.` or listed client-origin names (`tx.confirm.timeout`, `tx.confirm.unresolved`, `client.render.error`, `client.http.network_error`).
-**Success:** `204`. **Errors:** `400` · `403` · `413` (too large) · `429 RATE_LIMITED`.
+**Success:** `204`. **Errors:** `400 VALIDATION_ERROR` · `403` · `413 PAYLOAD_TOO_LARGE` · `415 UNSUPPORTED_MEDIA_TYPE` · `429 RATE_LIMITED` (with `Retry-After`).
 
 ## 6. Rules: where they are enforced
 
@@ -115,7 +115,7 @@ Logging never throws into business code: logger failures are swallowed after a b
 
 **Never logged:** session ID / cookie values, one-time codes, full identifiers, names of counterparties, `authorization` headers, request bodies as a whole.
 **Logged masked:** identifiers (`•••• 5678`, `a•••@correo.com`) only when needed.
-**Redaction paths:** `req.headers.cookie`, `req.headers.authorization`, `*.identifier`, `*.code`, `*.name`, `*.destination`, `*.sessionId`.
+**Redaction paths:** `cookie`, `authorization`, `identifier`, `code`, `otpCode`, `name`, `destination`, `sessionId`, at the top level and one level deep, plus `req.headers.cookie` / `req.headers.authorization`.
 
 ## 11. Observability — standard
 
@@ -128,7 +128,7 @@ Logging never throws into business code: logger failures are swallowed after a b
 | `requestId` | Yes (server) | From context |
 | `userId` | When authenticated | Internal ID |
 | `route`, `method`, `status`, `durationMs` | Request summary lines | Emitted once per API request by the controller wrapper |
-| `code` | On failures | `ErrorCode` |
+| `errorCode` | On failures | `ErrorCode`. Named `errorCode` because `code` is a redacted path (one-time codes) |
 | module fields | Per event | See catalog |
 
 ### 11.2 Levels
@@ -206,3 +206,5 @@ Logging never throws into business code: logger failures are swallowed after a b
 |---|---|---|---|
 | 0.1 | 2026-10-14 | Claude (AI-assisted) | First draft |
 | 1.0 | 2026-10-14 | Project owner | Approved |
+| 1.1 | 2026-10-14 | Claude (AI-assisted) | TASK-07: error code field renamed `errorCode` (conflicted with the redacted `code` path); redaction paths listed as implemented |
+| 1.2 | 2026-10-14 | Claude (AI-assisted) | TASK-08: client-logs error codes made explicit (`PAYLOAD_TOO_LARGE`, `UNSUPPORTED_MEDIA_TYPE`); the request summary line is written by the `withApi` controller wrapper |

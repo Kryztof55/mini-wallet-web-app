@@ -30,7 +30,7 @@
 
 ## 3. Environments and test data
 
-- **Mock data:** seeded users from TS-00 §9.1; every test starts with `POST /api/__mock/reset` (E2E fixture) or a fresh in-memory repository (integration).
+- **Mock data:** seeded users from TS-00 §9.1; every test starts with `POST /api/mock/reset` (E2E fixture) or a fresh in-memory repository (integration).
 - **Determinism:** outcomes forced with `x-mock-outcome` (TS-00 §9.2–9.3), only when mock controls are enabled. In E2E, the header is injected per request with route interception so it affects only the intended call. No test depends on randomness; TC-UNIT-18 checks the distribution separately.
 - **Time:** unit and presentation-logic tests use fake timers. E2E runs with shortened configuration: `TRANSFER_SLOW_MS=300`, `TRANSFER_TIMEOUT_MS=1000`, `TRANSFER_STATUS_CHECK_DELAYS_MS=200,400,800`, `OTP_RESEND_COOLDOWN_SEC=2`; code expiry forced with `otp_expired`.
 - **Isolation:** one browser context per E2E test; integration tests build their own repositories; no shared mutable state between tests.
@@ -248,7 +248,7 @@ Generated from the test cases in §6; every BR, UIR and AC is covered.
 | FR-TX-04 | — | TC-INT-07 | INT | ⬜ |
 | NFR-04 | — | TC-UNIT-19, TC-INT-13, TC-E2E-23 | E2E, INT, UNIT | ⬜ |
 | NFR-05 | — | TC-UNIT-20 | UNIT | ⬜ |
-| NFR-06 | — | TC-UNIT-23 | UNIT | ⬜ |
+| NFR-06 | — | TC-UNIT-23 | UNIT | ✅ |
 | NFR-10 | — | TC-UNIT-21, TC-INT-12 | INT, UNIT | ⬜ |
 | NFR-13 | — | TC-UNIT-17 | UNIT | ⬜ |
 | NFR-14 | — | TC-E2E-21 | E2E | ⬜ |
@@ -264,29 +264,29 @@ Levels and IDs follow the [specs README](../README.md#24-ids). Tests reference t
 
 | TC | Title | Covers | Key cases → expected result | Location | Priority | Built in | Status |
 |---|---|---|---|---|---|---|---|
-| TC-UNIT-01 | Money value object | BR-04 | fromMinor/parse reject non-integers and negatives; add/subtract exact; isZero; never floats | `src/domain/money.test.ts` | High | TASK-05 | ✅ |
-| TC-UNIT-02 | Amount input parsing and formatting | BR-04, UIR-TX-10 | `12.345`→`12.34` rejected 3rd decimal; letters rejected; `007`→`7.00`; `25.`→`25.00`; `$1,250.50`→`1250.50` (FS-03 EC-01…04) | `src/domain/money-input.test.ts` | High | TASK-05 | ✅ |
-| TC-UNIT-03 | validateAmount | BR-01, BR-02 | empty, 0, −1 → INVALID_AMOUNT; 0.01 ok; = balance ok; > balance → INSUFFICIENT_FUNDS; balance 0 (FS-03 EC-01, 02, 05) | `src/domain/transfer-rules.test.ts` | High | TASK-05 | ✅ |
-| TC-UNIT-04 | validateRecipient | BR-03, BR-09 | null → RECIPIENT_REQUIRED; own identifier (any format) → SELF_TRANSFER (FS-03 EC-12) | `src/domain/transfer-rules.test.ts` | High | TASK-05 | ✅ |
-| TC-UNIT-05 | parseIdentifier | BR-10, BR-05, UIR-AUTH-01 | `+52 (55) 1234-5678`, `52 5512345678`, spaces → `5512345678`; `+1…` invalid; email trimmed/lowercased; >254 chars invalid; `@` → email (FS-01 EC-01…04) | `src/domain/identifier.test.ts` | High | TASK-05 | ✅ |
-| TC-UNIT-06 | maskIdentifier | UIR-AUTH-06, UIR-TX-03 | phone → `•••• 5678`; email → `a•••@correo.com` | `src/domain/identifier.test.ts` | Medium | TASK-05 | ✅ |
-| TC-UNIT-07 | parseOtpCode | BR-11, UIR-AUTH-07 | `123 456`/`123-456` → `123456`; letters, 5 or 7 digits → INVALID_CODE_FORMAT (FS-01 EC-05) | `src/domain/otp.test.ts` | High | TASK-05 | ✅ |
-| TC-UNIT-08 | evaluateOtpAttempt | BR-12 | valid; incorrect → attemptsLeft 2,1; third failure → locked; > TTL → expired; older code after reissue → incorrect | `src/domain/otp.test.ts` | High | TASK-05 | ✅ |
-| TC-UNIT-09 | canIssueCode | BR-13 | within 30 s → throttled with retryAfterSec; after 30 s ok; locked challenge → ok immediately | `src/domain/otp.test.ts` | High | TASK-05 | ✅ |
-| TC-UNIT-10 | validateConcept | BR-15 | optional; 40 chars ok; 41 rejected; spaces-only → empty; control chars/line breaks rejected (FS-03 EC-11) | `src/domain/transfer-rules.test.ts` | Medium | TASK-05 | ✅ |
-| TC-UNIT-11 | validateContactName | BR-16 | empty/whitespace → required; 50 chars ok; 51 rejected; accents/emoji counted as characters (FS-03 EC-07) | `src/domain/contact.test.ts` | Medium | TASK-05 | ✅ |
-| TC-UNIT-12 | Attempt status transitions | BR-17 | in_progress → completed/failed/not_processed; final states immutable; not_processed may be re-processed | `src/domain/transfer-attempt.test.ts` | High | TASK-05 | ✅ |
+| TC-UNIT-01 | Money value object | BR-04 | fromMinor/parse reject non-integers and negatives; add/subtract exact; isZero; never floats | `src/core/money.test.ts` | High | TASK-05 | ✅ |
+| TC-UNIT-02 | Amount input parsing and formatting | BR-04, UIR-TX-10 | `12.345`→`12.34` rejected 3rd decimal; letters rejected; `007`→`7.00`; `25.`→`25.00`; `$1,250.50`→`1250.50` (FS-03 EC-01…04) | `src/core/money-input.test.ts` | High | TASK-05 | ✅ |
+| TC-UNIT-03 | validateAmount | BR-01, BR-02 | empty, 0, −1 → INVALID_AMOUNT; 0.01 ok; = balance ok; > balance → INSUFFICIENT_FUNDS; balance 0 (FS-03 EC-01, 02, 05) | `src/core/transfer-rules.test.ts` | High | TASK-05 | ✅ |
+| TC-UNIT-04 | validateRecipient | BR-03, BR-09 | null → RECIPIENT_REQUIRED; own identifier (any format) → SELF_TRANSFER (FS-03 EC-12) | `src/core/transfer-rules.test.ts` | High | TASK-05 | ✅ |
+| TC-UNIT-05 | parseIdentifier | BR-10, BR-05, UIR-AUTH-01 | `+52 (55) 1234-5678`, `52 5512345678`, spaces → `5512345678`; `+1…` invalid; email trimmed/lowercased; >254 chars invalid; `@` → email (FS-01 EC-01…04) | `src/core/identifier.test.ts` | High | TASK-05 | ✅ |
+| TC-UNIT-06 | maskIdentifier | UIR-AUTH-06, UIR-TX-03 | phone → `•••• 5678`; email → `a•••@correo.com` | `src/core/identifier.test.ts` | Medium | TASK-05 | ✅ |
+| TC-UNIT-07 | parseOtpCode | BR-11, UIR-AUTH-07 | `123 456`/`123-456` → `123456`; letters, 5 or 7 digits → INVALID_CODE_FORMAT (FS-01 EC-05) | `src/core/otp.test.ts` | High | TASK-05 | ✅ |
+| TC-UNIT-08 | evaluateOtpAttempt | BR-12 | valid; incorrect → attemptsLeft 2,1; third failure → locked; > TTL → expired; older code after reissue → incorrect | `src/core/otp.test.ts` | High | TASK-05 | ✅ |
+| TC-UNIT-09 | canIssueCode | BR-13 | within 30 s → throttled with retryAfterSec; after 30 s ok; locked challenge → ok immediately | `src/core/otp.test.ts` | High | TASK-05 | ✅ |
+| TC-UNIT-10 | validateConcept | BR-15 | optional; 40 chars ok; 41 rejected; spaces-only → empty; control chars/line breaks rejected (FS-03 EC-11) | `src/core/transfer-rules.test.ts` | Medium | TASK-05 | ✅ |
+| TC-UNIT-11 | validateContactName | BR-16 | empty/whitespace → required; 50 chars ok; 51 rejected; accents/emoji counted as characters (FS-03 EC-07) | `src/core/contact.test.ts` | Medium | TASK-05 | ✅ |
+| TC-UNIT-12 | Attempt status transitions | BR-17 | in_progress → completed/failed/not_processed; final states immutable; not_processed may be re-processed | `src/core/transfer-attempt.test.ts` | High | TASK-05 | ✅ |
 | TC-UNIT-13 | Transfer draft reducer and fingerprint | BR-07, UIR-TX-19, UIR-TX-21 | every action; summaryReached keeps key if fingerprint unchanged, new key if recipient/amount/concept changed; reset clears; seedRecipient | `src/features/transfer/state/draft-reducer.test.ts` | High | TASK-15 | ⬜ |
-| TC-UNIT-14 | sanitizeReturnTo | ADR-001, UIR-AUTH-14 | `/transfer/amount` ok; `//evil.com`, `https://…`, `javascript:` and `/login` rejected → `/` (FS-01 EC-14) | `src/domain/return-to.test.ts` | High | TASK-05 | ✅ |
+| TC-UNIT-14 | sanitizeReturnTo | ADR-001, UIR-AUTH-14 | `/transfer/amount` ok; `//evil.com`, `https://…`, `javascript:` and `/login` rejected → `/` (FS-01 EC-14) | `src/core/return-to.test.ts` | High | TASK-05 | ✅ |
 | TC-UNIT-15 | Session cookie signing | ADR-004, BR-14 | sign/verify round trip; tampered id or signature → invalid; constant-time compare | `src/server/session/cookie.test.ts` | High | TASK-09 | ⬜ |
-| TC-UNIT-16 | Error code → HTTP mapping | TS-00 §5 | every ErrorCode maps to its status; unknown exception → 500 INTERNAL_ERROR with requestId | `src/server/http/to-response.test.ts` | High | TASK-08 | ⬜ |
+| TC-UNIT-16 | Error code → HTTP mapping | TS-00 §5 | every ErrorCode maps to its status; unknown exception → 500 INTERNAL_ERROR with requestId | `src/server/http/http.test.ts` | High | TASK-08 | ✅ |
 | TC-UNIT-17 | Formatters | UIR-HOME-07, UIR-HOME-08, NFR-13 | es-MX currency; signed amount `−$250.00`/`+$1,000.00`; Hoy/Ayer/date in session time zone (FS-02 EC-09) | `src/lib/format/*.test.ts` | Medium | TASK-05 | ✅ |
-| TC-UNIT-18 | Outcome simulator | ASM-16, FR-CONF-11 | weights respected over N rolls; forced outcomes honored with mock controls; ignored and logged without them; timeout sub-cases | `src/server/mock/outcome-simulator.test.ts` | High | TASK-06 | ⬜ |
-| TC-UNIT-19 | Request ID and reference code | NFR-04, UIR-CONF-11 | valid incoming UUID reused; invalid replaced; reference `3F9A-12C4` from first 8 hex chars | `src/server/logging/request-id.test.ts` | Medium | TASK-07 | ⬜ |
-| TC-UNIT-20 | Log redaction | NFR-05 | cookie, authorization, identifier, code, name, destination, sessionId removed | `src/server/logging/redaction.test.ts` | High | TASK-07 | ⬜ |
-| TC-UNIT-21 | Configuration | NFR-10 | defaults from ASM-15…17; missing SESSION_SECRET fails; production forces MOCK_CONTROLS_ENABLED=false | `src/lib/config.test.ts` | High | TASK-06 | ⬜ |
-| TC-UNIT-22 | Contact repository uniqueness | BR-08 | same normalized identifier → existing contact returned, no duplicate (FS-03 EC-08) | `src/server/repositories/contact.repository.test.ts` | High | TASK-06 | ⬜ |
-| TC-UNIT-23 | Browser HTTP client | NFR-06, ADR-009 | timeout aborts and returns TIMEOUT; fetch TypeError → NETWORK_ERROR; schema mismatch → INTERNAL_ERROR; sends x-request-id, idempotency-key, JSON content type; 401 triggers session-ended redirect | `src/lib/http/client.test.ts` | High | TASK-08 | ⬜ |
+| TC-UNIT-18 | Outcome simulator | ASM-16, FR-CONF-11 | weights respected over N rolls; forced outcomes honored with mock controls; ignored and logged without them; timeout sub-cases | `src/server/mock/outcome-simulator.test.ts` | High | TASK-06 | ✅ |
+| TC-UNIT-19 | Request ID and reference code | NFR-04, UIR-CONF-11 | valid incoming UUID reused; invalid replaced; reference `3F9A-12C4` from first 8 hex chars | `src/server/logging/request-id.test.ts` | Medium | TASK-07 | ✅ |
+| TC-UNIT-20 | Log redaction | NFR-05 | cookie, authorization, identifier, code, name, destination, sessionId removed | `src/server/logging/redaction.test.ts` | High | TASK-07 | ✅ |
+| TC-UNIT-21 | Configuration | NFR-10 | defaults from ASM-15…17; missing SESSION_SECRET fails; production forces MOCK_CONTROLS_ENABLED=false | `src/lib/config.test.ts` | High | TASK-06 | ✅ |
+| TC-UNIT-22 | Contact repository uniqueness | BR-08 | same normalized identifier → existing contact returned, no duplicate (FS-03 EC-08) | `src/server/repositories/contact.repository.test.ts` | High | TASK-06 | ✅ |
+| TC-UNIT-23 | Browser HTTP client | NFR-06, ADR-009 | timeout aborts and returns TIMEOUT; fetch TypeError → NETWORK_ERROR; schema mismatch → INTERNAL_ERROR; sends x-request-id, idempotency-key, JSON content type; 401 triggers session-ended redirect | `src/lib/http/client.test.ts` | High | TASK-08 | ✅ |
 
 ### 6.2 Presentation logic
 
@@ -337,8 +337,8 @@ Levels and IDs follow the [specs README](../README.md#24-ids). Tests reference t
 | TC-INT-09 | POST /api/transfers — idempotency | BR-07, FR-CONF-08, AC-CONF-04 | same key + payload → stored 201 replay; same key + other payload → 409; concurrent same key → one debit, other 202; not_processed re-processed on retry | `src/app/api/transfers/idempotency.int.test.ts` | High | TASK-17 | ⬜ |
 | TC-INT-10 | Forced outcomes and attempt status | FR-CONF-01, FR-CONF-11, FR-CONF-13, BR-17, UIR-CONF-17, AC-CONF-15, AC-CONF-16 | each outcome and timeout sub-case via x-mock-outcome; status endpoint reports in_progress/completed/failed/not_processed; unknown key → not_processed | `src/app/api/transfers/outcomes.int.test.ts` | High | TASK-17 | ⬜ |
 | TC-INT-11 | Receipt ownership | AC-CONF-17 | getReceipt for another user's transfer → NOT_FOUND, indistinguishable from missing | `src/server/services/transfers.service.int.test.ts` | High | TASK-17 | ⬜ |
-| TC-INT-12 | Mock controls disabled | NFR-10 | with MOCK_CONTROLS_ENABLED=false: x-mock-outcome ignored (logged), /api/__mock/reset → 404, demo hint flag false | `src/server/mock/mock-controls.int.test.ts` | High | TASK-06 | ⬜ |
-| TC-INT-13 | Correlation and client logs | NFR-04 | every API response has x-request-id; error bodies include requestId; client-logs: >10 events → 400, >2 KB → 413, rate limit → 429 | `src/server/logging/observability.int.test.ts` | Medium | TASK-07 | ⬜ |
+| TC-INT-12 | Mock controls disabled | NFR-10 | with MOCK_CONTROLS_ENABLED=false: x-mock-outcome ignored (logged), /api/mock/reset → 404, demo hint flag false | `src/server/mock/mock-controls.int.test.ts` | High | TASK-06 | ⬜ |
+| TC-INT-13 | Correlation and client logs | NFR-04 | every API response has x-request-id; error bodies include requestId; client-logs: >10 events → 400, >2 KB → 413, rate limit → 429 | `src/app/api/client-logs/route.int.test.ts` | Medium | TASK-07 | ⬜ |
 | TC-INT-14 | Theme Server Action | ADR-007, UX-22 | sets `theme` cookie (light/dark/system) and rejects other values | `src/server/actions/set-theme.int.test.ts` | Medium | TASK-03 | ⬜ |
 
 ### 6.5 E2E

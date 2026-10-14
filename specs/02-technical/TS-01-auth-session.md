@@ -71,7 +71,7 @@ src/proxy.ts
 src/server/session/           # sign/verify, getSession, cookie options
 src/server/services/auth.service.ts
 src/server/repositories/{user,otp-challenge,session}.repository.ts
-src/domain/{identifier,otp,return-to}.ts
+src/core/{identifier,otp,return-to}.ts
 ```
 
 ### 3.4 Technology bindings

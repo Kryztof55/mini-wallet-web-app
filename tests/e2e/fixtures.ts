@@ -14,7 +14,7 @@ export const test = base.extend<Fixtures>({
   resetMocks: [
     async ({ request, baseURL }, use) => {
       // Available from TASK-06; until then the endpoint answers 404 and is ignored.
-      await request.post('/api/__mock/reset', {
+      await request.post('/api/mock/reset', {
         headers: {
           origin: baseURL ?? '',
           'content-type': 'application/json',

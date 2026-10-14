@@ -61,7 +61,7 @@ src/features/transfer/                           # steps, draft reducer, hooks
 src/components/domain/{MoneyInput,ContactItem,RecipientContext}.tsx
 src/app/api/contacts/route.ts
 src/server/services/contacts.service.ts
-src/domain/{money,transfer-rules,contact}.ts
+src/core/{money,transfer-rules,contact}.ts
 ```
 
 ### 3.4 Technology bindings

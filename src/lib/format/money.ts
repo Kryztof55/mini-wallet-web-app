@@ -1,4 +1,4 @@
-import type { Money } from '@/domain/money';
+import type { Money } from '@/core/money';
 
 const currencyFormatters = new Map<string, Intl.NumberFormat>();
 

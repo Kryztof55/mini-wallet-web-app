@@ -25,6 +25,39 @@ export default defineConfig([
     },
   },
   {
+    // Dependency direction (TS-00 §3): `src/core` is pure TypeScript and imports nothing
+    // from the project's outer layers, the framework or I/O. Everyone may import `core`.
+    files: ['src/core/**/*.ts'],
+    ignores: ['src/core/**/*.test.ts'],
+    rules: {
+      'no-restricted-imports': [
+        'error',
+        {
+          patterns: [
+            {
+              group: ['@/*', '!@/core', '!@/core/**'],
+              message:
+                'src/core must not depend on outer layers (app, features, components, server, lib).',
+            },
+            {
+              group: [
+                'react',
+                'react-dom',
+                'react/*',
+                'next',
+                'next/*',
+                'server-only',
+                'node:*',
+                'pino',
+              ],
+              message: 'src/core is framework- and I/O-free.',
+            },
+          ],
+        },
+      ],
+    },
+  },
+  {
     // Playwright fixtures receive a `use` callback that is not React's `use()` hook.
     files: ['tests/e2e/**/*.ts'],
     rules: { 'react-hooks/rules-of-hooks': 'off' },

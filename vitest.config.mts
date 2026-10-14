@@ -4,16 +4,21 @@ import { defineConfig } from 'vitest/config';
 
 /**
  * Test levels (ADR-005, test plan §2):
- * - "node": unit (domain, lib), integration (route handlers, services, middleware)
+ * - "node": unit (core, lib), integration (route handlers, services, middleware)
  * - "dom":  presentation logic (hooks) and component tests, in jsdom
  */
 export default defineConfig({
   plugins: [react()],
   resolve: {
-    alias: { '@': fileURLToPath(new URL('./src', import.meta.url)) },
+    alias: {
+      '@': fileURLToPath(new URL('./src', import.meta.url)),
+      'server-only': fileURLToPath(new URL('./src/test/empty-module.ts', import.meta.url)),
+    },
   },
   test: {
     restoreMocks: true,
+    // Server logs are asserted through injected loggers; keep the console quiet.
+    env: { LOG_LEVEL: 'silent' },
     coverage: {
       provider: 'v8',
       include: ['src/**/*.{ts,tsx}'],
@@ -27,7 +32,7 @@ export default defineConfig({
           name: 'node',
           environment: 'node',
           include: [
-            'src/domain/**/*.test.ts',
+            'src/core/**/*.test.ts',
             'src/lib/**/*.test.ts',
             'src/server/**/*.test.ts',
             'src/app/**/*.test.ts',

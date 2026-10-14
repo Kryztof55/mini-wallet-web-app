@@ -158,7 +158,7 @@ Links are relative (`[FS-03](../01-functional/FS-03-new-transaction.md)`) so the
 | FS-04 | Confirmation and receipt | 2 | Approved | 1.1 |
 | TS-00 | Overall architecture and technology bindings | 3 | Approved | 1.3 |
 | TS-01…04 | Auth & session, Home, Transactions, Confirmation | 3 | Approved | 1.0 |
-| TS-05 | Observability and traceability (server and client logging) | 3 | Approved | 1.0 |
+| TS-05 | Observability and traceability (server and client logging) | 3 | Approved | 1.1 |
 | ADR-001…008 | Routing, rendering, state, session & CSRF, testing, logging, theming, UI components | 3 | Accepted | — |
 | ADR-009 | Runtime validation at boundaries (Zod) | 3 | Accepted | — |
 | — | Implementation plan (`03-plan/implementation-plan.md`) | 4 | Draft | 0.1 |
