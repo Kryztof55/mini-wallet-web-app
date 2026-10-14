@@ -5,7 +5,7 @@
 | **ID** | TS-00 |
 | **Module** | CORE |
 | **Status** | Approved |
-| **Version** | 1.7 |
+| **Version** | 1.8 |
 | **Author** | Claude (AI-assisted draft) |
 | **Reviewer** | Project owner |
 | **Last updated** | 2026-10-14 |
@@ -283,6 +283,8 @@ All other well-formed identifiers proceed to the code step and fail verification
 
 See TS-01 and ADR-004. Cross-cutting rules: private responses `no-store`; no sensitive data in client storage; all inputs validated server-side with schemas and domain rules; security headers (`Content-Security-Policy` without inline scripts except framework needs, `X-Content-Type-Options: nosniff`, `Referrer-Policy: same-origin`, `frame-ancestors 'none'`).
 
+**Implementation (TASK-09):** the proxy sets a per-request nonce CSP on pages (`script-src 'self' 'nonce-…' 'strict-dynamic'`; `'unsafe-eval'` only in development; Next.js applies the nonce to its own scripts, verified 12/12 on `/login`). `style-src` allows `'unsafe-inline'` because UI primitives set `style` attributes and inject scroll-lock styles; scripts never do. Static headers in `next.config.ts`: `X-Content-Type-Options`, `Referrer-Policy`, `X-Frame-Options: DENY`, `Permissions-Policy`, `Cross-Origin-Opener-Policy`. HSTS is left to the hosting layer.
+
 ## 11. Observability
 
 Standard and event catalog in TS-05 (ADR-006). Every module TS lists its events.
@@ -385,3 +387,4 @@ Per ADR-005 and the test plan. TS-00-specific: unit tests for `Money`, `parseIde
 | 1.5 | 2026-10-14 | Project owner | Domain layer folder renamed `src/domain` → `src/core` (owner preference); dependency rule now enforced by ESLint |
 | 1.6 | 2026-10-14 | Project owner | Wallet-specific components folder renamed `src/components/domain` → `src/components/wallet` (avoids confusion with `src/core`) |
 | 1.7 | 2026-10-14 | Claude (AI-assisted) | TASK-03: token implementation with `light-dark()` + `color-scheme`; secondary action tokens; contrast verified by TC-UNIT-24 |
+| 1.8 | 2026-10-14 | Claude (AI-assisted) | TASK-09: CSP with nonce from the proxy and static security headers |

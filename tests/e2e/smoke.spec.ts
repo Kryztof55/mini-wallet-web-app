@@ -5,9 +5,11 @@ test.describe('[SMOKE] E2E tooling', () => {
     page,
     expectNoA11yViolations,
   }) => {
+    // Without a session, private Home redirects to login (TASK-09).
     await page.goto('/');
 
-    await expect(page.getByRole('heading', { level: 1, name: 'Mini Wallet' })).toBeVisible();
+    await expect(page).toHaveURL(/\/login$/);
+    await expect(page.getByRole('heading', { level: 1, name: 'Inicia sesión' })).toBeVisible();
     await expect(page.locator('html')).toHaveAttribute('lang', 'es-MX');
     await expectNoA11yViolations();
   });

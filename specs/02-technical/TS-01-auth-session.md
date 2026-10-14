@@ -5,7 +5,7 @@
 | **ID** | TS-01 |
 | **Module** | AUTH |
 | **Status** | Approved |
-| **Version** | 1.1 |
+| **Version** | 1.2 |
 | **Author** | Claude (AI-assisted draft) |
 | **Reviewer** | Project owner |
 | **Last updated** | 2026-10-14 |
@@ -68,7 +68,11 @@ src/features/auth/            # components, useLoginFlow, useCountdown
 src/app/(public)/login/page.tsx
 src/app/api/auth/{code,verify,logout}/route.ts
 src/proxy.ts
-src/server/session/           # sign/verify, getSession, cookie options
+src/server/session/{cookie,session}.ts   # sign/verify, cookie serialize/read; getSession, createSession, destroySession
+src/server/security/{csrf,routes,csp}.ts # CSRF layers 2–3, route classification, CSP with nonce
+src/server/http/with-session.ts          # controller authority wrapper
+src/lib/routes.ts                        # loginUrl(), LOGIN_PATH, RETURN_TO_HEADER
+src/app/(private)/layout.tsx             # page authority
 src/server/services/auth.service.ts
 src/server/repositories/{user,otp-challenge,session}.repository.ts
 src/core/{identifier,otp,return-to}.ts
@@ -206,6 +210,12 @@ Unknown identifiers also receive `202` (OQ-14); no challenge can ever verify for
 - **Cookie:** `session`, `HttpOnly; Secure` (relaxed only on `http://localhost`); `SameSite=Lax; Path=/`; no `Max-Age` beyond the store's lifetime.
 - **Brute force:** max 3 attempts per code (BR-12); resend throttled (BR-13); responses identical for unknown identifiers (OQ-14).
 - **Open redirect:** `sanitizeReturnTo` (unit-tested).
+- **Implementation notes (TASK-09):**
+  - Route classification is secure by default: every page except `/login` and every `/api/*` except `health`, `auth/{code,verify,logout}`, `client-logs` and `mock/*` is private.
+  - The proxy forwards `x-return-to` (path + query) so a private layout that finds no session can redirect back with `returnTo`.
+  - `/login` with a valid cookie bounces to `returnTo` (or Home) **unless** `reason` is present: the server already found that session invalid (e.g. store lost on restart), so bouncing would loop. The stale cookie is harmless and is replaced on the next login; clearing it from a GET would make logout-by-link possible.
+  - Controllers use `withApi(route, withSession(handler))`; `withSession` answers `401` without running the handler.
+  - The proxy logs `security.csrf.rejected` (with `reason`) and `auth.session.rejected` (with `layer`: proxy, layout or controller).
 - **Never logged:** code, session ID, full identifier (TS-05).
 
 ## 11. Observability
@@ -275,3 +285,4 @@ Per FS-01 §13. Technical notes: `autocomplete="username"` + `inputmode="email"`
 | 0.1 | 2026-10-14 | Claude (AI-assisted) | First draft |
 | 1.0 | 2026-10-14 | Project owner | Approved |
 | 1.1 | 2026-10-14 | Claude (AI-assisted) | One-time code is random per challenge; the demo hint shows the current code outside production (owner decision, resolves conflict between fixed demo code and AC-AUTH-10) |
+| 1.2 | 2026-10-14 | Claude (AI-assisted) | TASK-09: module files, secure-by-default route classification, `x-return-to`, no-bounce rule for `/login?reason=…`, `withSession` |

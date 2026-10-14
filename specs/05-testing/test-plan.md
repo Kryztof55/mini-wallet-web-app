@@ -65,7 +65,7 @@ Generated from the test cases in §6; every BR, UIR and AC is covered.
 | BR-11 | One-time code format | TC-UNIT-07, TC-INT-04 | INT, UNIT | ⬜ |
 | BR-12 | Code validity | TC-UNIT-08, TC-INT-04 | INT, UNIT | ⬜ |
 | BR-13 | Code throttling | TC-UNIT-09, TC-INT-03 | INT, UNIT | ⬜ |
-| BR-14 | Session required | TC-UNIT-15, TC-INT-02 | INT, UNIT | ⬜ |
+| BR-14 | Session required | TC-UNIT-15, TC-INT-02 | INT, UNIT | ✅ |
 | BR-15 | Concept format | TC-UNIT-10, TC-INT-08 | INT, UNIT | ⬜ |
 | BR-16 | Contact name | TC-UNIT-11, TC-INT-07 | INT, UNIT | ⬜ |
 | BR-17 | Single final outcome | TC-UNIT-12, TC-INT-10 | INT, UNIT | ⬜ |
@@ -83,7 +83,7 @@ Generated from the test cases in §6; every BR, UIR and AC is covered.
 | UIR-AUTH-12 | New code issued | TC-PL-01, TC-COMP-04 | COMP, PL | ⬜ |
 | UIR-AUTH-13 | Change identifier | TC-PL-01, TC-COMP-04 | COMP, PL | ⬜ |
 | UIR-AUTH-14 | Post-login navigation | TC-UNIT-14, TC-E2E-05 | E2E, UNIT | ⬜ |
-| UIR-AUTH-15 | No flash for authenticated users | TC-INT-02 | INT | ⬜ |
+| UIR-AUTH-15 | No flash for authenticated users | TC-INT-02 | INT | ✅ |
 | UIR-AUTH-16 | Demo code hint | TC-COMP-04 | COMP | ⬜ |
 | UIR-AUTH-17 | Session-ended notice | TC-COMP-05 | COMP | ⬜ |
 | UIR-AUTH-18 | Theme control | TC-COMP-02 | COMP | ✅ |
@@ -156,7 +156,7 @@ Generated from the test cases in §6; every BR, UIR and AC is covered.
 | AC-AUTH-16 | Simulated service error is recoverable | TC-INT-03, TC-E2E-07 | E2E, INT | ⬜ |
 | AC-AUTH-17 | Paste a formatted code | TC-COMP-04 | COMP | ⬜ |
 | AC-AUTH-18 | Demo hint only outside production | TC-COMP-04 | COMP | ⬜ |
-| AC-AUTH-19 | Server rejects private requests without session | TC-INT-02 | INT | ⬜ |
+| AC-AUTH-19 | Server rejects private requests without session | TC-INT-02 | INT | ✅ |
 | AC-HOME-01 | Name and balance | TC-E2E-08 | E2E | ⬜ |
 | AC-HOME-02 | Recent activity bounded to 10 | TC-E2E-08 | E2E | ⬜ |
 | AC-HOME-03 | Transaction item content | TC-COMP-07, TC-E2E-08 | COMP, E2E | ⬜ |
@@ -253,7 +253,7 @@ Generated from the test cases in §6; every BR, UIR and AC is covered.
 | NFR-13 | — | TC-UNIT-17 | UNIT | ✅ |
 | NFR-14 | — | TC-E2E-21 | E2E | ⬜ |
 | NFR-16 | — | TC-UNIT-24 | UNIT | ✅ |
-| NFR-17 | — | TC-INT-01 | INT | ⬜ |
+| NFR-17 | — | TC-INT-01 | INT | ✅ |
 | UX-01 | — | TC-MAN-03 | MAN | ⬜ |
 | UX-22 | — | TC-PL-09, TC-COMP-02, TC-INT-14, TC-E2E-22 | COMP, E2E, INT, PL | ⬜ |
 
@@ -279,7 +279,7 @@ Levels and IDs follow the [specs README](../README.md#24-ids). Tests reference t
 | TC-UNIT-12 | Attempt status transitions | BR-17 | in_progress → completed/failed/not_processed; final states immutable; not_processed may be re-processed | `src/core/transfer-attempt.test.ts` | High | TASK-05 | ✅ |
 | TC-UNIT-13 | Transfer draft reducer and fingerprint | BR-07, UIR-TX-19, UIR-TX-21 | every action; summaryReached keeps key if fingerprint unchanged, new key if recipient/amount/concept changed; reset clears; seedRecipient | `src/features/transfer/state/draft-reducer.test.ts` | High | TASK-15 | ⬜ |
 | TC-UNIT-14 | sanitizeReturnTo | ADR-001, UIR-AUTH-14 | `/transfer/amount` ok; `//evil.com`, `https://…`, `javascript:` and `/login` rejected → `/` (FS-01 EC-14) | `src/core/return-to.test.ts` | High | TASK-05 | ✅ |
-| TC-UNIT-15 | Session cookie signing | ADR-004, BR-14 | sign/verify round trip; tampered id or signature → invalid; constant-time compare | `src/server/session/cookie.test.ts` | High | TASK-09 | ⬜ |
+| TC-UNIT-15 | Session cookie signing | ADR-004, BR-14 | sign/verify round trip; tampered id or signature → invalid; constant-time compare | `src/server/session/cookie.test.ts` | High | TASK-09 | ✅ |
 | TC-UNIT-16 | Error code → HTTP mapping | TS-00 §5 | every ErrorCode maps to its status; unknown exception → 500 INTERNAL_ERROR with requestId | `src/server/http/http.test.ts` | High | TASK-08 | ✅ |
 | TC-UNIT-17 | Formatters | UIR-HOME-07, UIR-HOME-08, NFR-13 | es-MX currency; signed amount `−$250.00`/`+$1,000.00`; Hoy/Ayer/date in session time zone (FS-02 EC-09) | `src/lib/format/*.test.ts` | Medium | TASK-05 | ✅ |
 | TC-UNIT-18 | Outcome simulator | ASM-16, FR-CONF-11 | weights respected over N rolls; forced outcomes honored with mock controls; ignored and logged without them; timeout sub-cases | `src/server/mock/outcome-simulator.test.ts` | High | TASK-06 | ✅ |
@@ -328,8 +328,8 @@ Levels and IDs follow the [specs README](../README.md#24-ids). Tests reference t
 
 | TC | Title | Covers | Key cases → expected result | Location | Priority | Built in | Status |
 |---|---|---|---|---|---|---|---|
-| TC-INT-01 | CSRF protection matrix | NFR-17, ADR-004 | state-changing request with foreign Origin → 403; no Origin + Sec-Fetch-Site cross-site → 403; form-encoded → 415; missing x-request-id → 403; no CORS headers; GET never mutates | `src/proxy.int.test.ts` | High | TASK-09 | ⬜ |
-| TC-INT-02 | Session gate and authority | BR-14, UIR-AUTH-15, AC-AUTH-19, AC-AUTH-14 | private page without cookie → /login?returnTo; with cookie on /login → /; private API without session → 401; tampered cookie → 401; handler called directly (middleware bypassed) still → 401 | `src/server/session/session.int.test.ts` | High | TASK-09 | ⬜ |
+| TC-INT-01 | CSRF protection matrix | NFR-17, ADR-004 | state-changing request with foreign Origin → 403; no Origin + Sec-Fetch-Site cross-site → 403; form-encoded → 415; missing x-request-id → 403; no CORS headers; GET never mutates | `src/proxy.int.test.ts` | High | TASK-09 | ✅ |
+| TC-INT-02 | Session gate and authority | BR-14, UIR-AUTH-15, AC-AUTH-19, AC-AUTH-14 | private page without cookie → /login?returnTo; with cookie on /login → /; private API without session → 401; tampered cookie → 401; handler called directly (middleware bypassed) still → 401 | `src/server/session/session.int.test.ts` | High | TASK-09 | ✅ |
 | TC-INT-03 | POST /api/auth/code | FR-AUTH-01, FR-AUTH-02, FR-AUTH-12, BR-10, BR-13, AC-AUTH-16 | 202 with masked destination; 422 INVALID_IDENTIFIER; 429 CODE_THROTTLED with retryAfterSec; unknown identifier → same 202; seeded `falla.login` → 503; no identifier/code in logs | `src/app/api/auth/code/route.int.test.ts` | High | TASK-10 | ⬜ |
 | TC-INT-04 | POST /api/auth/verify | FR-AUTH-06, FR-AUTH-13, FR-AUTH-14, BR-11, BR-12, AC-AUTH-09 | 200 + cookie attributes; INVALID_CODE_FORMAT consumes no attempt; CODE_INCORRECT attemptsLeft; CODE_LOCKED; `otp_expired` forced → CODE_EXPIRED; redirectTo sanitized; timeZone stored | `src/app/api/auth/verify/route.int.test.ts` | High | TASK-10 | ⬜ |
 | TC-INT-05 | POST /api/auth/logout | FR-AUTH-10 | 204; session deleted; replaying old cookie → 401; idempotent without session | `src/app/api/auth/logout/route.int.test.ts` | High | TASK-10 | ⬜ |
@@ -340,7 +340,7 @@ Levels and IDs follow the [specs README](../README.md#24-ids). Tests reference t
 | TC-INT-10 | Forced outcomes and attempt status | FR-CONF-01, FR-CONF-11, FR-CONF-13, BR-17, UIR-CONF-17, AC-CONF-15, AC-CONF-16 | each outcome and timeout sub-case via x-mock-outcome; status endpoint reports in_progress/completed/failed/not_processed; unknown key → not_processed | `src/app/api/transfers/outcomes.int.test.ts` | High | TASK-17 | ⬜ |
 | TC-INT-11 | Receipt ownership | AC-CONF-17 | getReceipt for another user's transfer → NOT_FOUND, indistinguishable from missing | `src/server/services/transfers.service.int.test.ts` | High | TASK-17 | ⬜ |
 | TC-INT-12 | Mock controls disabled | NFR-10 | with MOCK_CONTROLS_ENABLED=false: x-mock-outcome ignored (logged), /api/mock/reset → 404, demo hint flag false | `src/server/mock/mock-controls.int.test.ts` | High | TASK-06 | ⬜ |
-| TC-INT-13 | Correlation and client logs | NFR-04 | every API response has x-request-id; error bodies include requestId; client-logs: >10 events → 400, >2 KB → 413, rate limit → 429 | `src/app/api/client-logs/route.int.test.ts` | Medium | TASK-07 | ⬜ |
+| TC-INT-13 | Correlation and client logs | NFR-04 | every API response has x-request-id; error bodies include requestId; client-logs: >10 events → 400, >2 KB → 413, rate limit → 429 | `src/app/api/client-logs/route.int.test.ts`, `src/proxy.int.test.ts`, `src/server/http/http.test.ts` | Medium | TASK-07, TASK-09 | ✅ |
 | TC-INT-14 | Theme Server Action | ADR-007, UX-22 | sets `theme` cookie (light/dark/system) and rejects other values | `src/server/actions/set-theme.int.test.ts` | Medium | TASK-03 | ✅ |
 
 ### 6.5 E2E

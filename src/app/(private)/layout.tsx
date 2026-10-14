@@ -1,0 +1,21 @@
+import { headers } from 'next/headers';
+import { redirect } from 'next/navigation';
+import type { ReactNode } from 'react';
+import { sanitizeReturnTo } from '@/core/return-to';
+import { loginUrl, RETURN_TO_HEADER } from '@/lib/routes';
+import { logEvent } from '@/server/logging/logger';
+import { getSession } from '@/server/session/session';
+
+/**
+ * Authority for every private view (BR-14, ADR-001): checks the signature AND the session
+ * record, so it holds even if the proxy is skipped. Failure → login, then back here.
+ */
+export default async function PrivateLayout({ children }: { readonly children: ReactNode }) {
+  const session = await getSession();
+  if (!session) {
+    logEvent('info', 'auth.session.rejected', { layer: 'layout' });
+    const returnTo = sanitizeReturnTo((await headers()).get(RETURN_TO_HEADER));
+    redirect(loginUrl({ returnTo, reason: 'session_ended' }));
+  }
+  return children;
+}

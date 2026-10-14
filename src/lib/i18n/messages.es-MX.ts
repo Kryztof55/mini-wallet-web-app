@@ -11,6 +11,7 @@ export const messages = {
   'common.step': 'Paso {n} de {total} — {name}',
   'common.notification': 'Notificación',
   'common.notifications_region': 'Notificaciones ({hotkey})',
+  'auth.title': 'Inicia sesión',
   'theme.label': 'Tema',
   'theme.system': 'Sistema',
   'theme.light': 'Claro',

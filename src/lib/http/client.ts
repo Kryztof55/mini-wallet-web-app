@@ -2,7 +2,9 @@ import type { z } from 'zod';
 import type { ClientOnlyErrorCode, ErrorCode, ErrorDetails } from '@/core/errors';
 import { isErrorCode } from '@/core/errors';
 import { err, ok, type Result } from '@/core/result';
+import { sanitizeReturnTo } from '@/core/return-to';
 import { newRequestId, REQUEST_ID_HEADER } from '@/lib/observability/request-id';
+import { loginUrl } from '@/lib/routes';
 
 /**
  * Browser HTTP client (TS-00 §5.3). Every call resolves to a `Result`: it never throws.
@@ -153,9 +155,8 @@ function redirectToLogin(): void {
   if (typeof window === 'undefined' || redirecting) return;
   redirecting = true;
   const { pathname, search } = window.location;
-  const returnTo = encodeURIComponent(`${pathname}${search}`);
+  const returnTo = sanitizeReturnTo(`${pathname}${search}`);
   // A full navigation on purpose: it drops every in-memory client state (transfer draft,
   // caches) that belonged to the ended session. The router would keep it alive.
-  // eslint-disable-next-line @next/next/no-location-assign-relative-destination
-  window.location.assign(`/login?reason=session_ended&returnTo=${returnTo}`);
+  window.location.assign(loginUrl({ returnTo, reason: 'session_ended' }));
 }
