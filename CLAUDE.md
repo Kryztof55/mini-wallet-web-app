@@ -149,3 +149,5 @@ all green. E2E when the task touches flows (TASK-20 owns the suite).
   (`@next/swc-linux-*`, `lightningcss-linux-*`, `@tailwindcss/oxide-linux-*`,
   `@rolldown/binding-linux-*`, `@unrs/resolver-binding-linux-*`) must be installed with
   `--no-save` after every `npm install`. Not needed on the Mac itself.
+- E2E: logout redirects with `location.replace`; wait for `/login?reason=logged_out`
+  before the next `page.goto`, or WebKit reports the goto as interrupted (home.spec `logout`).

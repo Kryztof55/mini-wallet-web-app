@@ -12,6 +12,12 @@ async function loginAs(page: Page, identifier: string) {
   await expect(page).toHaveURL('/');
 }
 
+/** Logout redirects with `location.replace`; wait for it so the next `goto` is not interrupted. */
+async function logout(page: Page) {
+  await page.getByRole('button', { name: 'Cerrar sesión' }).click();
+  await expect(page).toHaveURL('/login?reason=logged_out');
+}
+
 /**
  * Assertions target the visible app inside <main>. When streamed Suspense content arrives
  * after hydration has started, React renders the section on the client and Next's streamed
@@ -42,12 +48,12 @@ test.describe('[FS-02] Home', () => {
     await expect(
       main(page).getByRole('heading', { name: 'Aún no tienes movimientos' }),
     ).toBeVisible();
-    await page.getByRole('button', { name: 'Cerrar sesión' }).click();
+    await logout(page);
 
     await loginAs(page, 'cero@demo.mx');
     await expect(main(page).getByText('No tienes saldo disponible')).toBeVisible();
     await expect(page.getByRole('link', { name: 'Enviar dinero' })).toBeVisible();
-    await page.getByRole('button', { name: 'Cerrar sesión' }).click();
+    await logout(page);
 
     await loginAs(page, 'falla.movs@demo.mx');
     await expect(
@@ -55,7 +61,7 @@ test.describe('[FS-02] Home', () => {
     ).toBeVisible();
     await expect(main(page).getByText('$2,000.00')).toBeVisible();
     await expect(main(page).getByText(/Referencia: [0-9A-F]{4}-[0-9A-F]{4}/)).toBeVisible();
-    await page.getByRole('button', { name: 'Cerrar sesión' }).click();
+    await logout(page);
 
     // Beto's balance always fails: the retry calls only the summary endpoint and stays in its section.
     await loginAs(page, 'falla.saldo@demo.mx');
