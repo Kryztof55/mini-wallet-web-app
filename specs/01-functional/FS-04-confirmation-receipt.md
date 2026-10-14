@@ -5,7 +5,7 @@
 | **ID** | FS-04 |
 | **Module** | CONF |
 | **Status** | Approved |
-| **Version** | 1.1 |
+| **Version** | 1.2 |
 | **Author** | Claude (AI-assisted draft) |
 | **Reviewer** | Project owner |
 | **Last updated** | 2026-10-13 |
@@ -352,6 +352,9 @@ Then I see "No encontramos este comprobante." and no data from that transfer
 | `conf.receipt.folio` | "Folio" | Receipt label |
 | `conf.receipt.copy` | "Copiar folio" | Action |
 | `conf.receipt.copied` | "Folio copiado" | Toast |
+| `common.close` | "Cerrar" | Toast dismiss button |
+| `common.notification` | "Notificación" | Prefix read before a toast by screen readers |
+| `common.notifications_region` | "Notificaciones ({hotkey})" | Toast region label (F8 jumps to it) |
 | `conf.receipt.balance` | "Saldo disponible" | Receipt label |
 | `conf.receipt.home` | "Ir al inicio" | Primary action |
 | `conf.receipt.again` | "Enviar otra vez" | Secondary action |
@@ -423,3 +426,4 @@ Applies: A11Y-01, 02, 03, 04, 08, 09, 10, 11, 12, 13, 16, 17, 18, 20, 22, 25, 26
 | 0.1 | 2026-10-13 | Claude (AI-assisted) | First draft |
 | 1.0 | 2026-10-13 | Project owner | Approved |
 | 1.1 | 2026-10-14 | Claude (AI-assisted) | Traceability now points to the written TS (no behavior change) |
+| 1.2 | 2026-10-14 | Claude (AI-assisted) | TASK-04: toast copy keys (`common.close`, `common.notification`, `common.notifications_region`) |

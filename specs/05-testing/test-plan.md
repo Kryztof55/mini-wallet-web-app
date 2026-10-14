@@ -206,9 +206,9 @@ Generated from the test cases in §6; every BR, UIR and AC is covered.
 | A11Y-02 | — | TC-E2E-21 | E2E | ⬜ |
 | A11Y-03 | — | TC-COMP-01, TC-MAN-01 | COMP, MAN | ⬜ |
 | A11Y-04 | — | TC-E2E-21, TC-MAN-01 | E2E, MAN | ⬜ |
-| A11Y-05 | — | TC-COMP-01 | COMP | ⬜ |
+| A11Y-05 | — | TC-COMP-01 | COMP | ✅ |
 | A11Y-06 | — | TC-E2E-21 | E2E | ⬜ |
-| A11Y-07 | — | TC-COMP-01 | COMP | ⬜ |
+| A11Y-07 | — | TC-COMP-01 | COMP | ✅ |
 | A11Y-08 | — | TC-COMP-01, TC-MAN-02 | COMP, MAN | ⬜ |
 | A11Y-10 | — | TC-UNIT-24, TC-E2E-21, TC-MAN-04 | E2E, MAN, UNIT | ⬜ |
 | A11Y-11 | — | TC-E2E-21 | E2E | ⬜ |
@@ -217,8 +217,8 @@ Generated from the test cases in §6; every BR, UIR and AC is covered.
 | A11Y-14 | — | TC-MAN-02 | MAN | ⬜ |
 | A11Y-16 | — | TC-MAN-02 | MAN | ⬜ |
 | A11Y-17 | — | TC-MAN-02 | MAN | ⬜ |
-| A11Y-18 | — | TC-COMP-01 | COMP | ⬜ |
-| A11Y-19 | — | TC-COMP-01 | COMP | ⬜ |
+| A11Y-18 | — | TC-COMP-01 | COMP | ✅ |
+| A11Y-19 | — | TC-COMP-01 | COMP | ✅ |
 | A11Y-20 | — | TC-MAN-04 | MAN | ⬜ |
 | A11Y-21 | — | TC-E2E-21 | E2E | ⬜ |
 | A11Y-22 | — | TC-MAN-04 | MAN | ⬜ |
@@ -247,10 +247,10 @@ Generated from the test cases in §6; every BR, UIR and AC is covered.
 | FR-TX-02 | — | TC-INT-07 | INT | ⬜ |
 | FR-TX-04 | — | TC-INT-07 | INT | ⬜ |
 | NFR-04 | — | TC-UNIT-19, TC-INT-13, TC-E2E-23 | E2E, INT, UNIT | ⬜ |
-| NFR-05 | — | TC-UNIT-20 | UNIT | ⬜ |
+| NFR-05 | — | TC-UNIT-20 | UNIT | ✅ |
 | NFR-06 | — | TC-UNIT-23 | UNIT | ✅ |
 | NFR-10 | — | TC-UNIT-21, TC-INT-12 | INT, UNIT | ⬜ |
-| NFR-13 | — | TC-UNIT-17 | UNIT | ⬜ |
+| NFR-13 | — | TC-UNIT-17 | UNIT | ✅ |
 | NFR-14 | — | TC-E2E-21 | E2E | ⬜ |
 | NFR-16 | — | TC-UNIT-24 | UNIT | ✅ |
 | NFR-17 | — | TC-INT-01 | INT | ⬜ |
@@ -308,7 +308,7 @@ Levels and IDs follow the [specs README](../README.md#24-ids). Tests reference t
 
 | TC | Title | Covers | Key cases → expected result | Location | Priority | Built in | Status |
 |---|---|---|---|---|---|---|---|
-| TC-COMP-01 | Base components accessibility contracts | A11Y-03, A11Y-05, A11Y-07, A11Y-08, A11Y-13, A11Y-18, A11Y-19, A11Y-24, UIR-AUTH-03, UIR-TX-13 | Button busy ≠ disabled-for-invalid; TextField label/hint/error/invalid; Dialog focus trap + Escape + return focus; Toast polite; Skeleton hidden; ReferenceCode; axe clean | `src/components/ui/*.test.tsx` | High | TASK-04 | ⬜ |
+| TC-COMP-01 | Base components accessibility contracts | A11Y-03, A11Y-05, A11Y-07, A11Y-08, A11Y-13, A11Y-18, A11Y-19, A11Y-24, UIR-AUTH-03, UIR-TX-13 | Button busy ≠ disabled-for-invalid; TextField label/hint/error/invalid; Dialog focus trap + Escape + return focus; Toast polite; Skeleton hidden; ReferenceCode; axe clean | `src/components/ui/*.test.tsx` | High | TASK-04 | ✅ |
 | TC-COMP-02 | ThemeSwitcher | A11Y-26, UIR-AUTH-18, UX-22 | accessible name and current value; keyboard operable; focus stays after change | `src/features/theme/theme-switcher.test.tsx` | High | TASK-03 | ✅ |
 | TC-COMP-03 | IdentifierStep | UIR-AUTH-01, UIR-AUTH-02, UIR-AUTH-03, AC-AUTH-03, AC-AUTH-04, AC-AUTH-05 | error on blur not while typing; clears live; Continue enabled when empty → required error + focus; busy blocks second submit | `src/features/auth/identifier-step.test.tsx` | High | TASK-11 | ⬜ |
 | TC-COMP-04 | CodeStep and OneTimeCodeField | UIR-AUTH-05, UIR-AUTH-06, UIR-AUTH-07, UIR-AUTH-08, UIR-AUTH-09, UIR-AUTH-10, UIR-AUTH-11, UIR-AUTH-12, UIR-AUTH-13, UIR-AUTH-16, AC-AUTH-07, AC-AUTH-08, AC-AUTH-10, AC-AUTH-11, AC-AUTH-17, AC-AUTH-18 | focus + instructions with masked destination; paste normalized; no auto-submit; attempts-left message with selected content; locked state; cooldown text announced once at zero; demo hint only with flag | `src/features/auth/code-step.test.tsx` | High | TASK-11 | ⬜ |

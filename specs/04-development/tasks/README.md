@@ -7,7 +7,7 @@ File name: `TASK-NN-kebab-case-name.md`. Generated from the [implementation plan
 | [TASK-01](./TASK-01-scaffold-project.md) | Scaffold the project and tooling | M0 | Done |
 | [TASK-02](./TASK-02-setup-test-tooling.md) | Set up the test tooling | M0 | In review |
 | [TASK-03](./TASK-03-themes-and-tokens.md) | Implement design tokens, themes and theme switching | M0 | Done |
-| [TASK-04](./TASK-04-base-ui-components.md) | Build the base UI components | M0 | Pending |
+| [TASK-04](./TASK-04-base-ui-components.md) | Build the base UI components | M0 | Done |
 | [TASK-05](./TASK-05-domain-rules.md) | Implement the domain types and business rules | M0 | Done |
 | [TASK-06](./TASK-06-config-and-mocks.md) | Implement configuration and the mock layer | M0 | Done |
 | [TASK-07](./TASK-07-observability.md) | Implement the observability foundation | M0 | Done |

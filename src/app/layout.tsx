@@ -1,6 +1,8 @@
 import type { Metadata, Viewport } from 'next';
 import { cookies } from 'next/headers';
 import type { ReactNode } from 'react';
+import { LiveAnnouncerProvider } from '@/components/ui/live-announcer';
+import { ToastProvider } from '@/components/ui/toast';
 import { ThemeProvider } from '@/features/theme/theme-provider';
 import { t } from '@/lib/i18n/t';
 import { resolveThemePreference, THEME_COOKIE } from '@/lib/theme';
@@ -31,7 +33,11 @@ export default async function RootLayout({ children }: Readonly<{ children: Reac
         <a href="#main" className="skip-link">
           {t('common.skip_to_content')}
         </a>
-        <ThemeProvider initialTheme={theme}>{children}</ThemeProvider>
+        <ThemeProvider initialTheme={theme}>
+          <LiveAnnouncerProvider>
+            <ToastProvider>{children}</ToastProvider>
+          </LiveAnnouncerProvider>
+        </ThemeProvider>
       </body>
     </html>
   );

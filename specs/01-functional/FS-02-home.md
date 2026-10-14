@@ -5,7 +5,7 @@
 | **ID** | FS-02 |
 | **Module** | HOME |
 | **Status** | Approved |
-| **Version** | 1.1 |
+| **Version** | 1.2 |
 | **Author** | Claude (AI-assisted draft) |
 | **Reviewer** | Project owner |
 | **Last updated** | 2026-10-13 |
@@ -301,6 +301,7 @@ Then I am on Login with the notice "Cerraste sesión."
 | `date.yesterday` | "Ayer, {time}" | Relative date |
 | `common.retry` | "Intentar de nuevo" | Retry action |
 | `common.reference` | "Referencia: {code}" | Under errors |
+| `common.loading` | "Cargando…" | Text alternative of a loading region (skeletons are hidden) |
 | `auth.logout` | "Cerrar sesión" | Header action |
 
 ## 13. Accessibility and responsive behavior
@@ -348,3 +349,4 @@ None blocking. OQ-07 (reflect new transaction) and OQ-11 (hide balance) are appl
 | 0.1 | 2026-10-13 | Claude (AI-assisted) | First draft |
 | 1.0 | 2026-10-13 | Project owner | Approved |
 | 1.1 | 2026-10-14 | Claude (AI-assisted) | Traceability now points to the written TS (no behavior change) |
+| 1.2 | 2026-10-14 | Claude (AI-assisted) | TASK-04: `common.loading` for loading regions |

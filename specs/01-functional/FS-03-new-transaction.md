@@ -5,7 +5,7 @@
 | **ID** | FS-03 |
 | **Module** | TX |
 | **Status** | Approved |
-| **Version** | 1.1 |
+| **Version** | 1.2 |
 | **Author** | Claude (AI-assisted draft) |
 | **Reviewer** | Project owner |
 | **Last updated** | 2026-10-13 |
@@ -357,7 +357,7 @@ And I am on the amount step with that contact as recipient
 | Key | Text | Context |
 |---|---|---|
 | `tx.title` | "Enviar dinero" | View title |
-| `tx.step` | "Paso {n} de 3 — {name}" | Step indicator |
+| `common.step` | "Paso {n} de {total} — {name}" | Step indicator (shared component; `total` is 3 here) |
 | `tx.recipient.title` | "¿A quién le envías?" | Step 1 heading |
 | `tx.recipient.favorites` | "Favoritos" | List heading |
 | `tx.recipient.send_to` | "Enviar a {name}" | Favorite accessible name |
@@ -450,3 +450,4 @@ None blocking. Decisions applied: OQ-06 (save optional, on by default), OQ-08 (R
 | 0.1 | 2026-10-13 | Claude (AI-assisted) | First draft |
 | 1.0 | 2026-10-13 | Project owner | Approved |
 | 1.1 | 2026-10-14 | Claude (AI-assisted) | Traceability now points to the written TS (no behavior change) |
+| 1.2 | 2026-10-14 | Claude (AI-assisted) | TASK-04: step indicator copy key generalized to `common.step` (same text) |

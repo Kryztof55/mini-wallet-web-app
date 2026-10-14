@@ -5,6 +5,12 @@
 export const messages = {
   'common.skip_to_content': 'Saltar al contenido',
   'common.retry': 'Intentar de nuevo',
+  'common.reference': 'Referencia: {code}',
+  'common.loading': 'Cargando…',
+  'common.close': 'Cerrar',
+  'common.step': 'Paso {n} de {total} — {name}',
+  'common.notification': 'Notificación',
+  'common.notifications_region': 'Notificaciones ({hotkey})',
   'theme.label': 'Tema',
   'theme.system': 'Sistema',
   'theme.light': 'Claro',
