@@ -69,23 +69,23 @@ Generated from the test cases in §6; every BR, UIR and AC is covered.
 | BR-15 | Concept format | TC-UNIT-10, TC-INT-08 | INT, UNIT | ⬜ |
 | BR-16 | Contact name | TC-UNIT-11, TC-INT-07 | INT, UNIT | ⬜ |
 | BR-17 | Single final outcome | TC-UNIT-12, TC-INT-10 | INT, UNIT | ⬜ |
-| UIR-AUTH-01 | Identifier type inference | TC-UNIT-05, TC-COMP-03 | COMP, UNIT | ⬜ |
-| UIR-AUTH-02 | Validation timing | TC-COMP-03 | COMP | ⬜ |
-| UIR-AUTH-03 | Primary actions stay enabled | TC-COMP-01, TC-COMP-03 | COMP | ⬜ |
-| UIR-AUTH-04 | In-progress lock | TC-PL-01 | PL | ⬜ |
-| UIR-AUTH-05 | Code step entry | TC-COMP-04 | COMP | ⬜ |
-| UIR-AUTH-06 | Destination masking | TC-UNIT-06, TC-COMP-04 | COMP, UNIT | ⬜ |
-| UIR-AUTH-07 | Code input behavior | TC-UNIT-07, TC-COMP-04 | COMP, UNIT | ⬜ |
-| UIR-AUTH-08 | Explicit verification | TC-COMP-04 | COMP | ⬜ |
-| UIR-AUTH-09 | Incorrect code | TC-PL-01, TC-COMP-04 | COMP, PL | ⬜ |
-| UIR-AUTH-10 | Locked or expired code | TC-PL-01, TC-COMP-04 | COMP, PL | ⬜ |
-| UIR-AUTH-11 | Resend cooldown | TC-PL-02, TC-COMP-04 | COMP, PL | ⬜ |
-| UIR-AUTH-12 | New code issued | TC-PL-01, TC-COMP-04 | COMP, PL | ⬜ |
-| UIR-AUTH-13 | Change identifier | TC-PL-01, TC-COMP-04 | COMP, PL | ⬜ |
+| UIR-AUTH-01 | Identifier type inference | TC-UNIT-05, TC-COMP-03 | COMP, UNIT | ✅ |
+| UIR-AUTH-02 | Validation timing | TC-COMP-03 | COMP | ✅ |
+| UIR-AUTH-03 | Primary actions stay enabled | TC-COMP-01, TC-COMP-03 | COMP | ✅ |
+| UIR-AUTH-04 | In-progress lock | TC-PL-01 | PL | ✅ |
+| UIR-AUTH-05 | Code step entry | TC-COMP-04 | COMP | ✅ |
+| UIR-AUTH-06 | Destination masking | TC-UNIT-06, TC-COMP-04 | COMP, UNIT | ✅ |
+| UIR-AUTH-07 | Code input behavior | TC-UNIT-07, TC-COMP-04 | COMP, UNIT | ✅ |
+| UIR-AUTH-08 | Explicit verification | TC-COMP-04 | COMP | ✅ |
+| UIR-AUTH-09 | Incorrect code | TC-PL-01, TC-COMP-04 | COMP, PL | ✅ |
+| UIR-AUTH-10 | Locked or expired code | TC-PL-01, TC-COMP-04 | COMP, PL | ✅ |
+| UIR-AUTH-11 | Resend cooldown | TC-PL-02, TC-COMP-04 | COMP, PL | ✅ |
+| UIR-AUTH-12 | New code issued | TC-PL-01, TC-COMP-04 | COMP, PL | ✅ |
+| UIR-AUTH-13 | Change identifier | TC-PL-01, TC-COMP-04 | COMP, PL | ✅ |
 | UIR-AUTH-14 | Post-login navigation | TC-UNIT-14, TC-E2E-05 | E2E, UNIT | ⬜ |
 | UIR-AUTH-15 | No flash for authenticated users | TC-INT-02 | INT | ✅ |
-| UIR-AUTH-16 | Demo code hint | TC-COMP-04 | COMP | ⬜ |
-| UIR-AUTH-17 | Session-ended notice | TC-COMP-05 | COMP | ⬜ |
+| UIR-AUTH-16 | Demo code hint | TC-COMP-04 | COMP | ✅ |
+| UIR-AUTH-17 | Session-ended notice | TC-COMP-05 | COMP | ✅ |
 | UIR-AUTH-18 | Theme control | TC-COMP-02 | COMP | ✅ |
 | UIR-CONF-01 | Processing lock | TC-PL-08, TC-COMP-14 | COMP, PL | ⬜ |
 | UIR-CONF-02 | Slow-response message | TC-PL-08, TC-COMP-14 | COMP, PL | ⬜ |
@@ -140,22 +140,22 @@ Generated from the test cases in §6; every BR, UIR and AC is covered.
 | UIR-TX-21 | Draft reset after completion | TC-UNIT-13 | UNIT | ⬜ |
 | AC-AUTH-01 | Log in with a phone number | TC-E2E-01 | E2E | ⬜ |
 | AC-AUTH-02 | Log in with an email | TC-E2E-02 | E2E | ⬜ |
-| AC-AUTH-03 | Empty identifier | TC-COMP-03 | COMP | ⬜ |
-| AC-AUTH-04 | Invalid identifier format | TC-COMP-03 | COMP | ⬜ |
+| AC-AUTH-03 | Empty identifier | TC-COMP-03 | COMP | ✅ |
+| AC-AUTH-04 | Invalid identifier format | TC-COMP-03 | COMP | ✅ |
 | AC-AUTH-05 | No double submission | TC-COMP-03, TC-E2E-20 | COMP, E2E | ⬜ |
 | AC-AUTH-06 | Correct code creates a session | TC-E2E-01 | E2E | ⬜ |
 | AC-AUTH-07 | Incorrect code | TC-COMP-04, TC-E2E-03 | COMP, E2E | ⬜ |
 | AC-AUTH-08 | Code locked after 3 failures | TC-COMP-04, TC-E2E-03 | COMP, E2E | ⬜ |
 | AC-AUTH-09 | Expired code | TC-INT-04, TC-E2E-04 | E2E, INT | ⬜ |
 | AC-AUTH-10 | Resend cooldown and invalidation | TC-COMP-04, TC-E2E-03 | COMP, E2E | ⬜ |
-| AC-AUTH-11 | Change identifier keeps input | TC-COMP-04 | COMP | ⬜ |
+| AC-AUTH-11 | Change identifier keeps input | TC-COMP-04 | COMP | ✅ |
 | AC-AUTH-12 | Session persists on reload | TC-E2E-06 | E2E | ⬜ |
 | AC-AUTH-13 | Protected view and return to destination | TC-E2E-05 | E2E | ⬜ |
 | AC-AUTH-14 | Authenticated user opens Login | TC-INT-02, TC-E2E-05 | E2E, INT | ⬜ |
 | AC-AUTH-15 | Logout | TC-E2E-06 | E2E | ⬜ |
 | AC-AUTH-16 | Simulated service error is recoverable | TC-INT-03, TC-E2E-07 | E2E, INT | ⬜ |
-| AC-AUTH-17 | Paste a formatted code | TC-COMP-04 | COMP | ⬜ |
-| AC-AUTH-18 | Demo hint only outside production | TC-COMP-04 | COMP | ⬜ |
+| AC-AUTH-17 | Paste a formatted code | TC-COMP-04 | COMP | ✅ |
+| AC-AUTH-18 | Demo hint only outside production | TC-COMP-04 | COMP | ✅ |
 | AC-AUTH-19 | Server rejects private requests without session | TC-INT-02 | INT | ✅ |
 | AC-HOME-01 | Name and balance | TC-E2E-08 | E2E | ⬜ |
 | AC-HOME-02 | Recent activity bounded to 10 | TC-E2E-08 | E2E | ⬜ |
@@ -294,8 +294,8 @@ Levels and IDs follow the [specs README](../README.md#24-ids). Tests reference t
 
 | TC | Title | Covers | Key cases → expected result | Location | Priority | Built in | Status |
 |---|---|---|---|---|---|---|---|
-| TC-PL-01 | useLoginFlow | UIR-AUTH-04, UIR-AUTH-09, UIR-AUTH-10, UIR-AUTH-12, UIR-AUTH-13 | identifier → requestingCode → code → verifying → success; incorrect/locked/expired branches; change identifier keeps value; new code resets attempts | `src/features/auth/use-login-flow.test.ts` | High | TASK-11 | ⬜ |
-| TC-PL-02 | useCountdown | UIR-AUTH-11 | counts down from server value; exposes `available` at zero once; cleans up on unmount (fake timers) | `src/features/auth/use-countdown.test.ts` | Medium | TASK-11 | ⬜ |
+| TC-PL-01 | useLoginFlow | UIR-AUTH-04, UIR-AUTH-09, UIR-AUTH-10, UIR-AUTH-12, UIR-AUTH-13 | identifier → requestingCode → code → verifying → success; incorrect/locked/expired branches; change identifier keeps value; new code resets attempts | `src/features/auth/use-login-flow.test.ts` | High | TASK-11 | ✅ |
+| TC-PL-02 | useCountdown | UIR-AUTH-11 | counts down from server value; exposes `available` at zero once; cleans up on unmount (fake timers) | `src/features/auth/use-countdown.test.ts` | Medium | TASK-11 | ✅ |
 | TC-PL-03 | useSectionRetry | UIR-HOME-12 | retry calls only its endpoint; loading → ready / error with requestId | `src/features/home/use-section-retry.test.ts` | Medium | TASK-13 | ⬜ |
 | TC-PL-04 | useHideBalance | UIR-HOME-05 | toggle writes `hide_balance` cookie; initial value from server prop | `src/features/home/use-hide-balance.test.ts` | Medium | TASK-13 | ⬜ |
 | TC-PL-05 | useStepGuard | UIR-TX-14, BR-03 | amount without recipient → replace to recipient; summary without amount → amount; completion marker → Home; renders nothing before redirect | `src/features/transfer/use-step-guard.test.ts` | High | TASK-15 | ⬜ |
@@ -310,9 +310,9 @@ Levels and IDs follow the [specs README](../README.md#24-ids). Tests reference t
 |---|---|---|---|---|---|---|---|
 | TC-COMP-01 | Base components accessibility contracts | A11Y-03, A11Y-05, A11Y-07, A11Y-08, A11Y-13, A11Y-18, A11Y-19, A11Y-24, UIR-AUTH-03, UIR-TX-13 | Button busy ≠ disabled-for-invalid; TextField label/hint/error/invalid; Dialog focus trap + Escape + return focus; Toast polite; Skeleton hidden; ReferenceCode; axe clean | `src/components/ui/*.test.tsx` | High | TASK-04 | ✅ |
 | TC-COMP-02 | ThemeSwitcher | A11Y-26, UIR-AUTH-18, UX-22 | accessible name and current value; keyboard operable; focus stays after change | `src/features/theme/theme-switcher.test.tsx` | High | TASK-03 | ✅ |
-| TC-COMP-03 | IdentifierStep | UIR-AUTH-01, UIR-AUTH-02, UIR-AUTH-03, AC-AUTH-03, AC-AUTH-04, AC-AUTH-05 | error on blur not while typing; clears live; Continue enabled when empty → required error + focus; busy blocks second submit | `src/features/auth/identifier-step.test.tsx` | High | TASK-11 | ⬜ |
-| TC-COMP-04 | CodeStep and OneTimeCodeField | UIR-AUTH-05, UIR-AUTH-06, UIR-AUTH-07, UIR-AUTH-08, UIR-AUTH-09, UIR-AUTH-10, UIR-AUTH-11, UIR-AUTH-12, UIR-AUTH-13, UIR-AUTH-16, AC-AUTH-07, AC-AUTH-08, AC-AUTH-10, AC-AUTH-11, AC-AUTH-17, AC-AUTH-18 | focus + instructions with masked destination; paste normalized; no auto-submit; attempts-left message with selected content; locked state; cooldown text announced once at zero; demo hint only with flag | `src/features/auth/code-step.test.tsx` | High | TASK-11 | ⬜ |
-| TC-COMP-05 | SessionNotice | UIR-AUTH-17 | `reason=logged_out` and `reason=session_ended` messages announced | `src/features/auth/session-notice.test.tsx` | Medium | TASK-11 | ⬜ |
+| TC-COMP-03 | IdentifierStep | UIR-AUTH-01, UIR-AUTH-02, UIR-AUTH-03, AC-AUTH-03, AC-AUTH-04, AC-AUTH-05 | error on blur not while typing; clears live; Continue enabled when empty → required error + focus; busy blocks second submit | `src/features/auth/identifier-step.test.tsx` | High | TASK-11 | ✅ |
+| TC-COMP-04 | CodeStep and OneTimeCodeField | UIR-AUTH-05, UIR-AUTH-06, UIR-AUTH-07, UIR-AUTH-08, UIR-AUTH-09, UIR-AUTH-10, UIR-AUTH-11, UIR-AUTH-12, UIR-AUTH-13, UIR-AUTH-16, AC-AUTH-07, AC-AUTH-08, AC-AUTH-10, AC-AUTH-11, AC-AUTH-17, AC-AUTH-18 | focus + instructions with masked destination; paste normalized; no auto-submit; attempts-left message with selected content; locked state; cooldown text announced once at zero; demo hint only with flag | `src/features/auth/code-step.test.tsx` | High | TASK-11 | ✅ |
+| TC-COMP-05 | SessionNotice | UIR-AUTH-17 | `reason=logged_out` and `reason=session_ended` messages announced | `src/features/auth/session-notice.test.tsx` | Medium | TASK-11 | ✅ |
 | TC-COMP-06 | BalanceCard and HideBalanceToggle | UIR-HOME-04, UIR-HOME-05, AC-HOME-10 | zero balance note; masked `$ ••••••` with accessible 'Saldo oculto'; toggle aria-pressed | `src/components/wallet/balance-card.test.tsx` | High | TASK-13 | ⬜ |
 | TC-COMP-07 | TransactionItem and ActivityList | UIR-HOME-06, UIR-HOME-07, UIR-HOME-08, UIR-HOME-09, AC-HOME-03, AC-HOME-05, AC-HOME-11 | one accessible sentence per item; sign + direction label; badges only for pending/failed; long names truncated with full accessible name; empty state copy | `src/components/wallet/transaction-item.test.tsx` | High | TASK-13 | ⬜ |
 | TC-COMP-08 | Home sections | UIR-HOME-01, UIR-HOME-02, UIR-HOME-03, UIR-HOME-11, UIR-HOME-12, UIR-HOME-13, AC-HOME-04 | skeleton per section with aria-busy; SectionError with reference and retry; primary action always rendered; header actions; highlight respects reduced motion | `src/features/home/home-sections.test.tsx` | High | TASK-13 | ⬜ |
@@ -347,13 +347,13 @@ Levels and IDs follow the [specs README](../README.md#24-ids). Tests reference t
 
 | TC | Title | Covers | Key cases → expected result | Location | Priority | Built in | Status |
 |---|---|---|---|---|---|---|---|
-| TC-E2E-01 | Login with phone | AC-AUTH-01, AC-AUTH-06, FR-AUTH-07 | phone → code step `•••• 5678` → demo code → Home; Back does not show Login | `tests/e2e/auth.spec.ts` | High | TASK-20 | ⬜ |
-| TC-E2E-02 | Login with email | AC-AUTH-02 | email with spaces/uppercase → masked email → Home | `tests/e2e/auth.spec.ts` | Medium | TASK-20 | ⬜ |
-| TC-E2E-03 | Wrong code, lock and new code | AC-AUTH-07, AC-AUTH-08, AC-AUTH-10 | two wrong codes with attempts left; third locks; new code after cooldown (shortened); old code rejected | `tests/e2e/auth.spec.ts` | High | TASK-20 | ⬜ |
-| TC-E2E-04 | Expired code | AC-AUTH-09 | `otp_expired` forced on verify → expired message → request new code | `tests/e2e/auth.spec.ts` | Medium | TASK-20 | ⬜ |
-| TC-E2E-05 | Deep link and authenticated redirect | AC-AUTH-13, AC-AUTH-14, UIR-AUTH-14, FR-AUTH-08 | fresh context opens /transfer/recipient → Login → back to it; logged-in user opening /login → Home without form | `tests/e2e/auth.spec.ts` | High | TASK-20 | ⬜ |
-| TC-E2E-06 | Session persistence and logout | AC-AUTH-12, AC-AUTH-15, AC-HOME-12 | reload keeps session; logout → 'Cerraste sesión.'; Home redirects to Login; Back doesn't reveal balance | `tests/e2e/auth.spec.ts` | High | TASK-20 | ⬜ |
-| TC-E2E-07 | Login service error | AC-AUTH-16 | seeded `falla.login` → error with reference and retry; identifier kept | `tests/e2e/auth.spec.ts` | Medium | TASK-20 | ⬜ |
+| TC-E2E-01 | Login with phone | AC-AUTH-01, AC-AUTH-06, FR-AUTH-07 | phone → code step `•••• 5678` → demo code → Home; Back does not show Login | `tests/e2e/auth.spec.ts` | High | TASK-20 (written in TASK-11) | ⬜ |
+| TC-E2E-02 | Login with email | AC-AUTH-02 | email with spaces/uppercase → masked email → Home | `tests/e2e/auth.spec.ts` | Medium | TASK-20 (written in TASK-11) | ⬜ |
+| TC-E2E-03 | Wrong code, lock and new code | AC-AUTH-07, AC-AUTH-08, AC-AUTH-10 | two wrong codes with attempts left; third locks; new code after cooldown (shortened); old code rejected | `tests/e2e/auth.spec.ts` | High | TASK-20 (written in TASK-11) | ⬜ |
+| TC-E2E-04 | Expired code | AC-AUTH-09 | `otp_expired` forced on verify → expired message → request new code | `tests/e2e/auth.spec.ts` | Medium | TASK-20 (written in TASK-11) | ⬜ |
+| TC-E2E-05 | Deep link and authenticated redirect | AC-AUTH-13, AC-AUTH-14, UIR-AUTH-14, FR-AUTH-08 | fresh context opens /transfer/recipient → Login → back to it; logged-in user opening /login → Home without form | `tests/e2e/auth.spec.ts` | High | TASK-20 (written in TASK-11) | ⬜ |
+| TC-E2E-06 | Session persistence and logout | AC-AUTH-12, AC-AUTH-15, AC-HOME-12 | reload keeps session; logout → 'Cerraste sesión.'; Home redirects to Login; Back doesn't reveal balance | `tests/e2e/auth.spec.ts` | High | TASK-20 (written in TASK-11) | ⬜ |
+| TC-E2E-07 | Login service error | AC-AUTH-16 | seeded `falla.login` → error with reference and retry; identifier kept | `tests/e2e/auth.spec.ts` | Medium | TASK-20 (written in TASK-11) | ⬜ |
 | TC-E2E-08 | Home — normal user | AC-HOME-01, AC-HOME-02, AC-HOME-03, AC-HOME-11 | greeting, balance, exactly 10 newest items, item content and badges | `tests/e2e/home.spec.ts` | High | TASK-20 | ⬜ |
 | TC-E2E-09 | Home — states and section retry | AC-HOME-05, AC-HOME-06, AC-HOME-10, FR-HOME-06 | empty user; zero-balance user; balance-error and activity-error users; retry reloads only that section | `tests/e2e/home.spec.ts` | High | TASK-20 | ⬜ |
 | TC-E2E-10 | Hide balance | AC-HOME-08, UIR-HOME-05 | toggle, reload: still hidden; summary and receipt balances masked | `tests/e2e/home.spec.ts` | Medium | TASK-20 | ⬜ |

@@ -222,6 +222,7 @@ Unknown identifiers also receive `202` (OQ-14); no challenge can ever verify for
   - `x-mock-outcome: otp_expired` ages the stored challenge past its TTL, so it stays expired for later attempts.
   - A verified code is deleted (single use). Invalid `timeZone` falls back to `America/Mexico_City`.
   - `auth.code.rejected` / `auth.verify.rejected` are logged by the service (it is where the rule is evaluated), with `errorCode`.
+- **Implementation notes (TASK-11):** after a successful verification the client does a full navigation (`location.replace`), not a router navigation: the client router cache would otherwise restore `/login` on Back without asking the server. `BfcacheGuard` reloads Login and private pages restored from the back/forward cache, so the proxy and `getSession()` always decide.
 - **Never logged:** code, session ID, full identifier (TS-05).
 
 ## 11. Observability

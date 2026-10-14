@@ -5,6 +5,7 @@ export { Dialog, DialogClose } from './dialog';
 export { EmptyState } from './empty-state';
 export { ErrorState } from './error-state';
 export { LiveAnnouncerProvider, useAnnounce } from './live-announcer';
+export { Notice } from './notice';
 export { ReferenceCode } from './reference-code';
 export { Skeleton, SkeletonGroup } from './skeleton';
 export { StepIndicator } from './step-indicator';

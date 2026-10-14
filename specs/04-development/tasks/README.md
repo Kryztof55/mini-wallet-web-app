@@ -14,7 +14,7 @@ File name: `TASK-NN-kebab-case-name.md`. Generated from the [implementation plan
 | [TASK-08](./TASK-08-http-layers.md) | Build the server HTTP helpers and the browser HTTP client | M0 | Done |
 | [TASK-09](./TASK-09-session-and-security.md) | Implement session handling and request security | M1 | Done |
 | [TASK-10](./TASK-10-auth-api.md) | Implement the auth API | M1 | Done |
-| [TASK-11](./TASK-11-login-screens.md) | Build the login screens | M1 | Pending |
+| [TASK-11](./TASK-11-login-screens.md) | Build the login screens | M1 | Done |
 | [TASK-12](./TASK-12-home-api.md) | Implement the Home API and services | M2 | Pending |
 | [TASK-13](./TASK-13-home-screen.md) | Build the Home screen | M2 | Pending |
 | [TASK-14](./TASK-14-contacts-api.md) | Implement the contacts API | M3 | Pending |

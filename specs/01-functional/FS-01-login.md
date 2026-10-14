@@ -5,7 +5,7 @@
 | **ID** | FS-01 |
 | **Module** | AUTH |
 | **Status** | Approved |
-| **Version** | 1.3 |
+| **Version** | 1.4 |
 | **Author** | Claude (AI-assisted draft) |
 | **Reviewer** | Project owner |
 | **Last updated** | 2026-10-13 |
@@ -366,7 +366,7 @@ And no private data is returned
 | EC-05 | Code pasted with spaces or dashes, or with letters | Spaces/dashes removed; letters rejected (field accepts digits only) |
 | EC-06 | Double click on Continue or Verify | One request only (UIR-AUTH-04) |
 | EC-07 | Browser Back from the code step | Step 1 with identifier pre-filled (UIR-AUTH-13) |
-| EC-08 | Page reload on the code step | Returns to step 1; requesting another code is subject to the cooldown (BR-13) |
+| EC-08 | Page reload on the code step | Returns to step 1; requesting another code is subject to the cooldown (BR-13). Pressing Continue within the cooldown goes to the code step without a new code and says so (`auth.code.already_sent`): the code already sent is still valid |
 | EC-09 | Login completed in one tab while another tab shows Login | The other tab goes to Home on its next navigation or interaction |
 | EC-10 | Logout in one tab while another tab shows a private view | The other tab is sent to Login on its next private request (BR-14) |
 | EC-11 | Session credential removed or tampered with manually | Treated as no session (BR-14) |
@@ -392,13 +392,16 @@ UI copy is in Spanish (es-MX), per OQ-01. Keys are stable; texts may be refined 
 | `auth.code.label` | "Código de verificación" | Code field label |
 | `auth.code.error.required` | "Ingresa el código de 6 dígitos." | Empty code |
 | `auth.code.error.format` | "El código debe tener 6 dígitos." | Wrong length |
-| `auth.code.error.incorrect` | "El código no es correcto. Te quedan {n} intentos." / "…Te queda 1 intento." | Wrong code (plural-aware) |
+| `auth.code.error.incorrect` | "El código no es correcto. Te quedan {n} intentos." | Wrong code, 2+ attempts left |
+| `auth.code.error.incorrect_one` | "El código no es correcto. Te queda 1 intento." | Wrong code, 1 attempt left |
+| `auth.code.already_sent` | "Ya te enviamos un código hace poco. Usa ese código o espera para pedir otro." | EC-08: Continue within the cooldown |
 | `auth.code.error.locked` | "Superaste los intentos permitidos. Solicita un código nuevo." | 3 failures |
 | `auth.code.error.expired` | "Este código expiró. Solicita uno nuevo." | Expired code |
 | `auth.verify` | "Verificar" | Step 2 primary action |
 | `auth.verify.loading` | "Verificando…" | Step 2 in progress |
 | `auth.resend` | "Solicitar código nuevo" | Resend action |
-| `auth.resend.cooldown` | "Podrás solicitar un código nuevo en {m:ss}." | Cooldown text |
+| `auth.resend.cooldown` | "Podrás solicitar un código nuevo en {time}." | Cooldown text; `time` is `m:ss` |
+| `auth.resend.loading` | "Enviando código…" | New code in progress |
 | `auth.resend.available` | "Ya puedes solicitar un código nuevo." | Announced once when the cooldown ends |
 | `auth.resend.sent` | "Te enviamos un código nuevo." | New code issued |
 | `auth.change_identifier` | "Cambiar celular o correo" | Back to step 1 |
@@ -467,3 +470,4 @@ Applies: A11Y-01, 02, 03, 04, 05, 06, 07, 08, 10, 12, 13, 14, 16, 21, 23, 25, 26
 | 1.1 | 2026-10-14 | Claude (AI-assisted) | Traceability now points to the written TS (no behavior change) |
 | 1.2 | 2026-10-14 | Claude (AI-assisted) | One-time code is random per challenge; the demo hint shows the current code outside production (owner decision, resolves conflict between fixed demo code and AC-AUTH-10) |
 | 1.3 | 2026-10-14 | Claude (AI-assisted) | TASK-03: copy keys for the skip link and the theme switcher (shared by every screen) |
+| 1.4 | 2026-10-14 | Claude (AI-assisted) | TASK-11: EC-08 reuses the code already sent within the cooldown; plural copy split into two keys; `auth.resend.loading` |

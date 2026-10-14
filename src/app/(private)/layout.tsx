@@ -1,6 +1,7 @@
 import { headers } from 'next/headers';
 import { redirect } from 'next/navigation';
 import type { ReactNode } from 'react';
+import { BfcacheGuard } from '@/components/bfcache-guard';
 import { sanitizeReturnTo } from '@/core/return-to';
 import { loginUrl, RETURN_TO_HEADER } from '@/lib/routes';
 import { logEvent } from '@/server/logging/logger';
@@ -21,5 +22,10 @@ export default async function PrivateLayout({ children }: { readonly children: R
     const returnTo = sanitizeReturnTo((await headers()).get(RETURN_TO_HEADER));
     redirect(loginUrl({ returnTo, reason: 'session_ended' }));
   }
-  return children;
+  return (
+    <>
+      <BfcacheGuard />
+      {children}
+    </>
+  );
 }

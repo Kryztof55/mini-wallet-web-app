@@ -161,7 +161,10 @@ describe('[TC-INT-02][BR-14][UIR-AUTH-15][AC-AUTH-19][AC-AUTH-14] session gate a
     it('renders children with a valid session', async () => {
       const { default: PrivateLayout } = await import('@/app/(private)/layout');
       headerStore.cookie = (await loggedIn()).cookie;
-      expect(await PrivateLayout({ children: 'home' })).toBe('home');
+      const element = (await PrivateLayout({ children: 'home' })) as {
+        props: { children: unknown[] };
+      };
+      expect(element.props.children).toContain('home');
     });
   });
 
