@@ -59,7 +59,7 @@ describe('[TC-COMP-13][UIR-TX-20][A11Y-24] CancelTransferDialog', () => {
 
     await user.click(screen.getByRole('button', { name: 'Cancelar' }));
     await user.click(screen.getByRole('button', { name: 'Cancelar envío' }));
-    expect(draftProbe.current).toEqual(emptyDraft);
+    expect(draftProbe.current).toEqual({ ...emptyDraft, completed: true });
     expect(router.push).toHaveBeenCalledWith('/');
   });
 

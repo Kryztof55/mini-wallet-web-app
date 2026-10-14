@@ -90,6 +90,12 @@ describe('[TC-UNIT-13][BR-07][UIR-TX-19][UIR-TX-21] transfer draft reducer and f
     });
   });
 
+  it('cancelled discards the data and ends the flow (UIR-TX-20)', () => {
+    const cancelled = draftReducer(ready(), { type: 'cancelled' });
+    expect(cancelled).toEqual({ ...emptyDraft, completed: true });
+    expect(hasDraftData(cancelled)).toBe(false);
+  });
+
   it('completed marks the draft; choosing a recipient again clears the mark', () => {
     const done = draftReducer(ready(), { type: 'completed' });
     expect(done.completed).toBe(true);

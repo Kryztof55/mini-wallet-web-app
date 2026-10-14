@@ -1,6 +1,8 @@
-import { headers } from 'next/headers';
+import { cookies, headers } from 'next/headers';
 import { redirect } from 'next/navigation';
 import type { ReactNode } from 'react';
+import { HIDE_BALANCE_COOKIE } from '@/features/home/constants';
+import { HideBalanceProvider } from '@/features/home/hide-balance';
 import { AppHeader } from '@/features/home/home-header';
 import { TransferDraftProvider } from '@/features/transfer/state/draft-context';
 import { TransferDataProvider, type TransferData } from '@/features/transfer/transfer-data';
@@ -22,6 +24,8 @@ export default async function TransferLayout({ children }: { readonly children: 
   if (!session) redirect(loginUrl({ reason: 'session_ended' }));
 
   const requestId = (await headers()).get(REQUEST_ID_HEADER);
+  // Same per-device preference as Home, so the summary's balances start masked (UIR-TX-16).
+  const hideBalance = (await cookies()).get(HIDE_BALANCE_COOKIE)?.value === '1';
   const [summary, favorites, user] = await runInPageContext(() =>
     Promise.all([
       getAccountService().getSummary(session.userId),
@@ -39,10 +43,16 @@ export default async function TransferLayout({ children }: { readonly children: 
   return (
     <TransferDataProvider value={data}>
       <TransferDraftProvider>
-        <AppHeader />
-        <main id="main" tabIndex={-1} className="mx-auto w-full max-w-flow px-4 py-6 outline-none">
-          {children}
-        </main>
+        <HideBalanceProvider initialHidden={hideBalance}>
+          <AppHeader />
+          <main
+            id="main"
+            tabIndex={-1}
+            className="mx-auto w-full max-w-flow px-4 py-6 outline-none"
+          >
+            {children}
+          </main>
+        </HideBalanceProvider>
       </TransferDraftProvider>
     </TransferDataProvider>
   );

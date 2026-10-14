@@ -37,6 +37,36 @@ export function formatAmountText(clean: string): string {
   return decimalPart === undefined ? grouped : `${grouped}.${decimalPart}`;
 }
 
+export type AmountEdit = {
+  /** Cleaned text without grouping, e.g. `1250.5`. */
+  readonly text: string;
+  /** What the field shows, e.g. `1,250.5`. */
+  readonly display: string;
+  /** Where the caret goes in `display`. */
+  readonly caret: number;
+};
+
+/**
+ * UIR-TX-10: cleans and groups what is in the field after an edit and keeps the caret after
+ * the same digit it followed, so grouping commas never make it jump (TS-03 §13).
+ * Works because `cleanAmountText` is left-to-right: cleaning a prefix gives a prefix.
+ */
+export function editAmountText(raw: string, caret: number): AmountEdit {
+  const clean = cleanAmountText(raw);
+  const display = formatAmountText(clean);
+  const text = display.replace(/,/g, '');
+  const keptBefore = cleanAmountText(raw.slice(0, Math.max(0, caret))).length;
+  const zerosDropped = clean.length - text.length;
+  const target = keptBefore - Math.min(zerosDropped, keptBefore);
+  let seen = 0;
+  let position = 0;
+  while (position < display.length && seen < target) {
+    if (display[position] !== ',') seen += 1;
+    position += 1;
+  }
+  return { text, display, caret: position };
+}
+
 const AMOUNT_PATTERN = /^(\d*)(?:\.(\d*))?$/;
 
 /**

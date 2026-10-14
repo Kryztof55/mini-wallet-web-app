@@ -29,7 +29,10 @@ export type TransferDraft = {
   /** Idempotency key of the attempt (BR-07); set when the summary is reached. */
   readonly attempt: { readonly key: string; readonly fingerprint: string } | null;
   readonly notice: ContactNotice | null;
-  /** Set when the transfer succeeded; the guard then sends the user Home (TS-04). */
+  /**
+   * The flow is over (transfer succeeded, TS-04, or the user cancelled): the step guard sends
+   * the user Home instead of to the first incomplete step.
+   */
   readonly completed: boolean;
 };
 
@@ -55,6 +58,8 @@ export type DraftAction =
   | { readonly type: 'noticeShown' }
   | { readonly type: 'completed' }
   | { readonly type: 'reset' }
+  /** "Cancelar envío" (UIR-TX-20): discard the data and end the flow, so the guard goes Home. */
+  | { readonly type: 'cancelled' }
   /** "Enviar otra vez" (FS-04): start a new draft with this recipient. */
   | { readonly type: 'seedRecipient'; readonly recipient: Recipient };
 
@@ -99,6 +104,8 @@ export function draftReducer(draft: TransferDraft, action: DraftAction): Transfe
       return { ...draft, completed: true };
     case 'reset':
       return emptyDraft;
+    case 'cancelled':
+      return { ...emptyDraft, completed: true };
     case 'seedRecipient':
       return { ...emptyDraft, recipient: action.recipient };
     default: {

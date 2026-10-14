@@ -3,7 +3,8 @@ import { LiveAnnouncerProvider } from '@/components/ui/live-announcer';
 import type { Identifier } from '@/core/identifier';
 import { emptyDraft, type TransferDraft } from './state/draft';
 import { TransferDraftProvider, useDraft } from './state/draft-context';
-import { TransferDataProvider, type TransferData } from './transfer-data';
+import { HideBalanceProvider } from '@/features/home/hide-balance';
+import { TransferDataProvider, type LoadBalance, type TransferData } from './transfer-data';
 
 export const OWN: readonly Identifier[] = [
   { kind: 'phone', value: '5512345678' } as Identifier,
@@ -46,20 +47,36 @@ function DraftProbe() {
 export function TransferProviders({
   data = transferData(),
   draft = emptyDraft,
+  loadBalance,
+  hideBalance = false,
   children,
 }: {
   readonly data?: TransferData;
   readonly draft?: TransferDraft;
+  readonly loadBalance?: LoadBalance;
+  readonly hideBalance?: boolean;
   readonly children: ReactNode;
 }) {
   return (
     <LiveAnnouncerProvider>
-      <TransferDataProvider value={data}>
+      <TransferDataProvider value={data} {...(loadBalance ? { loadBalance } : {})}>
         <TransferDraftProvider initialDraft={draft}>
-          <DraftProbe />
-          {children}
+          <HideBalanceProvider initialHidden={hideBalance}>
+            <DraftProbe />
+            {children}
+          </HideBalanceProvider>
         </TransferDraftProvider>
       </TransferDataProvider>
     </LiveAnnouncerProvider>
   );
 }
+
+export const RECIPIENT = {
+  kind: 'contact',
+  contactId: 'ct_luis',
+  name: 'Luis Pérez',
+  maskedIdentifier: '•••• 5432',
+} as const;
+
+/** `$X.YZ` as Money without going through a Result. */
+export const mxn = (amountMinor: number) => ({ amountMinor, currency: 'MXN' as const });

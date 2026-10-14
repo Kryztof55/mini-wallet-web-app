@@ -386,6 +386,7 @@ And I am on the amount step with that contact as recipient
 | `tx.amount.error.balance` | "El monto supera tu saldo disponible ({balance})." | BR-02 |
 | `tx.concept.label` | "Concepto (opcional)" | Field |
 | `tx.concept.counter` | "{n}/40" | Counter |
+| `tx.concept.remaining` | "Quedan {n} caracteres" | Counter announcement near the limit (UIR-TX-15) |
 | `tx.summary.title` | "Revisa tu envío" | Step 3 heading |
 | `tx.summary.to` | "Para" | Label |
 | `tx.summary.amount` | "Monto" | Label |
@@ -457,3 +458,4 @@ None blocking. Decisions applied: OQ-06 (save optional, on by default), OQ-08 (R
 | 1.1 | 2026-10-14 | Claude (AI-assisted) | Traceability now points to the written TS (no behavior change) |
 | 1.2 | 2026-10-14 | Claude (AI-assisted) | TASK-04: step indicator copy key generalized to `common.step` (same text) |
 | 1.3 | 2026-10-14 | Claude (AI-assisted) | TASK-15: §12 adds the keys the build needed (step labels, empty identifier, spoken masks, "Cambiar destinatario"); no behavior change |
+| 1.4 | 2026-10-14 | Claude (AI-assisted) | TASK-16: §12 adds `tx.concept.remaining` (spoken counter near the limit); no behavior change |

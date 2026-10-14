@@ -66,6 +66,8 @@ src/core/{money,transfer-rules,contact}.ts
 
 **As built (TASK-15):** `FavoritesList` → `favorites-section.tsx`; `CancelTransferDialog` → `CancelTransfer` (`cancel-transfer.tsx`); `useTransferDraft` → `useDraft` / `useDraftDispatch`; `contactsApi.create` → `contactsApi.save`. Added `TransferDataProvider` (server data as `Loaded<T>`), `StepHeading`, `Avatar` and `MaskedIdentifierText` (`src/components/wallet/masked-identifier.tsx`, spoken form via `parseMaskedIdentifier` in `src/core/identifier.ts`). The draft also carries `notice` (saved / duplicate / save-failed, shown once on the amount step) and `completed` (UIR-TX-21).
 
+**As built (TASK-16):** domain helpers are `cleanAmountText` / `formatAmountText` / `editAmountText` (caret mapping by digit index) in `src/core/money-input.ts` and `truncateCharacters` / `stripControlCharacters` in `src/core/text.ts`. `MoneyInput` (`src/components/wallet/money-input.tsx`) writes the formatted value and caret during the change event, and Backspace/Delete beside a grouping comma removes the digit beyond it. The balance is client state in `TransferDataProvider` (`useTransferBalance`), so a retry on the amount step (`GET /api/me/summary` only) also feeds the summary. `ConceptField` lives in `src/features/transfer/`. The transfer layout also reads the hide-balance cookie and wraps the flow in `HideBalanceProvider`; the summary reuses Home's toggle (`HideBalanceToggle`). `SummaryStep` dispatches `summaryReached` (BR-07 key) and hands a `ConfirmableDraft` to `onConfirm`, which TS-04 wires. Cancel dispatches `cancelled` (empty draft + `completed`), not `reset`: with an empty draft the mounted step guard would redirect to step 1 and win over the navigation Home.
+
 ### 3.4 Technology bindings
 
 See TS-00 §3.4. Cancel dialog uses the Radix Dialog wrapper (ADR-008).
@@ -77,7 +79,7 @@ See TS-00 §3.4. Cancel dialog uses the Radix Dialog wrapper (ADR-008).
 | `Contact` | Entity/DTO | `{ id: ContactId; name; maskedIdentifier; lastUsedAt: ISO \| null }` | Unique by normalized identifier per user (BR-08) |
 | `Recipient` | Tagged union | `{ kind: 'contact'; contactId; name; maskedIdentifier } \| { kind: 'oneOff'; name; identifier: Identifier; maskedIdentifier }` | `oneOff` only when not saved |
 | `TransferDraft` | Value | `{ recipient: Recipient \| null; amount: Money \| null; concept: string; attempt: { key: AttemptKey; fingerprint: string } \| null }` | `attempt` set only when the summary is reached |
-| `DraftAction` | Tagged union | `recipientSelected \| amountConfirmed \| conceptChanged \| summaryReached \| reset \| seedRecipient` | Handled exhaustively |
+| `DraftAction` | Tagged union | `recipientSelected \| amountConfirmed \| conceptChanged \| summaryReached \| noticeShown \| completed \| cancelled \| reset \| seedRecipient` | Handled exhaustively |
 
 **Attempt key rule (BR-07):** on `summaryReached`, compute `draftFingerprint(recipient, amount, concept)`; keep the existing key if the fingerprint is unchanged, otherwise generate a new UUID. `reset` clears everything.
 
@@ -231,3 +233,4 @@ Per FS-03 §13. Technical notes: `MoneyInput` keeps a visible label and `aria-de
 | 1.0 | 2026-10-14 | Project owner | Approved |
 | 1.1 | 2026-10-14 | Project owner | Wallet-specific components folder renamed `src/components/domain` → `src/components/wallet` (avoids confusion with `src/core`) |
 | 1.2 | 2026-10-14 | Claude (AI-assisted) | TASK-15: §3.3 as-built names; draft adds `notice` and `completed` (no behavior change to the contracts) |
+| 1.3 | 2026-10-14 | Claude (AI-assisted) | TASK-16: §3.3 as-built notes for amount, concept, balance retry and summary |

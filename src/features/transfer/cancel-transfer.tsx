@@ -20,8 +20,10 @@ export function CancelTransfer({ dirty = false }: { readonly dirty?: boolean }) 
   const router = useRouter();
   const [open, setOpen] = useState(false);
 
+  // `cancelled` (not `reset`): an empty draft would make the step guard redirect to the
+  // recipient step and win over this navigation (found by TC-E2E-14).
   const leave = () => {
-    dispatch({ type: 'reset' });
+    dispatch({ type: 'cancelled' });
     router.push(HOME_PATH as Route);
   };
 

@@ -126,15 +126,15 @@ Generated from the test cases in §6; every BR, UIR and AC is covered.
 | UIR-TX-07 | Duplicate contact | TC-PL-07, TC-COMP-10 | COMP, PL | ✅ |
 | UIR-TX-08 | Save failure does not block | TC-PL-07, TC-COMP-10 | COMP, PL | ✅ |
 | UIR-TX-09 | Recipient context | TC-COMP-09 | COMP | ✅ |
-| UIR-TX-10 | Amount input | TC-UNIT-02, TC-COMP-11 | COMP, UNIT | ⬜ |
-| UIR-TX-11 | Balance next to amount | TC-COMP-11 | COMP | ⬜ |
-| UIR-TX-12 | Rule feedback timing | TC-PL-06, TC-COMP-11 | COMP, PL | ⬜ |
-| UIR-TX-13 | Primary actions stay enabled | TC-COMP-01, TC-COMP-11 | COMP | ⬜ |
+| UIR-TX-10 | Amount input | TC-UNIT-02, TC-COMP-11 | COMP, UNIT | ✅ |
+| UIR-TX-11 | Balance next to amount | TC-COMP-11 | COMP | ✅ |
+| UIR-TX-12 | Rule feedback timing | TC-PL-06, TC-COMP-11 | COMP, PL | ✅ |
+| UIR-TX-13 | Primary actions stay enabled | TC-COMP-01, TC-COMP-11 | COMP | ✅ |
 | UIR-TX-14 | Step guard | TC-PL-05 | PL | ✅ |
-| UIR-TX-15 | Concept counter | TC-COMP-11 | COMP | ⬜ |
-| UIR-TX-16 | Summary content | TC-COMP-12 | COMP | ⬜ |
-| UIR-TX-17 | Specific edit actions | TC-COMP-12 | COMP | ⬜ |
-| UIR-TX-18 | Confirm action label | TC-COMP-12 | COMP | ⬜ |
+| UIR-TX-15 | Concept counter | TC-COMP-11 | COMP | ✅ |
+| UIR-TX-16 | Summary content | TC-COMP-12 | COMP | ✅ |
+| UIR-TX-17 | Specific edit actions | TC-COMP-12 | COMP | ✅ |
+| UIR-TX-18 | Confirm action label | TC-COMP-12 | COMP | ✅ |
 | UIR-TX-19 | Draft preserved in the flow | TC-UNIT-13 | UNIT | ✅ |
 | UIR-TX-20 | Cancel | TC-COMP-13 | COMP | ✅ |
 | UIR-TX-21 | Draft reset after completion | TC-UNIT-13 | UNIT | ✅ |
@@ -170,18 +170,18 @@ Generated from the test cases in §6; every BR, UIR and AC is covered.
 | AC-HOME-11 | Pending and failed transactions | TC-COMP-07, TC-E2E-08 | COMP, E2E | ✅ |
 | AC-HOME-12 | Logout from Home | TC-E2E-06 | E2E | ✅ |
 | AC-TX-01 | Send to a favorite (happy path) | TC-E2E-11 | E2E | ⬜ |
-| AC-TX-02 | Amount must be greater than zero (BR-01) | TC-COMP-11, TC-E2E-13 | COMP, E2E | ⬜ |
-| AC-TX-03 | Amount cannot exceed balance (BR-02) | TC-COMP-11, TC-E2E-13 | COMP, E2E | ⬜ |
-| AC-TX-04 | Amount format (BR-04) | TC-COMP-11, TC-E2E-13 | COMP, E2E | ⬜ |
-| AC-TX-05 | Recipient required (BR-03) | TC-E2E-14 | E2E | ⬜ |
+| AC-TX-02 | Amount must be greater than zero (BR-01) | TC-COMP-11, TC-E2E-13 | COMP, E2E | ✅ |
+| AC-TX-03 | Amount cannot exceed balance (BR-02) | TC-COMP-11, TC-E2E-13 | COMP, E2E | ✅ |
+| AC-TX-04 | Amount format (BR-04) | TC-COMP-11, TC-E2E-13 | COMP, E2E | ✅ |
+| AC-TX-05 | Recipient required (BR-03) | TC-E2E-14 | E2E | ✅ |
 | AC-TX-06 | New contact saved by default | TC-E2E-12 | E2E | ⬜ |
 | AC-TX-07 | New contact as one-off | TC-E2E-12 | E2E | ⬜ |
 | AC-TX-08 | Duplicate contact (BR-08) | TC-E2E-12 | E2E | ⬜ |
 | AC-TX-09 | Invalid new contact (BR-05, BR-10, BR-16) | TC-COMP-10, TC-E2E-12 | COMP, E2E | ⬜ |
 | AC-TX-10 | No self-transfer (BR-09) | TC-COMP-10, TC-E2E-12 | COMP, E2E | ⬜ |
-| AC-TX-11 | Concept limit (BR-15) | TC-COMP-11, TC-E2E-13 | COMP, E2E | ⬜ |
-| AC-TX-12 | Edit from summary keeps data | TC-E2E-13 | E2E | ⬜ |
-| AC-TX-13 | Cancel with data asks for confirmation | TC-E2E-14 | E2E | ⬜ |
+| AC-TX-11 | Concept limit (BR-15) | TC-COMP-11, TC-E2E-13 | COMP, E2E | ✅ |
+| AC-TX-12 | Edit from summary keeps data | TC-E2E-13 | E2E | ✅ |
+| AC-TX-13 | Cancel with data asks for confirmation | TC-E2E-14 | E2E | ✅ |
 | AC-TX-14 | Favorites error keeps new contact available | TC-COMP-09 | COMP | ✅ |
 | AC-TX-15 | Server enforces the rules (BR-06) | TC-INT-08 | INT | ⬜ |
 | AC-TX-16 | Save failure does not block the transfer | TC-E2E-12 | E2E | ⬜ |
@@ -299,7 +299,7 @@ Levels and IDs follow the [specs README](../README.md#24-ids). Tests reference t
 | TC-PL-03 | useSectionRetry | UIR-HOME-12 | retry calls only its endpoint; loading → ready / error with requestId | `src/lib/hooks/use-section-retry.test.tsx` | Medium | TASK-13 | ✅ |
 | TC-PL-04 | useHideBalance | UIR-HOME-05 | toggle writes `hide_balance` cookie; initial value from server prop | `src/features/home/use-hide-balance.test.ts` | Medium | TASK-13 | ✅ |
 | TC-PL-05 | useStepGuard | UIR-TX-14, BR-03 | amount without recipient → replace to recipient; summary without amount → amount; completion marker → Home; renders nothing before redirect | `src/features/transfer/use-step-guard.test.tsx` | High | TASK-15 | ✅ |
-| TC-PL-06 | useAmountField | UIR-TX-12 | BR-02 error as soon as exceeded; BR-01 only on continue; errors clear when valid | `src/features/transfer/use-amount-field.test.ts` | High | TASK-16 | ⬜ |
+| TC-PL-06 | useAmountField | UIR-TX-12 | BR-02 error as soon as exceeded; BR-01 only on continue; errors clear when valid | `src/features/transfer/use-amount-field.test.ts` | High | TASK-16 | ✅ |
 | TC-PL-07 | useSaveContact | UIR-TX-06, UIR-TX-07, UIR-TX-08 | 201 → saved message; 200 → duplicate message + existing recipient; 503/network → one-off + failure message | `src/features/transfer/use-save-contact.test.tsx` | High | TASK-15 | ✅ |
 | TC-PL-08 | useConfirmTransfer | UIR-CONF-01, UIR-CONF-02, UIR-CONF-03, UIR-CONF-04, UIR-CONF-05, UIR-CONF-06, UIR-CONF-16, AC-CONF-02, AC-CONF-07, AC-CONF-08, AC-CONF-10 | every row of TS-04 §8 mapping table; slow at 3 s; abort at 10 s; checks at +2/+4/+8 s; unresolved after limit; same key on retry; timers and requests cleared on unmount (fake timers) | `src/features/confirmation/use-confirm-transfer.test.ts` | High | TASK-18 | ⬜ |
 | TC-PL-09 | Theme state | UX-22 | system/light/dark selection updates `data-theme` immediately and calls the Server Action | `src/features/theme/theme-provider.test.tsx` | Medium | TASK-03 | ✅ |
@@ -318,8 +318,8 @@ Levels and IDs follow the [specs README](../README.md#24-ids). Tests reference t
 | TC-COMP-08 | Home sections | UIR-HOME-01, UIR-HOME-02, UIR-HOME-03, UIR-HOME-11, UIR-HOME-12, UIR-HOME-13, AC-HOME-04 | skeleton per section with aria-busy; SectionError with reference and retry; primary action always rendered; header actions; highlight respects reduced motion | `src/features/home/home-sections.test.tsx` | High | TASK-13 | ✅ |
 | TC-COMP-09 | Recipient step | UIR-TX-01, UIR-TX-02, UIR-TX-03, UIR-TX-04, UIR-TX-09, AC-TX-14 | step indicator text; heading focus; favorites order and accessible names; activating a favorite selects and navigates; favorites error keeps 'Nuevo contacto' | `src/features/transfer/recipient-step.test.tsx`, `src/components/wallet/recipient-context.test.tsx` | High | TASK-15 | ✅ |
 | TC-COMP-10 | NewContactForm | UIR-TX-05, UIR-TX-06, UIR-TX-07, UIR-TX-08, AC-TX-09, AC-TX-10 | fields + checkbox checked by default; per-field errors and focus on first; self-transfer error; saved / duplicate / save-failed messages | `src/features/transfer/new-contact-form.test.tsx` | High | TASK-15 | ✅ |
-| TC-COMP-11 | Amount step | UIR-TX-10, UIR-TX-11, UIR-TX-12, UIR-TX-13, UIR-TX-15, AC-TX-02, AC-TX-03, AC-TX-04, AC-TX-11 | caret preserved while formatting; balance linked as description; BR-02 live, BR-01 on continue; concept counter 40/40; balance error with retry | `src/features/transfer/amount-step.test.tsx` | High | TASK-16 | ⬜ |
-| TC-COMP-12 | Summary step | UIR-TX-16, UIR-TX-17, UIR-TX-18 | all details; resulting balance (masked when hidden); specific edit actions; confirm label 'Enviar $250.00' | `src/features/transfer/summary-step.test.tsx` | High | TASK-16 | ⬜ |
+| TC-COMP-11 | Amount step | UIR-TX-10, UIR-TX-11, UIR-TX-12, UIR-TX-13, UIR-TX-15, AC-TX-02, AC-TX-03, AC-TX-04, AC-TX-11 | caret preserved while formatting; balance linked as description; BR-02 live, BR-01 on continue; concept counter 40/40; balance error with retry | `src/features/transfer/amount-step.test.tsx` | High | TASK-16 | ✅ |
+| TC-COMP-12 | Summary step | UIR-TX-16, UIR-TX-17, UIR-TX-18 | all details; resulting balance (masked when hidden); specific edit actions; confirm label 'Enviar $250.00' | `src/features/transfer/summary-step.test.tsx` | High | TASK-16 | ✅ |
 | TC-COMP-13 | CancelTransferDialog | UIR-TX-20, A11Y-24 | asks only when data entered; Escape = keep editing; focus returns to Cancel | `src/features/transfer/cancel-dialog.test.tsx` | Medium | TASK-15 | ✅ |
 | TC-COMP-14 | Confirmation views | UIR-CONF-01, UIR-CONF-02, UIR-CONF-04, UIR-CONF-05, UIR-CONF-06, UIR-CONF-08, UIR-CONF-09, UIR-CONF-10, UIR-CONF-11 | processing busy; slow and verifying announced; each outcome view: heading focus, copy, actions, reference code; unresolved never asserts result | `src/features/confirmation/outcome-views.test.tsx` | High | TASK-18 | ⬜ |
 | TC-COMP-15 | Receipt | UIR-CONF-12, UIR-CONF-13, UIR-CONF-14, UIR-CONF-15 | all receipt fields; balance masked when hidden; copy folio → 'Folio copiado'; actions order; not-found view | `src/features/confirmation/receipt.test.tsx` | High | TASK-19 | ⬜ |
@@ -359,8 +359,8 @@ Levels and IDs follow the [specs README](../README.md#24-ids). Tests reference t
 | TC-E2E-10 | Hide balance | AC-HOME-08, UIR-HOME-05 | toggle, reload: still hidden; summary and receipt balances masked | `tests/e2e/home.spec.ts` | Medium | TASK-20 (written in TASK-13) | ✅ |
 | TC-E2E-11 | Transfer happy path | AC-TX-01, AC-CONF-01, AC-HOME-07, AC-HOME-09, UIR-HOME-10 | favorite → amount → summary → success receipt → Home shows new balance and first item | `tests/e2e/transfer.spec.ts` | High | TASK-20 | ⬜ |
 | TC-E2E-12 | New contact variants | AC-TX-06, AC-TX-07, AC-TX-08, AC-TX-09, AC-TX-10, AC-TX-16 | saved, one-off, duplicate, invalid fields, self-transfer, save failure (route-level forced 503) continues | `tests/e2e/transfer.spec.ts` | High | TASK-20 | ⬜ |
-| TC-E2E-13 | Amount rules, concept and edit | AC-TX-02, AC-TX-03, AC-TX-04, AC-TX-11, AC-TX-12 | zero, over balance (live), format, concept limit, edit amount from summary keeps recipient and concept | `tests/e2e/transfer.spec.ts` | High | TASK-20 | ⬜ |
-| TC-E2E-14 | Cancel and step guard | AC-TX-05, AC-TX-13 | direct /transfer/summary → recipient; cancel dialog keep/confirm; no transfer made | `tests/e2e/transfer.spec.ts` | High | TASK-20 | ⬜ |
+| TC-E2E-13 | Amount rules, concept and edit | AC-TX-02, AC-TX-03, AC-TX-04, AC-TX-11, AC-TX-12 | zero, over balance (live), format, concept limit, edit amount from summary keeps recipient and concept | `tests/e2e/transfer.spec.ts` | High | TASK-20 | ✅ |
+| TC-E2E-14 | Cancel and step guard | AC-TX-05, AC-TX-13 | direct /transfer/summary → recipient; cancel dialog keep/confirm; no transfer made | `tests/e2e/transfer.spec.ts` | High | TASK-20 | ✅ |
 | TC-E2E-15 | Network error and safe retry | AC-CONF-03, AC-CONF-04 | forced network_error → 'Tu dinero no se envió' → retry succeeds → exactly one transaction | `tests/e2e/confirmation.spec.ts` | High | TASK-20 | ⬜ |
 | TC-E2E-16 | Insufficient funds | AC-CONF-05 | forced insufficient_funds → updated balance → 'Cambiar monto' keeps amount with error | `tests/e2e/confirmation.spec.ts` | High | TASK-20 | ⬜ |
 | TC-E2E-17 | Timeout sub-cases | AC-CONF-06, AC-CONF-07, AC-CONF-08, AC-CONF-10 | shortened timings; timeout-completed → receipt; timeout-not-processed → not sent; timeout-unresolved → no assertion of result; never stuck in 'Enviando…' | `tests/e2e/confirmation.spec.ts` | High | TASK-20 | ⬜ |

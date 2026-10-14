@@ -118,12 +118,13 @@ all green. E2E when the task touches flows (TASK-20 owns the suite).
 
 ## 9. Current state
 
-- Done: TASK-01 to TASK-15. E2E auth and home suites green in all 4 projects.
-- **Next: TASK-16** (amount step: `MoneyInput`, concept, BR-01/02/04/15, balance error;
-  summary step with edit links and attempt key). `/transfer/amount` is a placeholder today.
+- Done: TASK-01 to TASK-16. E2E auth, home and transfer (TC-E2E-13/14) suites.
+- **Next: TASK-17** (transfers API: `POST /api/transfers` with idempotency key, rules
+  re-validated on the server, forced outcomes; `GET /api/transfers/attempts/{key}`).
+  `SummaryStep` already hands a `ConfirmableDraft` (with attempt key) to `onConfirm`.
 - Pending owner decision: demo-accounts hint on login step 1 and no demo code for
   unknown identifiers (non-production only).
-- Then: TASK-17 transfers API → TASK-18/19 confirmation and receipt → TASK-20/21/22.
+- Then: TASK-18/19 confirmation and receipt → TASK-20/21/22.
 
 ## 10. Known pitfalls
 
@@ -150,4 +151,4 @@ all green. E2E when the task touches flows (TASK-20 owns the suite).
   `@rolldown/binding-linux-*`, `@unrs/resolver-binding-linux-*`) must be installed with
   `--no-save` after every `npm install`. Not needed on the Mac itself.
 - E2E: logout redirects with `location.replace`; wait for `/login?reason=logged_out`
-  before the next `page.goto`, or WebKit reports the goto as interrupted (home.spec `logout`).
+  before the next `page.goto`, or WebKit reports the goto as interrupted (`logout` in `tests/e2e/session.ts`).
