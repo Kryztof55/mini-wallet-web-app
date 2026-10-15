@@ -1,9 +1,9 @@
 import { headers } from 'next/headers';
 import { redirect } from 'next/navigation';
 import type { ReactNode } from 'react';
-import { BfcacheGuard } from '@/components/bfcache-guard';
+import { BfcacheGuard } from '@/shared/components/bfcache-guard';
 import { sanitizeReturnTo } from '@/core/return-to';
-import { loginUrl, RETURN_TO_HEADER } from '@/lib/routes';
+import { loginUrl, RETURN_TO_HEADER } from '@/shared/lib/routes';
 import { logEvent } from '@/server/logging/logger';
 import { runInPageContext } from '@/server/logging/page-context';
 import { getSession } from '@/server/session/session';

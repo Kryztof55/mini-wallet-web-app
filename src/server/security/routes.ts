@@ -1,4 +1,4 @@
-import { LOGIN_PATH } from '@/lib/routes';
+import { LOGIN_PATH } from '@/shared/lib/routes';
 
 export type RouteKind = 'public-page' | 'private-page' | 'public-api' | 'private-api';
 

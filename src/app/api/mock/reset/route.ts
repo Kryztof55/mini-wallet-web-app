@@ -1,5 +1,5 @@
 import { domainError } from '@/core/errors';
-import { getConfig } from '@/lib/config';
+import { getConfig } from '@/shared/lib/config';
 import { errorResponse, noContent, withApi } from '@/server/http';
 import { logEvent } from '@/server/logging/logger';
 import { resetMockDb } from '@/server/mock/db';

@@ -7,8 +7,8 @@ import type { AttemptKey, ContactId, TransactionId, TransferId, UserId } from '@
 import { Money } from '@/core/money';
 import { err, ok, type Result } from '@/core/result';
 import { validateConcept, validateRecipient } from '@/core/transfer-rules';
-import { getConfig, type OutcomeWeights } from '@/lib/config';
-import { publicConfig } from '@/lib/public-config';
+import { getConfig, type OutcomeWeights } from '@/shared/lib/config';
+import { publicConfig } from '@/shared/lib/public-config';
 import { logEvent } from '@/server/logging/logger';
 import { resolveTransferOutcome, type TransferOutcome } from '@/server/mock/outcome-simulator';
 import { getRepositories } from '@/server/repositories';

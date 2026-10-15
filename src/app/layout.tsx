@@ -1,11 +1,11 @@
 import type { Metadata, Viewport } from 'next';
 import { cookies } from 'next/headers';
 import type { ReactNode } from 'react';
-import { LiveAnnouncerProvider } from '@/components/ui/live-announcer';
-import { ToastProvider } from '@/components/ui/toast';
-import { ThemeProvider } from '@/features/theme/theme-provider';
-import { t } from '@/lib/i18n/t';
-import { resolveThemePreference, THEME_COOKIE } from '@/lib/theme';
+import { LiveAnnouncerProvider } from '@/shared/ui/live-announcer';
+import { ToastProvider } from '@/shared/ui/toast';
+import { ThemeProvider } from '@/shared/components/theme';
+import { t } from '@/shared/lib/i18n/t';
+import { resolveThemePreference, THEME_COOKIE } from '@/shared/lib/theme';
 import './globals.css';
 
 export const metadata: Metadata = {

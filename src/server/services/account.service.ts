@@ -4,7 +4,7 @@ import type { UserId } from '@/core/ids';
 import type { Money } from '@/core/money';
 import { err, ok, type Result } from '@/core/result';
 import type { Transaction } from '@/core/transaction';
-import { getConfig } from '@/lib/config';
+import { getConfig } from '@/shared/lib/config';
 import { logEvent } from '@/server/logging/logger';
 import { getRepositories } from '@/server/repositories';
 import type { Repositories } from '@/server/repositories/ports';

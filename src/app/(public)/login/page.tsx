@@ -1,11 +1,11 @@
 import type { Metadata } from 'next';
 import { Suspense } from 'react';
-import { BfcacheGuard } from '@/components/bfcache-guard';
+import { BfcacheGuard } from '@/shared/components/bfcache-guard';
 import { sanitizeReturnTo } from '@/core/return-to';
-import { LoginView } from '@/features/auth/login-view';
-import { ThemeSwitcher } from '@/features/theme/theme-switcher';
-import { t } from '@/lib/i18n/t';
-import type { LoginReason } from '@/lib/routes';
+import { LoginView } from '@/features/auth/components/login-view';
+import { ThemeSwitcher } from '@/shared/components/theme';
+import { t } from '@/shared/lib/i18n/t';
+import type { LoginReason } from '@/shared/lib/routes';
 
 export const metadata: Metadata = { title: t('auth.title') };
 

@@ -1,6 +1,6 @@
 import type { UserId } from '@/core/ids';
 import { vi } from 'vitest';
-import { resetConfigCache } from '@/lib/config';
+import { resetConfigCache } from '@/shared/lib/config';
 import { resetMockDb } from '@/server/mock/db';
 
 export const TEST_ORIGIN = 'http://localhost:3000';

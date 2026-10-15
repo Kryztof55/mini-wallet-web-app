@@ -1,5 +1,5 @@
 import { z } from 'zod';
-import { getConfig } from '@/lib/config';
+import { getConfig } from '@/shared/lib/config';
 import { errorResponse, jsonOk, parseJsonBody, withApi } from '@/server/http';
 import { logForcedOutcome, readForcedOutcome } from '@/server/mock/controls';
 import { AUTH_CODE_OUTCOMES, getAuthService } from '@/server/services/auth.service';

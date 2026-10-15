@@ -1,6 +1,6 @@
 import { redirect } from 'next/navigation';
-import { SendAgain } from '@/features/transfer/send-again';
-import { loginUrl } from '@/lib/routes';
+import { SendAgain } from '@/features/transfer/components/send-again';
+import { loginUrl } from '@/shared/lib/routes';
 import { runInPageContext } from '@/server/logging/page-context';
 import { getTransfersService } from '@/server/services/transfers.service';
 import { getSession } from '@/server/session/session';

@@ -1,13 +1,12 @@
 import { cookies, headers } from 'next/headers';
 import { redirect } from 'next/navigation';
 import type { ReactNode } from 'react';
-import { HIDE_BALANCE_COOKIE } from '@/features/home/constants';
-import { HideBalanceProvider } from '@/features/home/hide-balance';
-import { AppHeader } from '@/features/home/home-header';
+import { HIDE_BALANCE_COOKIE, HideBalanceProvider } from '@/shared/components/hide-balance';
+import { AppHeader } from '@/shared/components/app-header';
 import { TransferDraftProvider } from '@/features/transfer/state/draft-context';
-import { TransferDataProvider, type TransferData } from '@/features/transfer/transfer-data';
-import { REQUEST_ID_HEADER } from '@/lib/observability/request-id';
-import { loginUrl } from '@/lib/routes';
+import { TransferDataProvider, type TransferData } from '@/features/transfer/state/transfer-data';
+import { REQUEST_ID_HEADER } from '@/shared/lib/observability/request-id';
+import { loginUrl } from '@/shared/lib/routes';
 import { runInPageContext } from '@/server/logging/page-context';
 import { getRepositories } from '@/server/repositories';
 import { getAccountService } from '@/server/services/account.service';

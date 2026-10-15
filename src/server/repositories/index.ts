@@ -1,5 +1,5 @@
 import 'server-only';
-import { getConfig } from '@/lib/config';
+import { getConfig } from '@/shared/lib/config';
 import { getMockDb } from '@/server/mock/db';
 import { createLatency } from '@/server/mock/latency';
 import { createInMemoryRepositories } from './in-memory';

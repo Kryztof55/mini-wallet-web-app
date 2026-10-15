@@ -1,8 +1,8 @@
 import { z } from 'zod';
 import { domainError } from '@/core/errors';
 import type { AttemptKey } from '@/core/ids';
-import { getConfig } from '@/lib/config';
-import { IDEMPOTENCY_KEY_HEADER } from '@/lib/http/client';
+import { getConfig } from '@/shared/lib/config';
+import { IDEMPOTENCY_KEY_HEADER } from '@/shared/lib/http/client';
 import { errorResponse, jsonOk, parseJsonBody, withApi } from '@/server/http';
 import { withSession } from '@/server/http/with-session';
 import { logForcedOutcome, readForcedOutcome } from '@/server/mock/controls';

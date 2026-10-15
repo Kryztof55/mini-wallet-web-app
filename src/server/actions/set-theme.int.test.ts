@@ -1,6 +1,6 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
-import { resetConfigCache } from '@/lib/config';
-import { THEME_COOKIE_MAX_AGE_SEC } from '@/lib/theme';
+import { resetConfigCache } from '@/shared/lib/config';
+import { THEME_COOKIE_MAX_AGE_SEC } from '@/shared/lib/theme';
 import { setThemeAction } from './set-theme';
 
 const cookieStore = { set: vi.fn() };

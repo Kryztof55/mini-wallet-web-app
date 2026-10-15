@@ -1,6 +1,6 @@
 import { z } from 'zod';
 import { domainError } from '@/core/errors';
-import { getConfig } from '@/lib/config';
+import { getConfig } from '@/shared/lib/config';
 import { errorResponse, jsonOk, withApi } from '@/server/http';
 import { withSession } from '@/server/http/with-session';
 import { logForcedOutcome, readForcedOutcome } from '@/server/mock/controls';

@@ -31,15 +31,17 @@ Define the structure every module follows so that business rules live once, ever
 
 | Layer | Responsibility | Location | May depend on |
 |---|---|---|---|
-| Presentation (UI) | Render state, capture input, implement UI rules (UIR-*) | `src/components/**`, `src/features/*/components` | Presentation logic, domain types |
-| Presentation logic | Screen state, reducers, hooks, calls through the HTTP client | `src/features/*/hooks`, `src/features/*/state` | Domain, HTTP client |
-| HTTP client (browser) | Typed calls, timeout/cancellation, correlation + idempotency headers, response → `Result` | `src/lib/http` | Domain |
+| Presentation (UI) | Render state, capture input, implement UI rules (UIR-*) | `src/features/*/components`, `src/shared/components`, `src/shared/ui` | Presentation logic, domain types |
+| Presentation logic | Screen state, reducers, hooks, calls through the API clients | `src/features/*/hooks`, `src/features/*/state`, `src/shared/hooks` | Domain, API clients |
+| HTTP client (browser) | Typed calls, timeout/cancellation, correlation + idempotency headers, response → `Result`; one client module per API (Zod contracts) | `src/shared/lib/http`, `src/shared/api` | Domain |
 | Interface (controllers) | Route Handlers: session, input parsing, call service, map errors to HTTP | `src/app/api/**/route.ts` | Server helpers, services |
 | Application (services) | Use cases; enforce BR-*; idempotency; logging | `src/server/services` (server-only) | Domain, repository ports |
 | Core (domain) | Types, value objects, pure rules and validators | `src/core` | Nothing |
 | Infrastructure (repositories, mocks) | In-memory data, simulated latency/outcomes, session/OTP stores | `src/server/repositories`, `src/server/mock` (server-only) | Domain (ports) |
 
-**Dependency rule:** arrows point inward (UI → logic → client → controllers → services → domain). The core imports nothing from the project, the framework or I/O; an ESLint `no-restricted-imports` rule on `src/core/**` enforces it. Services depend on repository **ports** (interfaces), not on the in-memory implementations. Server-only modules cannot be imported from client code (build fails).
+**Dependency rule:** arrows point inward (UI → logic → client → controllers → services → domain). The core imports nothing from the project, the framework or I/O. Services depend on repository **ports** (interfaces), not on the in-memory implementations. Server-only modules cannot be imported from client code (build fails).
+
+**Folder rule (ADR-010):** `app → features → shared → core`, and `server → shared/lib, core`. A feature never imports another feature; whatever two features need lives in `shared`. Inside `shared`: `components → ui, hooks, api → lib → core`. ESLint `no-restricted-imports` enforces every arrow (`eslint.config.mjs`).
 
 ### 3.2 Diagram
 
@@ -65,45 +67,38 @@ flowchart LR
 
 ```
 src/
-  app/
-    layout.tsx                    # <html lang="es-MX" data-theme>, providers, skip link
-    globals.css                   # design tokens per theme (§9)
+  app/                              # routes only (Next.js App Router)
+    layout.tsx                      # <html lang="es-MX" data-theme>, providers, skip link
+    globals.css                     # design tokens per theme (§9)
     (public)/login/page.tsx
-    (private)/layout.tsx          # authoritative session check (getSession)
-    (private)/page.tsx            # Home (streamed sections)
-    (private)/transfer/layout.tsx # TransferDraftProvider + step guard
+    (private)/layout.tsx            # authoritative session check (getSession)
+    (private)/page.tsx              # Home (streamed sections)
+    (private)/transfer/layout.tsx   # flow data + draft providers
     (private)/transfer/{recipient,amount,summary}/page.tsx
+    (private)/transfer/again/[transferId]/page.tsx
     (private)/receipts/[transferId]/page.tsx
-    api/auth/{code,verify,logout}/route.ts
-    api/me/{summary,transactions}/route.ts
-    api/contacts/route.ts
-    api/transfers/route.ts
-    api/transfers/attempts/[key]/route.ts
-    api/client-logs/route.ts
-    api/mock/reset/route.ts     # non-production only
-  proxy.ts                        # route gate: requestId, CSRF, session (Next.js 16 name for middleware; ADR-001)
-  instrumentation.ts              # logger init (ADR-006)
-  core/                           # domain: money, identifier, otp, contact, transfer, errors, result
-  server/                         # server-only
-    services/                     # auth, account, contacts, transfers, preferences
-    repositories/                 # ports + in-memory implementations
-    mock/                         # seed data, outcome simulator, latency
-    http/                         # controller helpers: withSession, parseBody, toResponse
-    session/                      # sign/verify cookie, getSession
-    logging/                      # logger, request context, redaction
-    actions/                      # theme Server Action
-  lib/
-    http/                         # browser HTTP client
-    config.ts                     # typed configuration (§8)
-    i18n/messages.es-MX.ts        # copy keys from FS §12
-    format/                       # money, dates, masking (shared, pure)
-  components/
-    ui/                           # base components (ADR-008)
-    wallet/                       # wallet-specific: MoneyText, MoneyInput, TransactionItem…
-  features/
-    auth/ home/ transfer/ confirmation/ theme/   # screen components, hooks, reducers
-tests/e2e/                        # Playwright
+    api/…/route.ts                  # controllers (auth, me, contacts, transfers, client-logs, mock)
+  proxy.ts                          # route gate: requestId, CSRF, session (ADR-001)
+  instrumentation.ts                # logger init (ADR-006)
+  core/                             # domain: pure TS rules and types, no React/Next/I/O
+  features/                         # one folder per product area; never import each other
+    auth/  home/  transfer/  receipt/
+      components/<name>/            # <name>.tsx · <name>.test.tsx · index.ts
+      hooks/<name>/                 # same shape
+      state/                        # reducers, contexts, view state
+  shared/                           # used by two or more features
+    ui/<name>/                      # primitives (ADR-008): button, dialog, text-field, toast…
+    components/<name>/              # product pieces: app-header, hide-balance, money-text, theme…
+    hooks/<name>/                   # use-section-retry
+    api/                            # browser clients of our API: auth, account, contacts, transfers
+    lib/                            # infrastructure for client and server: http, i18n, format, config, routes, observability
+  server/                           # server-only
+    services/  repositories/  mock/  http/  session/  security/  logging/  actions/
+  test/                             # test helpers (setup, axe, API helpers)
+tests/e2e/                          # Playwright
 ```
+
+Each component or hook folder has an `index.ts` that re-exports only that folder (named exports; `export *` is not allowed for client modules). Import the folder (`@/shared/ui/button`), never a file inside it, and never a central barrel.
 
 ### 3.4 Technology bindings
 
@@ -388,3 +383,4 @@ Per ADR-005 and the test plan. TS-00-specific: unit tests for `Money`, `parseIde
 | 1.6 | 2026-10-14 | Project owner | Wallet-specific components folder renamed `src/components/domain` → `src/components/wallet` (avoids confusion with `src/core`) |
 | 1.7 | 2026-10-14 | Claude (AI-assisted) | TASK-03: token implementation with `light-dark()` + `color-scheme`; secondary action tokens; contrast verified by TC-UNIT-24 |
 | 1.8 | 2026-10-14 | Claude (AI-assisted) | TASK-09: CSP with nonce from the proxy and static security headers |
+| 1.9 | 2026-10-14 | Project owner | ADR-010: folder structure `features / shared / core`, one folder per component with `index.ts`, ESLint-enforced dependency direction (§3.1, §3.3) |

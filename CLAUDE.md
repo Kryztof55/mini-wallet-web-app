@@ -37,20 +37,37 @@ unknown error) → Receipt. Deliverables also include `README.md`, `DECISIONS.md
 
 - Every artifact is in **English**: code, comments, specs, commit messages, docs.
 - User-facing copy is **Spanish (es-MX)**, defined in each FS §12 and implemented in
-  `src/lib/i18n/messages.es-MX.ts`. Components never hard-code text: use `t('key', params)`.
+  `src/shared/lib/i18n/messages.es-MX.ts`. Components never hard-code text: use `t('key', params)`.
   New keys go to the FS §12 table first.
 - The project owner talks in Spanish.
 
-## 4. Architecture rules (TS-00, ADR-001…009)
+## 4. Architecture rules (TS-00, ADR-001…010)
 
-| Layer         | Path                                                                                                               | Rule                                                                                                                                                                        |
-| ------------- | ------------------------------------------------------------------------------------------------------------------ | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Core (domain) | `src/core`                                                                                                         | Pure TS rules and types (`Money`, `parseIdentifier`, `validateAmount`, OTP, attempt states). Imports nothing from the project, React, Next or I/O — ESLint enforces it.     |
-| Server        | `src/server`                                                                                                       | `import 'server-only'`. Services return `Result`, never throw for expected failures. Repositories behind ports (`repositories/ports.ts`), in-memory mocks in `server/mock`. |
-| Controllers   | `src/app/api/**/route.ts`                                                                                          | Wrap with `withApi(route, handler)`; parse with `parseJsonBody(request, zodSchema)`; map errors with `errorResponse(domainError(code), requestId)`.                         |
-| Browser HTTP  | `src/lib/http/client.ts`                                                                                           | `request(method, path, { schema, body, timeoutMs, idempotencyKey })` → `Result`, never throws, always carries `requestId`.                                                  |
-| Shared pure   | `src/lib`                                                                                                          | config, formatting, i18n, theme, observability helpers.                                                                                                                     |
-| UI            | `src/components/ui` (base), `src/components/wallet` (wallet-specific), `src/features/*` (screens, hooks, reducers) | Presentation only. UI rules (`UIR-*`) live here; business rules (`BR-*`) are enforced on the server.                                                                        |
+**Folders (ADR-010).** `app → features → shared → core`; `server → shared/lib, core`. ESLint
+(`no-restricted-imports` in `eslint.config.mjs`) enforces every arrow.
+
+| Folder                         | What goes there                                                                                                                           |
+| ------------------------------ | ----------------------------------------------------------------------------------------------------------------------------------------- |
+| `src/app`                      | Routes only: pages, layouts, `api/**/route.ts` controllers.                                                                               |
+| `src/features/<area>`          | One product area (`auth`, `home`, `transfer`, `receipt`): `components/<name>/`, `hooks/<name>/`, `state/`. Never imports another feature. |
+| `src/shared/ui/<name>`         | Design-system primitives (Radix + tokens). Know nothing about the product.                                                                |
+| `src/shared/components/<name>` | Product pieces used by 2+ features: `app-header`, `hide-balance`, `money-text`, `theme`, `start-transfer-link`…                           |
+| `src/shared/hooks/<name>`      | Hooks used by 2+ features.                                                                                                                |
+| `src/shared/api`               | Browser clients of our API, one module per area with its Zod contract (`auth`, `account`, `contacts`, `transfers`).                       |
+| `src/shared/lib`               | Infrastructure for client and server: `http/client.ts`, `i18n`, `format`, `config`, `routes`, `observability`.                            |
+| `src/core`                     | Pure TS domain rules and types. Imports nothing from the project, React, Next or I/O.                                                     |
+| `src/server`                   | `import 'server-only'`. Services return `Result`; repositories behind ports; mocks in `server/mock`.                                      |
+
+- **One folder per component or hook**: `<name>.tsx`, `<name>.test.tsx`, `index.ts` with named
+  re-exports of that folder only (no `export *`: Next rejects it for client modules). Import the
+  folder (`@/shared/ui/button`), never a file inside it (ESLint), never a central barrel.
+- Used by one feature → it lives in that feature. Needed by a second feature → move it to
+  `shared` (don't import across features).
+- Controllers: `withApi(route, handler)`; parse with `parseJsonBody(request, zodSchema)`; map
+  errors with `errorResponse(domainError(code), requestId)`.
+- Browser HTTP: `request(method, path, { schema, body, timeoutMs, idempotencyKey })` →
+  `Result`, never throws, always carries `requestId`.
+- UI rules (`UIR-*`) live in the UI; business rules (`BR-*`) are enforced on the server.
 
 - Error codes: closed catalog in `src/core/errors.ts`, HTTP mapping in
   `src/server/http/status.ts` (TS-00 §5.2). The UI picks copy by `code`, never from the
@@ -120,9 +137,9 @@ all green. E2E when the task touches flows (TASK-20 owns the suite).
 
 - Done: TASK-01 to TASK-19 (the whole user flow). TASK-20: all 23 E2E green on 4 projects;
   pending the 10× stability run (`npx playwright test --repeat-each=10`).
-- **Next: folder-structure refactor** (owner request: clearer layers, one folder per component
-  with its test and `index.ts`, no central barrels; ADR + TS-00 §3.3 update; own branch). Then
-  TASK-21 and TASK-22 on `chore/m5-quality-delivery`.
+- Folder-structure refactor done (ADR-010) on `refactor/folder-structure`.
+- **Next: TASK-21** (a11y/responsive pass incl. Home masked-name spoken form, manual checks
+  TC-MAN-01…04) → TASK-22 delivery docs, on `chore/m5-quality-delivery`.
 - Pending owner decision: demo-accounts hint on login step 1 and no demo code for
   unknown identifiers (non-production only).
 - Then: TASK-21 a11y/responsive pass (incl. Home masked-name spoken form) → TASK-22 delivery docs
@@ -139,7 +156,8 @@ all green. E2E when the task touches flows (TASK-20 owns the suite).
 - Setting a cookie in a Server Action re-renders the current route on the server.
 - Anything exported from a `'use client'` module is a client reference on the server: a
   function can't be called and a constant is not its value (e.g. `buttonClasses` lives in
-  `button-classes.ts`, cookie names in `features/home/constants.ts`). Unit tests and the
+  `shared/ui/button/button-classes.ts`, the cookie name in
+  `shared/components/hide-balance/constants.ts`). Unit tests and the
   build don't catch it: check the server log, a static render or E2E.
 - `/login?reason=…` is never bounced by the proxy even with a valid cookie (avoids a loop
   when the session store lost the record). Private controllers:

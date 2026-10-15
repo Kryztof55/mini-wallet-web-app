@@ -1,10 +1,14 @@
 import { useEffect, type ReactNode } from 'react';
-import { LiveAnnouncerProvider } from '@/components/ui/live-announcer';
+import { LiveAnnouncerProvider } from '@/shared/ui/live-announcer';
 import type { Identifier } from '@/core/identifier';
 import { emptyDraft, type TransferDraft } from './state/draft';
 import { TransferDraftProvider, useDraft } from './state/draft-context';
-import { HideBalanceProvider } from '@/features/home/hide-balance';
-import { TransferDataProvider, type LoadBalance, type TransferData } from './transfer-data';
+import { HideBalanceProvider } from '@/shared/components/hide-balance';
+import {
+  TransferDataProvider,
+  type LoadBalance,
+  type TransferData,
+} from '@/features/transfer/state/transfer-data';
 
 export const OWN: readonly Identifier[] = [
   { kind: 'phone', value: '5512345678' } as Identifier,

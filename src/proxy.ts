@@ -1,9 +1,9 @@
 import { NextResponse, type NextRequest } from 'next/server';
 import { domainError } from '@/core/errors';
 import { sanitizeReturnTo } from '@/core/return-to';
-import { getConfig } from '@/lib/config';
-import { ensureRequestId, REQUEST_ID_HEADER } from '@/lib/observability/request-id';
-import { HOME_PATH, LOGIN_PATH, loginUrl, RETURN_TO_HEADER } from '@/lib/routes';
+import { getConfig } from '@/shared/lib/config';
+import { ensureRequestId, REQUEST_ID_HEADER } from '@/shared/lib/observability/request-id';
+import { HOME_PATH, LOGIN_PATH, loginUrl, RETURN_TO_HEADER } from '@/shared/lib/routes';
 import { errorResponse } from '@/server/http/respond';
 import { runWithRequestContext } from '@/server/logging/context';
 import { logEvent } from '@/server/logging/logger';

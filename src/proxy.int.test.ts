@@ -1,6 +1,6 @@
 import { NextRequest } from 'next/server';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
-import { resetConfigCache } from '@/lib/config';
+import { resetConfigCache } from '@/shared/lib/config';
 import { proxy } from './proxy';
 
 const ORIGIN = 'http://localhost:3000';

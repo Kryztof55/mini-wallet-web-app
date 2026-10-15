@@ -1,5 +1,5 @@
 import { afterEach, describe, expect, it, vi } from 'vitest';
-import { resetConfigCache } from '@/lib/config';
+import { resetConfigCache } from '@/shared/lib/config';
 import { getMockDb } from '@/server/mock/db';
 import { SEED_USER_IDS } from '@/server/mock/seed';
 import { POST } from './route';

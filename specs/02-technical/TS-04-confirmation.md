@@ -63,15 +63,23 @@ sequenceDiagram
 ### 3.3 Module structure
 
 ```
-src/features/confirmation/                     # useConfirmTransfer, outcome views
-src/app/(private)/transfer/summary/page.tsx    # hosts ConfirmButton and outcome views
+src/features/transfer/components/{transfer-confirmation,outcome-views}/   # hosted by the summary page
+src/features/transfer/hooks/use-confirm-transfer/
+src/features/transfer/state/confirm-state.ts
+src/features/receipt/components/{receipt-details,receipt-not-found,copy-folio-button}/
+src/shared/api/transfers.ts                    # POST /api/transfers, GET attempts client + receipt schema
+src/shared/lib/transfer-completion.ts          # completion marker (sessionStorage)
+src/shared/ui/view-heading/
+src/app/(private)/transfer/summary/page.tsx
 src/app/(private)/receipts/[transferId]/page.tsx
 src/app/api/transfers/route.ts
 src/app/api/transfers/attempts/[key]/route.ts
 src/server/services/transfers.service.ts
-src/server/repositories/{attempt,transfer}.repository.ts
+src/server/repositories/{ports,in-memory}.ts
 src/server/mock/outcome-simulator.ts
 ```
+
+**Folder structure (ADR-010):** the block above is current. Paths inside the *As built* notes below are those of the task that wrote them; ADR-010 maps them to today's folders.
 
 **As built (TASK-17):** no separate repository files; the ports in `src/server/repositories/ports.ts` gain `attempts.claim(userId, key, payloadHash, now)` (atomic check-and-set: claims a new key or a same-payload `not_processed` one, otherwise returns the stored attempt) and `ledger.commitTransfer(…)` (one atomic step: BR-02 against the current balance, debit, outgoing transaction, favorite `lastUsedAt`, receipt). In memory, atomicity comes from doing the check and the write with no `await` in between. Service order: claim → rules (BR-03/10/16 → BR-09 → BR-04/01 → BR-15) → BR-02 against the balance → simulated outcome → commit. A rule failure is stored as `failed`, so a retry with the same key returns the same `422`. `payloadHash` is SHA-256 of a fixed-order array (recipient, amount, currency, trimmed concept). Folio: `MW-` + 6 characters without 0/O/1/I/L. Timeout sub-cases sleep `simulatedDelays()` derived from the client timings: `late` = timeout + half the first check delay (11 s by default: after the client gives up, before its first check); `unresolved` = timeout + all check delays + 5 s (29 s), then `not_processed`. The status endpoint answers `not_processed` for a malformed key too.
 
@@ -284,3 +292,4 @@ Per FS-04 §13. Technical notes: one polite live region announces "Enviando", th
 | 1.1 | 2026-10-14 | Claude (AI-assisted) | TASK-17: §3.3 as-built (claim/commit ports, service order, delays), §16 two mock limitations |
 | 1.2 | 2026-10-14 | Claude (AI-assisted) | TASK-18: §3.3 as-built; success keeps the draft (documented deviation from §6, avoids a guard race) |
 | 1.3 | 2026-10-14 | Claude (AI-assisted) | TASK-19: §3.3 as-built (receipt page, send-again route, internal recipient reference, shared transfer/movement ID) |
+| 1.4 | 2026-10-14 | Project owner | Folder structure per ADR-010 (features / shared / core); §3.3 updated |

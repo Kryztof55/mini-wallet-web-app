@@ -57,12 +57,18 @@ stateDiagram-v2
 ```
 src/app/(private)/transfer/layout.tsx           # server: session, initial balance + favorites; client provider
 src/app/(private)/transfer/{recipient,amount,summary}/page.tsx
-src/features/transfer/                           # steps, draft reducer, hooks
-src/components/wallet/{MoneyInput,ContactItem,RecipientContext}.tsx
+src/app/(private)/transfer/again/[transferId]/page.tsx
+src/features/transfer/components/{recipient-step,amount-step,summary-step,new-contact-form,favorites-section,concept-field,money-input,contact-item,recipient-context,avatar,step-heading,cancel-transfer,send-again}/
+src/features/transfer/hooks/{use-step-guard,use-save-contact,use-amount-field}/
+src/features/transfer/state/{draft,draft-context,transfer-data}.ts(x)
+src/shared/api/contacts.ts                      # GET/POST /api/contacts client
+src/shared/components/{detail-row,masked-identifier,money-text,hide-balance}/
 src/app/api/contacts/route.ts
 src/server/services/contacts.service.ts
-src/core/{money,transfer-rules,contact}.ts
+src/core/{money,money-input,transfer-rules,contact,text}.ts
 ```
+
+**Folder structure (ADR-010):** the block above is current. Paths inside the *As built* notes below are those of the task that wrote them; ADR-010 maps them to today's folders.
 
 **As built (TASK-15):** `FavoritesList` → `favorites-section.tsx`; `CancelTransferDialog` → `CancelTransfer` (`cancel-transfer.tsx`); `useTransferDraft` → `useDraft` / `useDraftDispatch`; `contactsApi.create` → `contactsApi.save`. Added `TransferDataProvider` (server data as `Loaded<T>`), `StepHeading`, `Avatar` and `MaskedIdentifierText` (`src/components/wallet/masked-identifier.tsx`, spoken form via `parseMaskedIdentifier` in `src/core/identifier.ts`). The draft also carries `notice` (saved / duplicate / save-failed, shown once on the amount step) and `completed` (UIR-TX-21).
 
@@ -236,3 +242,4 @@ Per FS-03 §13. Technical notes: `MoneyInput` keeps a visible label and `aria-de
 | 1.1 | 2026-10-14 | Project owner | Wallet-specific components folder renamed `src/components/domain` → `src/components/wallet` (avoids confusion with `src/core`) |
 | 1.2 | 2026-10-14 | Claude (AI-assisted) | TASK-15: §3.3 as-built names; draft adds `notice` and `completed` (no behavior change to the contracts) |
 | 1.3 | 2026-10-14 | Claude (AI-assisted) | TASK-16: §3.3 as-built notes for amount, concept, balance retry and summary |
+| 1.4 | 2026-10-14 | Project owner | Folder structure per ADR-010 (features / shared / core); §3.3 updated |

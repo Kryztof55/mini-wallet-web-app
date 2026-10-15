@@ -3,9 +3,9 @@
 import 'server-only';
 import { cookies, headers } from 'next/headers';
 import type { ErrorCode } from '@/core/errors';
-import { getConfig } from '@/lib/config';
-import { ensureRequestId, REQUEST_ID_HEADER } from '@/lib/observability/request-id';
-import type { ThemePreference } from '@/lib/theme';
+import { getConfig } from '@/shared/lib/config';
+import { ensureRequestId, REQUEST_ID_HEADER } from '@/shared/lib/observability/request-id';
+import type { ThemePreference } from '@/shared/lib/theme';
 import { runWithRequestContext } from '@/server/logging/context';
 import { logEvent } from '@/server/logging/logger';
 import { setThemePreference } from '@/server/services/preferences.service';

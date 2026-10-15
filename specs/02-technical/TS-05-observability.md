@@ -57,9 +57,11 @@ src/proxy.ts                 # ensureRequestId
 src/instrumentation.ts
 src/server/logging/{logger,context,events,redaction}.ts
 src/app/api/client-logs/route.ts
-src/lib/observability/report-client-event.ts
-src/components/ui/ReferenceCode.tsx
+src/shared/lib/observability/{request-id,report-client-event}.ts
+src/shared/ui/reference-code/
 ```
+
+**Folder structure (ADR-010):** the block above is current. Paths inside the *As built* notes below are those of the task that wrote them; ADR-010 maps them to today's folders.
 
 ### 3.4 Technology bindings
 
@@ -209,3 +211,4 @@ Logging never throws into business code: logger failures are swallowed after a b
 | 1.1 | 2026-10-14 | Claude (AI-assisted) | TASK-07: error code field renamed `errorCode` (conflicted with the redacted `code` path); redaction paths listed as implemented |
 | 1.2 | 2026-10-14 | Claude (AI-assisted) | TASK-08: client-logs error codes made explicit (`PAYLOAD_TOO_LARGE`, `UNSUPPORTED_MEDIA_TYPE`); the request summary line is written by the `withApi` controller wrapper |
 | 1.3 | 2026-10-14 | Claude (AI-assisted) | TASK-03: `prefs.theme.rejected` for invalid theme values sent to the Server Action |
+| 1.4 | 2026-10-14 | Project owner | Folder structure per ADR-010 (features / shared / core); §3.3 updated |

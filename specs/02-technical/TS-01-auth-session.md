@@ -64,19 +64,26 @@ sequenceDiagram
 ### 3.3 Module structure
 
 ```
-src/features/auth/            # components, useLoginFlow, useCountdown
+src/features/auth/components/{login-view,identifier-step,code-step,one-time-code-field,resend-countdown,session-notice,step-error}/
+src/features/auth/hooks/{use-login-flow,use-countdown}/
+src/features/auth/state/login-state.ts
+src/shared/api/auth.ts                   # POST /api/auth/{code,verify,logout} client
+src/shared/components/app-header/        # AppHeader + LogoutButton
 src/app/(public)/login/page.tsx
 src/app/api/auth/{code,verify,logout}/route.ts
 src/proxy.ts
 src/server/session/{cookie,session}.ts   # sign/verify, cookie serialize/read; getSession, createSession, destroySession
 src/server/security/{csrf,routes,csp}.ts # CSRF layers 2–3, route classification, CSP with nonce
 src/server/http/with-session.ts          # controller authority wrapper
-src/lib/routes.ts                        # loginUrl(), LOGIN_PATH, RETURN_TO_HEADER
+src/shared/lib/routes.ts                 # loginUrl(), LOGIN_PATH, RETURN_TO_HEADER, HIGHLIGHT_PARAM
+src/shared/components/bfcache-guard/     # reload on bfcache restore of private pages
 src/app/(private)/layout.tsx             # page authority
 src/server/services/auth.service.ts
-src/server/repositories/{user,otp-challenge,session}.repository.ts
+src/server/repositories/{ports,in-memory}.ts
 src/core/{identifier,otp,return-to}.ts
 ```
+
+**Folder structure (ADR-010):** the block above is current. Paths inside the *As built* notes below are those of the task that wrote them; ADR-010 maps them to today's folders.
 
 ### 3.4 Technology bindings
 
@@ -296,3 +303,4 @@ Per FS-01 §13. Technical notes: `autocomplete="username"` + `inputmode="email"`
 | 1.2 | 2026-10-14 | Claude (AI-assisted) | TASK-09: module files, secure-by-default route classification, `x-return-to`, no-bounce rule for `/login?reason=…`, `withSession` |
 | 1.3 | 2026-10-14 | Claude (AI-assisted) | TASK-10: `OtpDelivery` port, decoy behavior, `otp_expired` persistence, single-use codes, log origins |
 | 1.4 | 2026-10-14 | Claude (AI-assisted) | Canonical signature encoding required |
+| 1.5 | 2026-10-14 | Project owner | Folder structure per ADR-010 (features / shared / core); §3.3 updated |

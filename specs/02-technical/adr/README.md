@@ -15,3 +15,4 @@ An accepted ADR is never edited; a new one supersedes it.
 | [ADR-007](./ADR-007-theming.md) | Semantic CSS tokens + cookie-backed theme, CSS `prefers-color-scheme` for system | Accepted |
 | [ADR-008](./ADR-008-ui-component-strategy.md) | Radix primitives + own domain components + Tailwind on tokens | Accepted |
 | [ADR-009](./ADR-009-runtime-validation-at-boundaries.md) | Zod schemas for runtime validation at boundaries | Accepted |
+| [ADR-010](./ADR-010-folder-structure.md) | Folder structure `features / shared / core`, one folder per component, ESLint-enforced boundaries | Accepted |

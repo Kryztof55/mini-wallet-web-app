@@ -1,7 +1,7 @@
 import { NextRequest } from 'next/server';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import type { UserId } from '@/core/ids';
-import { resetConfigCache } from '@/lib/config';
+import { resetConfigCache } from '@/shared/lib/config';
 import { withApi } from '@/server/http/handler';
 import { withSession } from '@/server/http/with-session';
 import { getRequestContext } from '@/server/logging/context';

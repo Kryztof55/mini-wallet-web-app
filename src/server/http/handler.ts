@@ -1,5 +1,5 @@
 import 'server-only';
-import { ensureRequestId, REQUEST_ID_HEADER } from '@/lib/observability/request-id';
+import { ensureRequestId, REQUEST_ID_HEADER } from '@/shared/lib/observability/request-id';
 import { runWithRequestContext } from '@/server/logging/context';
 import { logEvent } from '@/server/logging/logger';
 import { internalErrorResponse } from './respond';

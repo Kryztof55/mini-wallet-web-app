@@ -54,12 +54,17 @@ flowchart TD
 
 ```
 src/app/(private)/page.tsx
-src/features/home/            # sections, SectionError, useSectionRetry, useHideBalance
-src/components/wallet/        # BalanceCard, TransactionItem, MoneyText
+src/features/home/components/{sections,balance-card,transaction-item,activity-list,activity-retry,balance-retry,skeletons,send-money-action}/
+src/features/home/{data,activity-view}.ts
+src/shared/components/{hide-balance,money-text,app-header,start-transfer-link}/
+src/shared/hooks/use-section-retry/
+src/shared/api/account.ts                # GET /api/me/{summary,transactions} client
 src/app/api/me/{summary,transactions}/route.ts
 src/server/services/account.service.ts
-src/server/repositories/{account,transaction}.repository.ts
+src/server/repositories/{ports,in-memory}.ts
 ```
+
+**Folder structure (ADR-010):** the block above is current. Paths inside the *As built* notes below are those of the task that wrote them; ADR-010 maps them to today's folders.
 
 ### 3.4 Technology bindings
 
@@ -210,3 +215,4 @@ Per FS-02 §13. Technical notes: list as `<ul>` with each `TransactionItem` as `
 | 1.1 | 2026-10-14 | Project owner | Wallet-specific components folder renamed `src/components/domain` → `src/components/wallet` (avoids confusion with `src/core`) |
 | 1.2 | 2026-10-14 | Claude (AI-assisted) | TASK-12: 400 for a non-numeric limit, response without owner ID, outages modelled in repositories |
 | 1.3 | 2026-10-14 | Claude (AI-assisted) | TASK-13: view models built where data is fetched, request dedupe, constants outside client modules |
+| 1.4 | 2026-10-14 | Project owner | Folder structure per ADR-010 (features / shared / core); §3.3 updated |

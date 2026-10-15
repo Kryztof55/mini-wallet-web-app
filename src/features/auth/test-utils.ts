@@ -1,8 +1,8 @@
 import { vi } from 'vitest';
 import type { ErrorDetails } from '@/core/errors';
 import { err, ok } from '@/core/result';
-import type { ClientErrorCode } from '@/lib/http/client';
-import type { AuthApi, CodeIssued } from './api';
+import type { ClientErrorCode } from '@/shared/lib/http/client';
+import type { AuthApi, CodeIssued } from '@/shared/api/auth';
 
 export const REQUEST_ID = '3f9a12c4-5b6d-4e7f-8a9b-0c1d2e3f4a5b';
 

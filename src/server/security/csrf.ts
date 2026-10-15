@@ -1,4 +1,4 @@
-import { isValidRequestId, REQUEST_ID_HEADER } from '@/lib/observability/request-id';
+import { isValidRequestId, REQUEST_ID_HEADER } from '@/shared/lib/observability/request-id';
 
 export const STATE_CHANGING_METHODS: ReadonlySet<string> = new Set([
   'POST',

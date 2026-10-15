@@ -1,6 +1,6 @@
 import 'server-only';
 import { domainError, type DomainError } from '@/core/errors';
-import { REQUEST_ID_HEADER } from '@/lib/observability/request-id';
+import { REQUEST_ID_HEADER } from '@/shared/lib/observability/request-id';
 import { HTTP_STATUS_BY_CODE, messageForStatus } from './status';
 
 const BASE_HEADERS = { 'Cache-Control': 'no-store' } as const;

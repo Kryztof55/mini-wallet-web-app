@@ -1,6 +1,6 @@
 import type { Metadata } from 'next';
-import { RecipientStep } from '@/features/transfer/recipient-step';
-import { t } from '@/lib/i18n/t';
+import { RecipientStep } from '@/features/transfer/components/recipient-step';
+import { t } from '@/shared/lib/i18n/t';
 
 export const metadata: Metadata = { title: `${t('tx.step.recipient')} · ${t('tx.title')}` };
 

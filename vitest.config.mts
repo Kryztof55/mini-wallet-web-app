@@ -4,7 +4,7 @@ import { defineConfig } from 'vitest/config';
 
 /**
  * Test levels (ADR-005, test plan §2):
- * - "node": unit (core, lib), integration (route handlers, services, middleware)
+ * - "node": unit (core, shared/lib), integration (route handlers, services, proxy)
  * - "dom":  presentation logic (hooks) and component tests, in jsdom
  */
 export default defineConfig({
@@ -33,7 +33,8 @@ export default defineConfig({
           environment: 'node',
           include: [
             'src/core/**/*.test.ts',
-            'src/lib/**/*.test.ts',
+            'src/shared/lib/**/*.test.ts',
+            'src/shared/api/**/*.test.ts',
             'src/server/**/*.test.ts',
             'src/app/**/*.test.ts',
             'src/*.test.ts',
@@ -50,7 +51,9 @@ export default defineConfig({
           include: [
             'src/**/*.test.tsx',
             'src/features/**/*.test.ts',
-            'src/components/**/*.test.ts',
+            'src/shared/ui/**/*.test.ts',
+            'src/shared/components/**/*.test.ts',
+            'src/shared/hooks/**/*.test.ts',
           ],
         },
       },

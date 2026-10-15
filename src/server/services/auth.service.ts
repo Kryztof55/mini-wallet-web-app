@@ -17,8 +17,8 @@ import {
 } from '@/core/otp';
 import { err, ok, type Result } from '@/core/result';
 import { sanitizeReturnTo, type SafeReturnTo } from '@/core/return-to';
-import { getConfig } from '@/lib/config';
-import { DEFAULT_TIME_ZONE } from '@/lib/format/date';
+import { getConfig } from '@/shared/lib/config';
+import { DEFAULT_TIME_ZONE } from '@/shared/lib/format/date';
 import { logEvent } from '@/server/logging/logger';
 import { getRepositories } from '@/server/repositories';
 import type { Repositories, Session } from '@/server/repositories/ports';

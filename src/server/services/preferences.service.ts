@@ -6,7 +6,7 @@ import {
   THEME_COOKIE,
   THEME_COOKIE_MAX_AGE_SEC,
   type ThemePreference,
-} from '@/lib/theme';
+} from '@/shared/lib/theme';
 
 /** The subset of Next's cookie store the service needs; keeps the service framework-free. */
 export type CookieWriter = {

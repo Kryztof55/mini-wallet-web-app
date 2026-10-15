@@ -1,5 +1,5 @@
 import 'server-only';
-import type { OutcomeKey, OutcomeWeights } from '@/lib/config';
+import type { OutcomeKey, OutcomeWeights } from '@/shared/lib/config';
 
 /** Simulated results of a transfer submission (TS-00 §9.2). */
 export const TRANSFER_OUTCOMES = [

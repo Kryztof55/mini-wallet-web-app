@@ -1,9 +1,9 @@
 import type { Money } from '@/core/money';
 import type { TransactionDirection, TransactionStatus } from '@/core/transaction';
-import { formatFullDateTime, formatRelativeDate } from '@/lib/format/date';
-import { formatSignedAmount } from '@/lib/format/money';
-import { initialsOf } from '@/lib/format/initials';
-import { t } from '@/lib/i18n/t';
+import { formatFullDateTime, formatRelativeDate } from '@/shared/lib/format/date';
+import { formatSignedAmount } from '@/shared/lib/format/money';
+import { initialsOf } from '@/shared/lib/format/initials';
+import { t } from '@/shared/lib/i18n/t';
 
 /** What the API returns for an activity item (TS-02 §4). */
 export type ActivityItemData = {
