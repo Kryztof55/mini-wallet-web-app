@@ -68,24 +68,51 @@ press “Verificar”. Any other phone or email is not a demo account: no code i
 **Recommended for reviewers: `ana@demo.mx`.** Phones are also accepted as
 `+52 55 1234 5678` or `(55) 1234-5678`.
 
+> **Transfer confirmations answer randomly** (success, network error, insufficient funds,
+> timeout, unknown error). Send several transfers to see every case — see
+> [Trying each confirmation outcome](#trying-each-confirmation-outcome).
+
 The one-time code is random per request, valid 5 minutes, 3 attempts; a new code can be
 requested after 30 s. Mock data lives in server memory: transfers and new contacts persist
 while the server runs and reset on restart.
 
 ### Trying each confirmation outcome
 
-The confirmation is **random** by default, as the challenge asks: success 60 %, network
-error 10 %, insufficient funds 10 %, timeout 10 %, unknown error 10 %. To see one outcome
-every time, set its weight in `.env.local` and restart, e.g.:
+**The transfer confirmation answers randomly on purpose**, as the challenge asks: every
+time you press **“Enviar $…”** on the summary, the mock server picks one outcome. **To see
+the different cases, send several transfers** (e.g. with `ana@demo.mx`, $10 to Luis Pérez)
+and you will get a different screen from time to time:
+
+| Outcome            | Chance | What you see                                                                                                                                                          |
+| ------------------ | ------ | --------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Success            | 60 %   | Receipt: “Envío realizado”, with folio, date and the new balance                                                                                                      |
+| Network error      | 10 %   | “No pudimos conectarnos”: the money was not sent; “Intentar de nuevo” retries safely                                                                                  |
+| Insufficient funds | 10 %   | “No tienes saldo suficiente”, with the current balance and “Cambiar monto”                                                                                            |
+| Timeout            | 10 %   | “Esto está tardando un poco más de lo normal…”, then “Estamos verificando tu envío…”; the app checks the status and ends on the receipt (the transfer completed late) |
+| Unknown error      | 10 %   | “No pudimos completar tu envío”: generic fallback that does not claim whether the money moved, with a reference code, a safe retry and “Ir al inicio”                 |
+
+Things to know while trying them:
+
+- **Retries are safe:** “Intentar de nuevo” reuses the same attempt, so a transfer is never
+  charged twice, and the retry gets a new random answer.
+- **Data persists while the server runs:** each success lowers the balance and appears in
+  Home's activity. Restart the server to start again from the seed data.
+- **Business rules are not random:** an amount of zero, above your balance, or with no
+  recipient is always rejected before or at confirmation.
+
+**To see one outcome every time** instead of waiting for it, set its weight in `.env.local`
+and restart the server:
 
 ```bash
 OUTCOME_WEIGHTS=network_error:100      # or insufficient_funds / timeout / unknown_error
+OUTCOME_WEIGHTS=success:50,timeout:50  # or any mix; the default is 60/10/10/10/10
 ```
 
-Tests force outcomes per request with the `x-mock-outcome` header (including the three
-timeout sub-cases: completed late, not processed, unresolved). Demo aids — the code hint,
-`x-mock-outcome`, `POST /api/mock/reset` — exist only when `MOCK_CONTROLS_ENABLED=true`
-and are always off with `APP_ENV=production`.
+The E2E tests force each outcome per request with the `x-mock-outcome` header, including
+the three timeout sub-cases: completed late, not processed, and unresolved (“No pudimos
+confirmar el estado de tu envío”). Demo aids — the code hint, `x-mock-outcome`,
+`POST /api/mock/reset` — exist only when `MOCK_CONTROLS_ENABLED=true` and are always off
+with `APP_ENV=production`.
 
 ## Scripts
 
