@@ -1,4 +1,4 @@
-import { parseMaskedIdentifier } from '@/core/identifier';
+import { parseMaskedIdentifier } from '@/core/identity';
 import { t } from '@/shared/lib/i18n/t';
 
 /** Words a screen reader can say for a mask; falls back to the mask itself. */

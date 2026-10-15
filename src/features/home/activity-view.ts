@@ -1,5 +1,5 @@
 import type { Money } from '@/core/money';
-import type { TransactionDirection, TransactionStatus } from '@/core/transaction';
+import type { TransactionDirection, TransactionStatus } from '@/core/transfers';
 import { formatFullDateTime, formatRelativeDate } from '@/shared/lib/format/date';
 import { formatSignedAmount } from '@/shared/lib/format/money';
 import { initialsOf } from '@/shared/lib/format/initials';

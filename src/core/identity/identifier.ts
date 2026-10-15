@@ -1,6 +1,6 @@
-import type { Brand } from './brand';
-import { domainError, type DomainError } from './errors';
-import { err, ok, type Result } from './result';
+import type { Brand } from '@/core/common';
+import { domainError, type DomainError } from '@/core/common';
+import { err, ok, type Result } from '@/core/common';
 
 /** Ten-digit Mexican phone number, digits only (ASM-01). */
 export type PhoneNumber = Brand<string, 'PhoneNumber'>;

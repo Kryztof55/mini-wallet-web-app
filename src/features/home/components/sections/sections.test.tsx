@@ -3,7 +3,7 @@ import userEvent from '@testing-library/user-event';
 import type { ReactElement } from 'react';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { LiveAnnouncerProvider } from '@/shared/ui/live-announcer';
-import { err, ok } from '@/core/result';
+import { err, ok } from '@/core/common';
 import { ThemeProvider } from '@/shared/components/theme';
 import { SEED_USER_IDS } from '@/server/mock/seed';
 import { setupApiEnv, teardownApiEnv } from '@/test/api';

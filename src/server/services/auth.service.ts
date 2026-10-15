@@ -1,12 +1,12 @@
 import 'server-only';
 import { randomInt } from 'node:crypto';
-import { domainError, type DomainError } from '@/core/errors';
+import { domainError, type DomainError } from '@/core/common';
 import {
   identifierKey,
   maskIdentifier,
   parseIdentifier,
   type MaskedIdentifier,
-} from '@/core/identifier';
+} from '@/core/identity';
 import {
   canIssueCode,
   evaluateOtpAttempt,
@@ -14,9 +14,9 @@ import {
   parseOtpCode,
   type OtpChallenge,
   type OtpPolicy,
-} from '@/core/otp';
-import { err, ok, type Result } from '@/core/result';
-import { sanitizeReturnTo, type SafeReturnTo } from '@/core/return-to';
+} from '@/core/auth';
+import { err, ok, type Result } from '@/core/common';
+import { sanitizeReturnTo, type SafeReturnTo } from '@/core/auth';
 import { getConfig } from '@/shared/lib/config';
 import { DEFAULT_TIME_ZONE } from '@/shared/lib/format/date';
 import { logEvent } from '@/server/logging/logger';

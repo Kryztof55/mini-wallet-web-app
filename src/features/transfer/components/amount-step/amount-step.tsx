@@ -9,7 +9,7 @@ import { Notice } from '@/shared/ui/notice';
 import { MoneyInput } from '@/features/transfer/components/money-input';
 import { RecipientContext } from '@/features/transfer/components/recipient-context';
 import type { Money } from '@/core/money';
-import { validateConcept } from '@/core/transfer-rules';
+import { validateConcept } from '@/core/transfers';
 import { formatMoney } from '@/shared/lib/format/money';
 import { t } from '@/shared/lib/i18n/t';
 import { CancelTransfer } from '@/features/transfer/components/cancel-transfer';

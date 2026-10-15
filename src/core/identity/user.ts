@@ -1,5 +1,5 @@
 import type { Identifier } from './identifier';
-import type { UserId } from './ids';
+import type { UserId } from '@/core/common';
 
 export type User = {
   readonly id: UserId;

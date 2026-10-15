@@ -1,15 +1,15 @@
 import 'server-only';
-import type { Contact } from '@/core/contact';
+import type { Contact } from '@/core/contacts';
 import {
   maskIdentifier,
   type EmailAddress,
   type Identifier,
   type PhoneNumber,
-} from '@/core/identifier';
-import type { ContactId, TransactionId, UserId } from '@/core/ids';
+} from '@/core/identity';
+import type { ContactId, TransactionId, UserId } from '@/core/common';
 import type { Money } from '@/core/money';
-import type { Transaction, TransactionDirection, TransactionStatus } from '@/core/transaction';
-import type { User } from '@/core/user';
+import type { Transaction, TransactionDirection, TransactionStatus } from '@/core/transfers';
+import type { User } from '@/core/identity';
 
 /** Simulated failures attached to seeded users (TS-00 §9.1). */
 export type MockBehaviors = {

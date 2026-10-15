@@ -1,6 +1,6 @@
 import { useEffect, type ReactNode } from 'react';
 import { LiveAnnouncerProvider } from '@/shared/ui/live-announcer';
-import type { Identifier } from '@/core/identifier';
+import type { Identifier } from '@/core/identity';
 import { emptyDraft, type TransferDraft } from './state/draft';
 import { TransferDraftProvider, useDraft } from './state/draft-context';
 import { HideBalanceProvider } from '@/shared/components/hide-balance';

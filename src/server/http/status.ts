@@ -1,5 +1,5 @@
 import 'server-only';
-import type { ErrorCode } from '@/core/errors';
+import type { ErrorCode } from '@/core/common';
 
 /** Error code → HTTP status (TS-00 §5.2). Exhaustive: adding a code without a status fails to compile. */
 export const HTTP_STATUS_BY_CODE: Readonly<Record<ErrorCode, number>> = {

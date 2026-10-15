@@ -1,9 +1,9 @@
 'use client';
 
 import { useCallback, useState } from 'react';
-import { formatAmountText, moneyToAmountText, parseAmountInput } from '@/core/money-input';
+import { formatAmountText, moneyToAmountText, parseAmountInput } from '@/core/money';
 import { Money } from '@/core/money';
-import { validateAmount } from '@/core/transfer-rules';
+import { validateAmount } from '@/core/transfers';
 
 /** `min` = BR-01 (empty or zero), `balance` = BR-02 (more than the available balance). */
 export type AmountError = 'min' | 'balance';

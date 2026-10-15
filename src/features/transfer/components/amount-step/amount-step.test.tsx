@@ -1,7 +1,7 @@
 import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
-import { err, ok } from '@/core/result';
+import { err, ok } from '@/core/common';
 import { getA11yViolations } from '@/test/axe';
 import { AmountStep } from './amount-step';
 import { emptyDraft, type TransferDraft } from '@/features/transfer/state/draft';

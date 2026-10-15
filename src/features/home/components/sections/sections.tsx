@@ -1,6 +1,6 @@
 import { headers } from 'next/headers';
 import { BalanceCard } from '@/features/home/components/balance-card';
-import type { UserId } from '@/core/ids';
+import type { UserId } from '@/core/common';
 import { t } from '@/shared/lib/i18n/t';
 import { REQUEST_ID_HEADER } from '@/shared/lib/observability/request-id';
 import { ActivityList } from '@/features/home/components/activity-list';

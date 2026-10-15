@@ -1,6 +1,6 @@
 import 'server-only';
-import type { Contact } from '@/core/contact';
-import type { Identifier, MaskedIdentifier } from '@/core/identifier';
+import type { Contact } from '@/core/contacts';
+import type { Identifier, MaskedIdentifier } from '@/core/identity';
 import type {
   AttemptKey,
   ContactId,
@@ -8,14 +8,14 @@ import type {
   TransactionId,
   TransferId,
   UserId,
-} from '@/core/ids';
+} from '@/core/common';
 import type { Money } from '@/core/money';
-import type { OtpChallenge } from '@/core/otp';
-import type { Transaction } from '@/core/transaction';
-import type { TransferStatus } from '@/core/transfer-attempt';
-import type { User } from '@/core/user';
-import type { DomainError } from '@/core/errors';
-import type { Result } from '@/core/result';
+import type { OtpChallenge } from '@/core/auth';
+import type { Transaction } from '@/core/transfers';
+import type { TransferStatus } from '@/core/transfers';
+import type { User } from '@/core/identity';
+import type { DomainError } from '@/core/common';
+import type { Result } from '@/core/common';
 
 /**
  * Repository ports (TS-00 §3.1). Services depend on these interfaces only; the in-memory

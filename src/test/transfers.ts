@@ -1,6 +1,6 @@
 import { SEED_USER_IDS } from '@/server/mock/seed';
 import { getMockDb } from '@/server/mock/db';
-import type { UserId } from '@/core/ids';
+import type { UserId } from '@/core/common';
 import { jsonGet, jsonPost, sessionCookieFor } from './api';
 
 /** A valid transfer from Ana to her favorite Luis: $250.00, "Tacos". */

@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import type { Identifier } from '@/core/identifier';
+import type { Identifier } from '@/core/identity';
 import type { Money } from '@/core/money';
 import {
   draftFingerprint,

@@ -2,7 +2,7 @@ import { render, screen, waitFor, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { ANNOUNCE_DELAY_MS } from '@/shared/ui/live-announcer';
-import { err, ok, type Result } from '@/core/result';
+import { err, ok, type Result } from '@/core/common';
 import { draftFingerprint, emptyDraft, type TransferDraft } from '@/features/transfer/state/draft';
 import { draftProbe, mxn, RECIPIENT, TransferProviders } from '@/features/transfer/test-utils';
 import type { ClientError, ClientSuccess } from '@/shared/lib/http/client';

@@ -1,5 +1,5 @@
-import { domainError, type DomainError } from './errors';
-import { err, ok, type Result } from './result';
+import { domainError, type DomainError } from '@/core/common';
+import { err, ok, type Result } from '@/core/common';
 
 export const OTP_LENGTH = 6;
 

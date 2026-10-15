@@ -9,10 +9,10 @@ import {
   useState,
   type ReactNode,
 } from 'react';
-import { compareByRecentUse } from '@/core/contact';
-import type { Identifier } from '@/core/identifier';
+import { compareByRecentUse } from '@/core/contacts';
+import type { Identifier } from '@/core/identity';
 import type { Money } from '@/core/money';
-import type { Result } from '@/core/result';
+import type { Result } from '@/core/common';
 import { homeApi } from '@/shared/api/account';
 import type { ClientError } from '@/shared/lib/http/client';
 

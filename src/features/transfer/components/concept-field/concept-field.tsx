@@ -3,8 +3,8 @@
 import { useId } from 'react';
 import { TextField } from '@/shared/ui/text-field';
 import { useAnnounce } from '@/shared/ui/live-announcer';
-import { countCharacters, stripControlCharacters, truncateCharacters } from '@/core/text';
-import { CONCEPT_MAX_LENGTH } from '@/core/transfer-rules';
+import { countCharacters, stripControlCharacters, truncateCharacters } from '@/core/common';
+import { CONCEPT_MAX_LENGTH } from '@/core/transfers';
 import { t } from '@/shared/lib/i18n/t';
 
 /** Remaining characters at which the counter starts being announced (UIR-TX-15). */

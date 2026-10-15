@@ -1,5 +1,5 @@
 import 'server-only';
-import type { SessionId } from '@/core/ids';
+import type { SessionId } from '@/core/common';
 
 /**
  * Signed opaque session cookie (ADR-004): `<sessionId>.<HMAC-SHA-256>`, base64url.

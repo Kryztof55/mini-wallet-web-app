@@ -1,6 +1,6 @@
 import { vi } from 'vitest';
-import type { ErrorDetails } from '@/core/errors';
-import { err, ok } from '@/core/result';
+import type { ErrorDetails } from '@/core/common';
+import { err, ok } from '@/core/common';
 import type { ClientErrorCode } from '@/shared/lib/http/client';
 import type { AuthApi, CodeIssued } from '@/shared/api/auth';
 

@@ -1,6 +1,6 @@
 import { act, renderHook } from '@testing-library/react';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
-import { err, ok, type Result } from '@/core/result';
+import { err, ok, type Result } from '@/core/common';
 import type { ClientError, ClientSuccess } from '@/shared/lib/http/client';
 import type { AttemptStatus, ReceiptView, TransfersApi } from '@/shared/api/transfers';
 import { useConfirmTransfer, type ConfirmRequest } from './use-confirm-transfer';

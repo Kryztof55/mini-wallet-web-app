@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
-import { parseIdentifier, type Identifier } from './identifier';
-import type { Money } from './money';
+import { parseIdentifier, type Identifier } from '@/core/identity';
+import type { Money } from '@/core/money';
 import {
   CONCEPT_MAX_LENGTH,
   validateAmount,

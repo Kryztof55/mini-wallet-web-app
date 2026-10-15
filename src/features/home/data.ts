@@ -1,6 +1,6 @@
 import 'server-only';
 import { cache } from 'react';
-import type { UserId } from '@/core/ids';
+import type { UserId } from '@/core/common';
 import { runInPageContext } from '@/server/logging/page-context';
 import { getAccountService } from '@/server/services/account.service';
 

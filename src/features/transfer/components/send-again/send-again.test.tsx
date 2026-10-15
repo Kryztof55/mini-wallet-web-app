@@ -1,6 +1,6 @@
 import { render } from '@testing-library/react';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
-import type { Identifier } from '@/core/identifier';
+import type { Identifier } from '@/core/identity';
 import { hasTransferCompleted, markTransferCompleted } from '@/shared/lib/transfer-completion';
 import { SendAgain } from './send-again';
 import { draftProbe, RECIPIENT, TransferProviders } from '@/features/transfer/test-utils';

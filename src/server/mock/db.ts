@@ -1,10 +1,10 @@
 import 'server-only';
-import type { Contact } from '@/core/contact';
-import type { SessionId, UserId } from '@/core/ids';
+import type { Contact } from '@/core/contacts';
+import type { SessionId, UserId } from '@/core/common';
 import type { Money } from '@/core/money';
-import type { OtpChallenge } from '@/core/otp';
-import type { Transaction } from '@/core/transaction';
-import type { User } from '@/core/user';
+import type { OtpChallenge } from '@/core/auth';
+import type { Transaction } from '@/core/transfers';
+import type { User } from '@/core/identity';
 import type { Attempt, Receipt, Session, TransferRecipientRef } from '@/server/repositories/ports';
 import { createSeed, type MockBehaviors } from './seed';
 

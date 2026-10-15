@@ -2,7 +2,7 @@
 
 import type { ChangeEvent, KeyboardEvent, Ref } from 'react';
 import { TextField } from '@/shared/ui/text-field';
-import { editAmountText } from '@/core/money-input';
+import { editAmountText } from '@/core/money';
 
 /**
  * Amount input (UIR-TX-10): fixed "$" before the value, es-MX grouping while typing, only

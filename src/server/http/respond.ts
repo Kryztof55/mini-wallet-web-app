@@ -1,5 +1,5 @@
 import 'server-only';
-import { domainError, type DomainError } from '@/core/errors';
+import { domainError, type DomainError } from '@/core/common';
 import { REQUEST_ID_HEADER } from '@/shared/lib/observability/request-id';
 import { HTTP_STATUS_BY_CODE, messageForStatus } from './status';
 

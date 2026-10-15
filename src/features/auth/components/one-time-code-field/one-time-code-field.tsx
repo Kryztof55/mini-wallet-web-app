@@ -1,6 +1,6 @@
 import type { Ref } from 'react';
 import { TextField } from '@/shared/ui/text-field';
-import { OTP_LENGTH } from '@/core/otp';
+import { OTP_LENGTH } from '@/core/auth';
 import { t } from '@/shared/lib/i18n/t';
 
 /** Digits only, at most six: typed, pasted ("123 456", "123-456") or autofilled. */

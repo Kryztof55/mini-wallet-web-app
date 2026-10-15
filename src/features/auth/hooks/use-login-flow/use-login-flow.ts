@@ -1,7 +1,7 @@
 'use client';
 
 import { useCallback, useMemo, useReducer, useRef } from 'react';
-import { maskIdentifier, parseIdentifier } from '@/core/identifier';
+import { maskIdentifier, parseIdentifier } from '@/core/identity';
 import type { ClientError } from '@/shared/lib/http/client';
 import { authApi as defaultApi, type AuthApi } from '@/shared/api/auth';
 import {

@@ -1,8 +1,8 @@
-import { domainError, type DomainError } from './errors';
-import { sameIdentifier, type Identifier } from './identifier';
-import { Money } from './money';
-import { err, ok, type Result } from './result';
-import { countCharacters, hasControlCharacters } from './text';
+import { domainError, type DomainError } from '@/core/common';
+import { sameIdentifier, type Identifier } from '@/core/identity';
+import { Money } from '@/core/money';
+import { err, ok, type Result } from '@/core/common';
+import { countCharacters, hasControlCharacters } from '@/core/common';
 
 export const CONCEPT_MAX_LENGTH = 40;
 

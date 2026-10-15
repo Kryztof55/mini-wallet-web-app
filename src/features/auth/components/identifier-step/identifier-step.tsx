@@ -3,7 +3,7 @@
 import { useState, type FormEvent, type ReactNode, type Ref } from 'react';
 import { Button } from '@/shared/ui/button';
 import { TextField } from '@/shared/ui/text-field';
-import { parseIdentifier } from '@/core/identifier';
+import { parseIdentifier } from '@/core/identity';
 import { t } from '@/shared/lib/i18n/t';
 
 type IdentifierError = 'required' | 'format';

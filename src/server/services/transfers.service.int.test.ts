@@ -1,5 +1,5 @@
 import { afterEach, beforeEach, describe, expect, it } from 'vitest';
-import type { AttemptKey, UserId } from '@/core/ids';
+import type { AttemptKey, UserId } from '@/core/common';
 import { SEED_USER_IDS } from '@/server/mock/seed';
 import { getRepositories } from '@/server/repositories';
 import { setupApiEnv, teardownApiEnv } from '@/test/api';

@@ -1,4 +1,4 @@
-import { domainError } from '@/core/errors';
+import { domainError } from '@/core/common';
 import { getConfig } from '@/shared/lib/config';
 import { errorResponse, noContent, withApi } from '@/server/http';
 import { logEvent } from '@/server/logging/logger';

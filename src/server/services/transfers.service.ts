@@ -1,12 +1,12 @@
 import 'server-only';
 import { createHash, randomInt } from 'node:crypto';
-import { validateContactName } from '@/core/contact';
-import { domainError, type DomainError, type ErrorCode } from '@/core/errors';
-import { maskIdentifier, parseIdentifier, type Identifier } from '@/core/identifier';
-import type { AttemptKey, ContactId, TransactionId, TransferId, UserId } from '@/core/ids';
+import { validateContactName } from '@/core/contacts';
+import { domainError, type DomainError, type ErrorCode } from '@/core/common';
+import { maskIdentifier, parseIdentifier, type Identifier } from '@/core/identity';
+import type { AttemptKey, ContactId, TransactionId, TransferId, UserId } from '@/core/common';
 import { Money } from '@/core/money';
-import { err, ok, type Result } from '@/core/result';
-import { validateConcept, validateRecipient } from '@/core/transfer-rules';
+import { err, ok, type Result } from '@/core/common';
+import { validateConcept, validateRecipient } from '@/core/transfers';
 import { getConfig, type OutcomeWeights } from '@/shared/lib/config';
 import { publicConfig } from '@/shared/lib/public-config';
 import { logEvent } from '@/server/logging/logger';

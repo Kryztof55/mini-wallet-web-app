@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { parseIdentifier, type Identifier } from '@/core/identifier';
+import { parseIdentifier, type Identifier } from '@/core/identity';
 import { createMockDb } from '@/server/mock/db';
 import { SEED_USER_IDS } from '@/server/mock/seed';
 import { createInMemoryRepositories } from './in-memory';

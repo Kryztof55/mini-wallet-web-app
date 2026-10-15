@@ -81,6 +81,8 @@ src/
   proxy.ts                          # route gate: requestId, CSRF, session (ADR-001)
   instrumentation.ts                # logger init (ADR-006)
   core/                             # domain: pure TS rules and types, no React/Next/I/O
+    common/                         # Result, error catalog, branded IDs, text helpers
+    money/  identity/  auth/  contacts/  transfers/   # one folder per domain concept, each with index.ts
   features/                         # one folder per product area; never import each other
     auth/  home/  transfer/  receipt/
       components/<name>/            # <name>.tsx · <name>.test.tsx · index.ts

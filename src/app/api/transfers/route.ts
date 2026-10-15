@@ -1,6 +1,6 @@
 import { z } from 'zod';
-import { domainError } from '@/core/errors';
-import type { AttemptKey } from '@/core/ids';
+import { domainError } from '@/core/common';
+import type { AttemptKey } from '@/core/common';
 import { getConfig } from '@/shared/lib/config';
 import { IDEMPOTENCY_KEY_HEADER } from '@/shared/lib/http/client';
 import { errorResponse, jsonOk, parseJsonBody, withApi } from '@/server/http';

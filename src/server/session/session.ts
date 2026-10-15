@@ -1,7 +1,7 @@
 import 'server-only';
 import { cookies } from 'next/headers';
 import { cache } from 'react';
-import type { UserId } from '@/core/ids';
+import type { UserId } from '@/core/common';
 import { getConfig } from '@/shared/lib/config';
 import { setContextUserId } from '@/server/logging/context';
 import { getRepositories } from '@/server/repositories';

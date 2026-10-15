@@ -1,6 +1,6 @@
 import 'server-only';
-import { domainError, type DomainError } from '@/core/errors';
-import { err, ok, type Result } from '@/core/result';
+import { domainError, type DomainError } from '@/core/common';
+import { err, ok, type Result } from '@/core/common';
 import {
   isThemePreference,
   THEME_COOKIE,

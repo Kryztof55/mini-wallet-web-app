@@ -1,6 +1,6 @@
-import type { MaskedIdentifier } from './identifier';
-import type { TransactionId, UserId } from './ids';
-import type { Money } from './money';
+import type { MaskedIdentifier } from '@/core/identity';
+import type { TransactionId, UserId } from '@/core/common';
+import type { Money } from '@/core/money';
 
 export type TransactionDirection = 'in' | 'out';
 export type TransactionStatus = 'completed' | 'pending' | 'failed';

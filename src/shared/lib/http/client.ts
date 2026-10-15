@@ -1,8 +1,8 @@
 import type { z } from 'zod';
-import type { ClientOnlyErrorCode, ErrorCode, ErrorDetails } from '@/core/errors';
-import { isErrorCode } from '@/core/errors';
-import { err, ok, type Result } from '@/core/result';
-import { sanitizeReturnTo } from '@/core/return-to';
+import type { ClientOnlyErrorCode, ErrorCode, ErrorDetails } from '@/core/common';
+import { isErrorCode } from '@/core/common';
+import { err, ok, type Result } from '@/core/common';
+import { sanitizeReturnTo } from '@/core/auth';
 import { newRequestId, REQUEST_ID_HEADER } from '@/shared/lib/observability/request-id';
 import { loginUrl } from '@/shared/lib/routes';
 

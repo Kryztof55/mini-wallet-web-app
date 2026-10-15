@@ -1,7 +1,7 @@
 import { act, renderHook } from '@testing-library/react';
 import { describe, expect, it, vi } from 'vitest';
-import type { Identifier } from '@/core/identifier';
-import { err, ok } from '@/core/result';
+import type { Identifier } from '@/core/identity';
+import { err, ok } from '@/core/common';
 import type { ContactsApi } from '@/shared/api/contacts';
 import { useSaveContact } from './use-save-contact';
 

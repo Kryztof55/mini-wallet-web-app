@@ -265,20 +265,20 @@ Levels and IDs follow the [specs README](../README.md#24-ids). Tests reference t
 
 | TC | Title | Covers | Key cases → expected result | Location | Priority | Built in | Status |
 |---|---|---|---|---|---|---|---|
-| TC-UNIT-01 | Money value object | BR-04 | fromMinor/parse reject non-integers and negatives; add/subtract exact; isZero; never floats | `src/core/money.test.ts` | High | TASK-05 | ✅ |
-| TC-UNIT-02 | Amount input parsing and formatting | BR-04, UIR-TX-10 | `12.345`→`12.34` rejected 3rd decimal; letters rejected; `007`→`7.00`; `25.`→`25.00`; `$1,250.50`→`1250.50` (FS-03 EC-01…04) | `src/core/money-input.test.ts` | High | TASK-05 | ✅ |
-| TC-UNIT-03 | validateAmount | BR-01, BR-02 | empty, 0, −1 → INVALID_AMOUNT; 0.01 ok; = balance ok; > balance → INSUFFICIENT_FUNDS; balance 0 (FS-03 EC-01, 02, 05) | `src/core/transfer-rules.test.ts` | High | TASK-05 | ✅ |
-| TC-UNIT-04 | validateRecipient | BR-03, BR-09 | null → RECIPIENT_REQUIRED; own identifier (any format) → SELF_TRANSFER (FS-03 EC-12) | `src/core/transfer-rules.test.ts` | High | TASK-05 | ✅ |
-| TC-UNIT-05 | parseIdentifier | BR-10, BR-05, UIR-AUTH-01 | `+52 (55) 1234-5678`, `52 5512345678`, spaces → `5512345678`; `+1…` invalid; email trimmed/lowercased; >254 chars invalid; `@` → email (FS-01 EC-01…04) | `src/core/identifier.test.ts` | High | TASK-05 | ✅ |
-| TC-UNIT-06 | maskIdentifier | UIR-AUTH-06, UIR-TX-03 | phone → `•••• 5678`; email → `a•••@correo.com` | `src/core/identifier.test.ts` | Medium | TASK-05 | ✅ |
-| TC-UNIT-07 | parseOtpCode | BR-11, UIR-AUTH-07 | `123 456`/`123-456` → `123456`; letters, 5 or 7 digits → INVALID_CODE_FORMAT (FS-01 EC-05) | `src/core/otp.test.ts` | High | TASK-05 | ✅ |
-| TC-UNIT-08 | evaluateOtpAttempt | BR-12 | valid; incorrect → attemptsLeft 2,1; third failure → locked; > TTL → expired; older code after reissue → incorrect | `src/core/otp.test.ts` | High | TASK-05 | ✅ |
-| TC-UNIT-09 | canIssueCode | BR-13 | within 30 s → throttled with retryAfterSec; after 30 s ok; locked challenge → ok immediately | `src/core/otp.test.ts` | High | TASK-05 | ✅ |
-| TC-UNIT-10 | validateConcept | BR-15 | optional; 40 chars ok; 41 rejected; spaces-only → empty; control chars/line breaks rejected (FS-03 EC-11) | `src/core/transfer-rules.test.ts` | Medium | TASK-05 | ✅ |
-| TC-UNIT-11 | validateContactName | BR-16 | empty/whitespace → required; 50 chars ok; 51 rejected; accents/emoji counted as characters (FS-03 EC-07) | `src/core/contact.test.ts` | Medium | TASK-05 | ✅ |
-| TC-UNIT-12 | Attempt status transitions | BR-17 | in_progress → completed/failed/not_processed; final states immutable; not_processed may be re-processed | `src/core/transfer-attempt.test.ts` | High | TASK-05 | ✅ |
+| TC-UNIT-01 | Money value object | BR-04 | fromMinor/parse reject non-integers and negatives; add/subtract exact; isZero; never floats | `src/core/money/money.test.ts` | High | TASK-05 | ✅ |
+| TC-UNIT-02 | Amount input parsing and formatting | BR-04, UIR-TX-10 | `12.345`→`12.34` rejected 3rd decimal; letters rejected; `007`→`7.00`; `25.`→`25.00`; `$1,250.50`→`1250.50` (FS-03 EC-01…04) | `src/core/money/money-input.test.ts` | High | TASK-05 | ✅ |
+| TC-UNIT-03 | validateAmount | BR-01, BR-02 | empty, 0, −1 → INVALID_AMOUNT; 0.01 ok; = balance ok; > balance → INSUFFICIENT_FUNDS; balance 0 (FS-03 EC-01, 02, 05) | `src/core/transfers/transfer-rules.test.ts` | High | TASK-05 | ✅ |
+| TC-UNIT-04 | validateRecipient | BR-03, BR-09 | null → RECIPIENT_REQUIRED; own identifier (any format) → SELF_TRANSFER (FS-03 EC-12) | `src/core/transfers/transfer-rules.test.ts` | High | TASK-05 | ✅ |
+| TC-UNIT-05 | parseIdentifier | BR-10, BR-05, UIR-AUTH-01 | `+52 (55) 1234-5678`, `52 5512345678`, spaces → `5512345678`; `+1…` invalid; email trimmed/lowercased; >254 chars invalid; `@` → email (FS-01 EC-01…04) | `src/core/identity/identifier.test.ts` | High | TASK-05 | ✅ |
+| TC-UNIT-06 | maskIdentifier | UIR-AUTH-06, UIR-TX-03 | phone → `•••• 5678`; email → `a•••@correo.com` | `src/core/identity/identifier.test.ts` | Medium | TASK-05 | ✅ |
+| TC-UNIT-07 | parseOtpCode | BR-11, UIR-AUTH-07 | `123 456`/`123-456` → `123456`; letters, 5 or 7 digits → INVALID_CODE_FORMAT (FS-01 EC-05) | `src/core/auth/otp.test.ts` | High | TASK-05 | ✅ |
+| TC-UNIT-08 | evaluateOtpAttempt | BR-12 | valid; incorrect → attemptsLeft 2,1; third failure → locked; > TTL → expired; older code after reissue → incorrect | `src/core/auth/otp.test.ts` | High | TASK-05 | ✅ |
+| TC-UNIT-09 | canIssueCode | BR-13 | within 30 s → throttled with retryAfterSec; after 30 s ok; locked challenge → ok immediately | `src/core/auth/otp.test.ts` | High | TASK-05 | ✅ |
+| TC-UNIT-10 | validateConcept | BR-15 | optional; 40 chars ok; 41 rejected; spaces-only → empty; control chars/line breaks rejected (FS-03 EC-11) | `src/core/transfers/transfer-rules.test.ts` | Medium | TASK-05 | ✅ |
+| TC-UNIT-11 | validateContactName | BR-16 | empty/whitespace → required; 50 chars ok; 51 rejected; accents/emoji counted as characters (FS-03 EC-07) | `src/core/contacts/contact.test.ts` | Medium | TASK-05 | ✅ |
+| TC-UNIT-12 | Attempt status transitions | BR-17 | in_progress → completed/failed/not_processed; final states immutable; not_processed may be re-processed | `src/core/transfers/transfer-attempt.test.ts` | High | TASK-05 | ✅ |
 | TC-UNIT-13 | Transfer draft reducer and fingerprint | BR-07, UIR-TX-19, UIR-TX-21 | every action; summaryReached keeps key if fingerprint unchanged, new key if recipient/amount/concept changed; reset clears; seedRecipient | `src/features/transfer/state/draft.test.ts` | High | TASK-15 | ✅ |
-| TC-UNIT-14 | sanitizeReturnTo | ADR-001, UIR-AUTH-14 | `/transfer/amount` ok; `//evil.com`, `https://…`, `javascript:` and `/login` rejected → `/` (FS-01 EC-14) | `src/core/return-to.test.ts` | High | TASK-05 | ✅ |
+| TC-UNIT-14 | sanitizeReturnTo | ADR-001, UIR-AUTH-14 | `/transfer/amount` ok; `//evil.com`, `https://…`, `javascript:` and `/login` rejected → `/` (FS-01 EC-14) | `src/core/auth/return-to.test.ts` | High | TASK-05 | ✅ |
 | TC-UNIT-15 | Session cookie signing | ADR-004, BR-14 | sign/verify round trip; tampered id or signature → invalid; constant-time compare | `src/server/session/cookie.test.ts` | High | TASK-09 | ✅ |
 | TC-UNIT-16 | Error code → HTTP mapping | TS-00 §5 | every ErrorCode maps to its status; unknown exception → 500 INTERNAL_ERROR with requestId | `src/server/http/http.test.ts` | High | TASK-08 | ✅ |
 | TC-UNIT-17 | Formatters | UIR-HOME-07, UIR-HOME-08, NFR-13 | es-MX currency; signed amount `−$250.00`/`+$1,000.00`; Hoy/Ayer/date in session time zone (FS-02 EC-09) | `src/shared/lib/format/*.test.ts` | Medium | TASK-05 | ✅ |

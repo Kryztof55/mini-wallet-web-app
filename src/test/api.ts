@@ -1,4 +1,4 @@
-import type { UserId } from '@/core/ids';
+import type { UserId } from '@/core/common';
 import { vi } from 'vitest';
 import { resetConfigCache } from '@/shared/lib/config';
 import { resetMockDb } from '@/server/mock/db';

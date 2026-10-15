@@ -1,9 +1,9 @@
 import 'server-only';
-import { domainError, type DomainError } from '@/core/errors';
-import type { UserId } from '@/core/ids';
+import { domainError, type DomainError } from '@/core/common';
+import type { UserId } from '@/core/common';
 import type { Money } from '@/core/money';
-import { err, ok, type Result } from '@/core/result';
-import type { Transaction } from '@/core/transaction';
+import { err, ok, type Result } from '@/core/common';
+import type { Transaction } from '@/core/transfers';
 import { getConfig } from '@/shared/lib/config';
 import { logEvent } from '@/server/logging/logger';
 import { getRepositories } from '@/server/repositories';

@@ -1,5 +1,5 @@
 import { afterEach, describe, expect, it, vi } from 'vitest';
-import type { SessionId } from '@/core/ids';
+import type { SessionId } from '@/core/common';
 import {
   newSessionId,
   readCookie,

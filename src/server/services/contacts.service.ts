@@ -1,10 +1,10 @@
 import 'server-only';
-import { validateContactName, type Contact } from '@/core/contact';
-import { domainError, type DomainError } from '@/core/errors';
-import { maskIdentifier, parseIdentifier } from '@/core/identifier';
-import type { UserId } from '@/core/ids';
-import { err, ok, type Result } from '@/core/result';
-import { validateRecipient } from '@/core/transfer-rules';
+import { validateContactName, type Contact } from '@/core/contacts';
+import { domainError, type DomainError } from '@/core/common';
+import { maskIdentifier, parseIdentifier } from '@/core/identity';
+import type { UserId } from '@/core/common';
+import { err, ok, type Result } from '@/core/common';
+import { validateRecipient } from '@/core/transfers';
 import { logEvent } from '@/server/logging/logger';
 import { getRepositories } from '@/server/repositories';
 import type { Repositories } from '@/server/repositories/ports';

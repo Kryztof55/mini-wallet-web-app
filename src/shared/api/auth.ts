@@ -1,5 +1,5 @@
 import { z } from 'zod';
-import type { Result } from '@/core/result';
+import type { Result } from '@/core/common';
 import {
   request,
   type ClientError,

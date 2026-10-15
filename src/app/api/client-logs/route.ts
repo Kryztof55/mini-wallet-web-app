@@ -1,5 +1,5 @@
 import { z } from 'zod';
-import { domainError } from '@/core/errors';
+import { domainError } from '@/core/common';
 import { errorResponse, noContent, parseJsonBody, withApi } from '@/server/http';
 import { createRateLimiter } from '@/server/http/rate-limit';
 import { CLIENT_LOG_EVENTS } from '@/server/logging/events';

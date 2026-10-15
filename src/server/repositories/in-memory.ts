@@ -1,13 +1,13 @@
 import 'server-only';
-import { compareByRecentUse, type Contact } from '@/core/contact';
-import { domainError } from '@/core/errors';
+import { compareByRecentUse, type Contact } from '@/core/contacts';
+import { domainError } from '@/core/common';
 import { Money } from '@/core/money';
-import { err, ok } from '@/core/result';
-import { identifierKey, type Identifier } from '@/core/identifier';
-import type { AttemptKey, ContactId, TransferId, UserId } from '@/core/ids';
+import { err, ok } from '@/core/common';
+import { identifierKey, type Identifier } from '@/core/identity';
+import type { AttemptKey, ContactId, TransferId, UserId } from '@/core/common';
 import type { MockDb } from '@/server/mock/db';
 import type { Latency } from '@/server/mock/latency';
-import type { Transaction } from '@/core/transaction';
+import type { Transaction } from '@/core/transfers';
 import type { Attempt, Receipt, Repositories } from './ports';
 
 function sortContacts(contacts: readonly Contact[]): Contact[] {

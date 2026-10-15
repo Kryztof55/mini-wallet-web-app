@@ -1,7 +1,7 @@
 import { Writable } from 'node:stream';
 import { afterEach, describe, expect, it } from 'vitest';
 import { z } from 'zod';
-import { domainError, ERROR_CODES } from '@/core/errors';
+import { domainError, ERROR_CODES } from '@/core/common';
 import { createLogger, setLogger } from '@/server/logging/logger';
 import { withApi } from './handler';
 import { parseJsonBody } from './parse-body';

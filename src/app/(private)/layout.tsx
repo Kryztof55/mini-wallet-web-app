@@ -2,7 +2,7 @@ import { headers } from 'next/headers';
 import { redirect } from 'next/navigation';
 import type { ReactNode } from 'react';
 import { BfcacheGuard } from '@/shared/components/bfcache-guard';
-import { sanitizeReturnTo } from '@/core/return-to';
+import { sanitizeReturnTo } from '@/core/auth';
 import { loginUrl, RETURN_TO_HEADER } from '@/shared/lib/routes';
 import { logEvent } from '@/server/logging/logger';
 import { runInPageContext } from '@/server/logging/page-context';

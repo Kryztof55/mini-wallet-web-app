@@ -65,7 +65,7 @@ src/shared/api/contacts.ts                      # GET/POST /api/contacts client
 src/shared/components/{detail-row,masked-identifier,money-text,hide-balance}/
 src/app/api/contacts/route.ts
 src/server/services/contacts.service.ts
-src/core/{money,money-input,transfer-rules,contact,text}.ts
+src/core/{money,transfers,contacts,common}/
 ```
 
 **Folder structure (ADR-010):** the block above is current. Paths inside the *As built* notes below are those of the task that wrote them; ADR-010 maps them to today's folders.

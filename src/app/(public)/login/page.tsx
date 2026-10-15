@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
 import { Suspense } from 'react';
 import { BfcacheGuard } from '@/shared/components/bfcache-guard';
-import { sanitizeReturnTo } from '@/core/return-to';
+import { sanitizeReturnTo } from '@/core/auth';
 import { LoginView } from '@/features/auth/components/login-view';
 import { ThemeSwitcher } from '@/shared/components/theme';
 import { t } from '@/shared/lib/i18n/t';

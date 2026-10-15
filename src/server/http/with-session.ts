@@ -1,5 +1,5 @@
 import 'server-only';
-import { domainError } from '@/core/errors';
+import { domainError } from '@/core/common';
 import { logEvent } from '@/server/logging/logger';
 import type { Session } from '@/server/repositories/ports';
 import { getSessionFromRequest } from '@/server/session/session';

@@ -1,8 +1,8 @@
 'use client';
 
 import { useCallback, useRef, useState } from 'react';
-import type { Identifier } from '@/core/identifier';
-import { maskIdentifier } from '@/core/identifier';
+import type { Identifier } from '@/core/identity';
+import { maskIdentifier } from '@/core/identity';
 import { contactsApi as defaultApi, type ContactsApi } from '@/shared/api/contacts';
 import type { ContactNotice, Recipient } from '@/features/transfer/state/draft';
 

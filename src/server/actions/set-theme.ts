@@ -2,7 +2,7 @@
 
 import 'server-only';
 import { cookies, headers } from 'next/headers';
-import type { ErrorCode } from '@/core/errors';
+import type { ErrorCode } from '@/core/common';
 import { getConfig } from '@/shared/lib/config';
 import { ensureRequestId, REQUEST_ID_HEADER } from '@/shared/lib/observability/request-id';
 import type { ThemePreference } from '@/shared/lib/theme';

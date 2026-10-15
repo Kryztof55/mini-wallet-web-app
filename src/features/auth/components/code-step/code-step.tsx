@@ -3,7 +3,7 @@
 import { useEffect, useId, useRef, useState, type FormEvent, type ReactNode } from 'react';
 import { Button } from '@/shared/ui/button';
 import { Notice } from '@/shared/ui/notice';
-import { parseOtpCode } from '@/core/otp';
+import { parseOtpCode } from '@/core/auth';
 import { t } from '@/shared/lib/i18n/t';
 import type { CodeError, LoginState } from '@/features/auth/state/login-state';
 import { OneTimeCodeField } from '@/features/auth/components/one-time-code-field';

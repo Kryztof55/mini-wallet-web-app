@@ -1,7 +1,7 @@
 'use client';
 
 import { useCallback, useRef, useState } from 'react';
-import type { Result } from '@/core/result';
+import type { Result } from '@/core/common';
 import type { ClientError, ClientSuccess } from '@/shared/lib/http/client';
 
 export type SectionState<T> =

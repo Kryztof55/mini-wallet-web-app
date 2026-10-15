@@ -1,4 +1,4 @@
-import { identifierKey, type Identifier } from '@/core/identifier';
+import { identifierKey, type Identifier } from '@/core/identity';
 import type { Money } from '@/core/money';
 
 /** TS-03 §4: a saved favorite or a one-off contact (not saved, or saving failed). */

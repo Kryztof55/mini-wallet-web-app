@@ -1,5 +1,5 @@
-import { domainError, type DomainError } from './errors';
-import { err, ok, type Result } from './result';
+import { domainError, type DomainError } from '@/core/common';
+import { err, ok, type Result } from '@/core/common';
 
 /** BR-17: state of a transfer attempt as reported by the server. */
 export type TransferStatus = 'in_progress' | 'completed' | 'failed' | 'not_processed';

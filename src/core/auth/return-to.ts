@@ -1,4 +1,4 @@
-import type { Brand } from './brand';
+import type { Brand } from '@/core/common';
 
 /** A same-origin relative path that is safe to redirect to after login (ADR-001). */
 export type SafeReturnTo = Brand<string, 'SafeReturnTo'>;

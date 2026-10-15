@@ -1,5 +1,5 @@
 import { z } from 'zod';
-import type { AttemptKey } from '@/core/ids';
+import type { AttemptKey } from '@/core/common';
 import { jsonOk, withApi } from '@/server/http';
 import { withSession } from '@/server/http/with-session';
 import { getTransfersService } from '@/server/services/transfers.service';

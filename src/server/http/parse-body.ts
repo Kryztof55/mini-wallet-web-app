@@ -1,7 +1,7 @@
 import 'server-only';
 import type { z } from 'zod';
-import { domainError, type DomainError } from '@/core/errors';
-import { err, ok, type Result } from '@/core/result';
+import { domainError, type DomainError } from '@/core/common';
+import { err, ok, type Result } from '@/core/common';
 
 /**
  * Shape validation at the boundary (ADR-009). A malformed body is a 400 VALIDATION_ERROR;

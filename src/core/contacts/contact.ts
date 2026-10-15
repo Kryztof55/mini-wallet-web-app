@@ -1,8 +1,8 @@
-import { domainError, type DomainError } from './errors';
-import type { Identifier } from './identifier';
-import type { ContactId, UserId } from './ids';
-import { err, ok, type Result } from './result';
-import { countCharacters, hasControlCharacters } from './text';
+import { domainError, type DomainError } from '@/core/common';
+import type { Identifier } from '@/core/identity';
+import type { ContactId, UserId } from '@/core/common';
+import { err, ok, type Result } from '@/core/common';
+import { countCharacters, hasControlCharacters } from '@/core/common';
 
 export const CONTACT_NAME_MAX_LENGTH = 50;
 

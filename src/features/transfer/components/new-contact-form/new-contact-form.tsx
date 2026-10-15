@@ -4,9 +4,9 @@ import { useRef, useState, type FormEvent } from 'react';
 import { Button } from '@/shared/ui/button';
 import { Checkbox } from '@/shared/ui/checkbox';
 import { TextField } from '@/shared/ui/text-field';
-import { validateContactName } from '@/core/contact';
-import { parseIdentifier, type Identifier } from '@/core/identifier';
-import { validateRecipient } from '@/core/transfer-rules';
+import { validateContactName } from '@/core/contacts';
+import { parseIdentifier, type Identifier } from '@/core/identity';
+import { validateRecipient } from '@/core/transfers';
 import { t } from '@/shared/lib/i18n/t';
 import type { NewContactInput, SaveFieldError } from '@/features/transfer/hooks/use-save-contact';
 

@@ -1,6 +1,6 @@
-import { domainError, type DomainError } from './errors';
+import { domainError, type DomainError } from '@/core/common';
 import { Money } from './money';
-import { err, type Result } from './result';
+import { err, type Result } from '@/core/common';
 
 /** Maximum decimals accepted for MXN (BR-04). */
 export const AMOUNT_DECIMALS = 2;

@@ -13,7 +13,7 @@ import { logEvent } from '@/server/logging/logger';
 import { runInPageContext } from '@/server/logging/page-context';
 import { getTransfersService } from '@/server/services/transfers.service';
 import { getSession } from '@/server/session/session';
-import type { UserId } from '@/core/ids';
+import type { UserId } from '@/core/common';
 
 type Params = { readonly params: Promise<{ readonly transferId: string }> };
 

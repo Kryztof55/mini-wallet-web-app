@@ -80,7 +80,7 @@ src/shared/components/bfcache-guard/     # reload on bfcache restore of private 
 src/app/(private)/layout.tsx             # page authority
 src/server/services/auth.service.ts
 src/server/repositories/{ports,in-memory}.ts
-src/core/{identifier,otp,return-to}.ts
+src/core/{identity,auth}/
 ```
 
 **Folder structure (ADR-010):** the block above is current. Paths inside the *As built* notes below are those of the task that wrote them; ADR-010 maps them to today's folders.

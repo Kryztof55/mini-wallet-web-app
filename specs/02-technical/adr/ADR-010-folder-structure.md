@@ -46,10 +46,10 @@ inside shared:  components → ui, hooks, api → lib → core
 
 - `src/features/<area>` (`auth`, `home`, `transfer`, `receipt`): `components/<name>/`, `hooks/<name>/`, `state/`. A feature never imports another feature; the confirmation flow joins `transfer` because it lives on `/transfer/summary` and depends on the draft.
 - `src/shared/ui` (primitives), `src/shared/components` (product pieces used by 2+ features), `src/shared/hooks`, `src/shared/api` (browser clients of our API, one per area, with their Zod contracts), `src/shared/lib` (infrastructure for client and server).
-- `src/core` keeps its name and meaning (owner decision): pure domain.
+- `src/core` keeps its name and meaning (owner decision): pure domain, grouped by concept, each group with an `index.ts`: `common` (Result, errors, IDs, text), `money`, `identity` (identifier, user), `auth` (OTP, return-to), `contacts`, `transfers` (rules, attempt states, transactions). Direction: `transfers → contacts, identity, money → common`; `auth → identity → common`.
 - One folder per component or hook: `<name>.tsx`, `<name>.test.tsx`, `index.ts` with **named** re-exports of that folder only. `export *` is not used: Next.js rejects it for client modules. Imports target the folder, never a file inside it, never a central barrel.
 - A piece used by one feature lives in that feature; when a second feature needs it, it moves to `shared`.
-- ESLint `no-restricted-imports` (regex patterns) enforces each arrow, the "no cross-feature imports" rule and the "import the folder" rule. Integration tests under `src/server` may import route handlers.
+- ESLint `no-restricted-imports` (regex patterns) enforces each arrow, the "no cross-feature imports" rule and the "import the folder" rule. Integration tests under `src/server` may import route handlers. Flat config keeps only the **last** matching `no-restricted-imports` per file, so each file belongs to exactly one group that lists all its patterns (the first version overlapped groups and silently dropped the core purity rule; caught while adding the core groups and verified with probe imports: 10 forbidden imports fail, 2 allowed ones pass).
 
 ## 5. Consequences
 
@@ -72,6 +72,7 @@ inside shared:  components → ui, hooks, api → lib → core
 | `src/features/transfer/{completion-marker,start-transfer-link}` | `src/shared/lib/transfer-completion.ts`, `src/shared/components/start-transfer-link/` |
 | `src/features/confirmation/*` | `src/features/transfer/{components,hooks,state}/`, receipt → `src/features/receipt/components/`, `view-heading` → `src/shared/ui/view-heading/` |
 | `src/components/ui/index.ts` | removed |
+| `src/core/<module>.ts` | `src/core/{common,money,identity,auth,contacts,transfers}/` (see §4) |
 
 ## 6. Bindings introduced
 

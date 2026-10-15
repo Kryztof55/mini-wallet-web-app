@@ -1,6 +1,6 @@
 import { act, renderHook } from '@testing-library/react';
 import { describe, expect, it, vi } from 'vitest';
-import { err, ok } from '@/core/result';
+import { err, ok } from '@/core/common';
 import { useSectionRetry } from './use-section-retry';
 
 const success = (data: string) => ok({ data, status: 200, requestId: 'req-ok' });

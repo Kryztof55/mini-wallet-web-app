@@ -1,4 +1,4 @@
-import type { ErrorCode, ErrorDetails } from '@/core/errors';
+import type { ErrorCode, ErrorDetails } from '@/core/common';
 import type { Money } from '@/core/money';
 import type { ClientError } from '@/shared/lib/http/client';
 import type { AttemptStatus, ReceiptView } from '@/shared/api/transfers';

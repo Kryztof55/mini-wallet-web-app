@@ -1,6 +1,6 @@
 import { NextResponse, type NextRequest } from 'next/server';
-import { domainError } from '@/core/errors';
-import { sanitizeReturnTo } from '@/core/return-to';
+import { domainError } from '@/core/common';
+import { sanitizeReturnTo } from '@/core/auth';
 import { getConfig } from '@/shared/lib/config';
 import { ensureRequestId, REQUEST_ID_HEADER } from '@/shared/lib/observability/request-id';
 import { HOME_PATH, LOGIN_PATH, loginUrl, RETURN_TO_HEADER } from '@/shared/lib/routes';

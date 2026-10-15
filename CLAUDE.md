@@ -43,8 +43,10 @@ unknown error) → Receipt. Deliverables also include `README.md`, `DECISIONS.md
 
 ## 4. Architecture rules (TS-00, ADR-001…010)
 
-**Folders (ADR-010).** `app → features → shared → core`; `server → shared/lib, core`. ESLint
-(`no-restricted-imports` in `eslint.config.mjs`) enforces every arrow.
+**Folders (ADR-010).** `app → features → shared → core`; `server → shared/lib, core`; inside
+core `transfers → contacts, identity, money → common`, `auth → identity → common`. ESLint
+(`no-restricted-imports` in `eslint.config.mjs`) enforces every arrow. Flat config keeps only
+the last matching `no-restricted-imports` per file: add patterns to the file's one group.
 
 | Folder                         | What goes there                                                                                                                           |
 | ------------------------------ | ----------------------------------------------------------------------------------------------------------------------------------------- |
@@ -69,7 +71,7 @@ unknown error) → Receipt. Deliverables also include `README.md`, `DECISIONS.md
   `Result`, never throws, always carries `requestId`.
 - UI rules (`UIR-*`) live in the UI; business rules (`BR-*`) are enforced on the server.
 
-- Error codes: closed catalog in `src/core/errors.ts`, HTTP mapping in
+- Error codes: closed catalog in `src/core/common/errors.ts`, HTTP mapping in
   `src/server/http/status.ts` (TS-00 §5.2). The UI picks copy by `code`, never from the
   server `message`.
 - Money is integer minor units (`amountMinor`), MXN.
