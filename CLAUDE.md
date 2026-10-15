@@ -145,9 +145,10 @@ all green. E2E when the task touches flows (TASK-20 owns the suite).
 - TASK-21 in review: scripted a11y/responsive pass done and its 8 findings fixed (reflow at
   320 px, spoken masks and amounts); TC-MAN-02 waits for the owner's VoiceOver run (guide in
   the card, §10). **Next: TASK-22** delivery docs, on `chore/m5-quality-delivery`.
-- Pending owner decision: demo-accounts hint on login step 1 and no demo code for
-  unknown identifiers (non-production only).
-- TASK-22: README with demo accounts, DECISIONS.md, AI_USAGE.md.
+- Owner decision 2026-10-15 (OQ-14 amendment): no demo hint on login step 1; demo accounts
+  live in the README; outside production an unknown identifier gets `demoUnknownAccount`
+  (hint says "not a demo account") instead of a code that could never verify.
+- TASK-22: complete the README (starter with demo accounts exists), DECISIONS.md, AI_USAGE.md.
 
 ## 10. Known pitfalls
 

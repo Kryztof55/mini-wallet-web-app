@@ -101,7 +101,7 @@ Values (5 minutes, 3 attempts, 30 seconds) come from ASM-15; codes are random pe
 | UIR-AUTH-13 | Change identifier | User chooses "Change phone or email" or browser Back from the code step | Returns to step 1 with the identifier pre-filled and focused. | FR-AUTH-15, UX-06 |
 | UIR-AUTH-14 | Post-login navigation | Verification succeeds | Navigate to the originally requested private view if any, otherwise Home; Login is replaced in the history so Back does not return to it. | FR-AUTH-07, FR-AUTH-08, UX-18 |
 | UIR-AUTH-15 | No flash for authenticated users | Authenticated user opens Login | Redirect to Home before the login form is ever rendered. | FR-AUTH-09 |
-| UIR-AUTH-16 | Demo code hint | Environment is not production | A clearly labeled hint shows the code issued for the current challenge (it changes with every new code). Never rendered in production. | FR-AUTH-16 |
+| UIR-AUTH-16 | Demo code hint | Environment is not production | A clearly labeled hint shows the code issued for the current challenge (it changes with every new code). For an identifier that is not a demo account, no code is shown; the hint says so and points to the demo accounts in the README. Never rendered in production. | FR-AUTH-16 |
 | UIR-AUTH-17 | Session-ended notice | User arrives at Login because the session expired/was invalid, or after logging out | A notice explains why ("Your session ended…" / "You have logged out"). | FR-AUTH-10, FR-AUTH-11, UX-18 |
 | UIR-AUTH-18 | Theme control | Any login step | The theme switcher is available, as on every screen. | UX-22, A11Y-26 |
 
@@ -343,6 +343,8 @@ And nothing is submitted until I press "Verify"
 ```gherkin
 Given the app runs in a non-production environment
 Then the code step shows the demo code hint
+Given the app runs in a non-production environment and the identifier is not a demo account
+Then no code is shown and the hint points to the demo accounts in the README
 Given the app runs in production
 Then the demo code hint is never rendered
 ```
@@ -406,6 +408,7 @@ UI copy is in Spanish (es-MX), per OQ-01. Keys are stable; texts may be refined 
 | `auth.resend.sent` | "Te enviamos un código nuevo." | New code issued |
 | `auth.change_identifier` | "Cambiar celular o correo" | Back to step 1 |
 | `auth.demo_hint` | "Ambiente de prueba — código: {code}" | Non-production only |
+| `auth.demo_unknown_account` | "Ambiente de prueba — este celular o correo no es una cuenta demo. Usa una de las cuentas del README." | Non-production only; identifier with no account |
 | `auth.error.service` | "No pudimos continuar en este momento. Intenta de nuevo." | Simulated service error |
 | `auth.error.network` | "No hay conexión. Revisa tu internet e intenta de nuevo." | Network error |
 | `auth.error.timeout` | "Esto está tardando más de lo normal. Intenta de nuevo." | Timeout |
@@ -447,7 +450,7 @@ Applies: A11Y-01, 02, 03, 04, 05, 06, 07, 08, 10, 12, 13, 14, 16, 21, 23, 25, 26
 
 | ID | Question | Blocking? | Answer / decision |
 |---|---|---|---|
-| OQ-14 | **Unknown identifier (E2):** should the app say "no account found" at step 1, or always continue to the code step and fail generically at verification? | No | **Recommendation:** always continue to the code step and fail generically, so the login does not reveal which phones/emails have an account (prevents account enumeration). The masked destination helps users spot typos. Trade-off: a user with a typo only finds out at the code step. **Resolved 2026-10-13: option (b), as recommended.** |
+| OQ-14 | **Unknown identifier (E2):** should the app say "no account found" at step 1, or always continue to the code step and fail generically at verification? | No | **Recommendation:** always continue to the code step and fail generically, so the login does not reveal which phones/emails have an account (prevents account enumeration). The masked destination helps users spot typos. Trade-off: a user with a typo only finds out at the code step. **Resolved 2026-10-13: option (b), as recommended.** | **Amended 2026-10-15 (owner):** outside production the demo hint does not show a code for an unknown identifier (it could never verify and confused testers); it says the identifier is not a demo account. Production keeps identical answers. Demo accounts are documented in the README, not on the login screen.
 
 ## 16. Traceability
 
@@ -471,3 +474,4 @@ Applies: A11Y-01, 02, 03, 04, 05, 06, 07, 08, 10, 12, 13, 14, 16, 21, 23, 25, 26
 | 1.2 | 2026-10-14 | Claude (AI-assisted) | One-time code is random per challenge; the demo hint shows the current code outside production (owner decision, resolves conflict between fixed demo code and AC-AUTH-10) |
 | 1.3 | 2026-10-14 | Claude (AI-assisted) | TASK-03: copy keys for the skip link and the theme switcher (shared by every screen) |
 | 1.4 | 2026-10-14 | Claude (AI-assisted) | TASK-11: EC-08 reuses the code already sent within the cooldown; plural copy split into two keys; `auth.resend.loading` |
+| 1.5 | 2026-10-15 | Project owner | UIR-AUTH-16 / AC-AUTH-18 / OQ-14: no demo code for unknown identifiers outside production; demo accounts listed in the README |

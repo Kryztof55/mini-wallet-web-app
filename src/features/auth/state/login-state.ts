@@ -9,6 +9,13 @@ export type StepError = {
 
 export type CodeError = 'format' | 'incorrect' | 'locked' | 'expired';
 
+/**
+ * Non-production aid on the code step (UIR-AUTH-16): the code of a known account, or a notice
+ * that the identifier is not a demo account (no code is shown that could never verify).
+ */
+export type DemoAid =
+  { readonly kind: 'code'; readonly code: string } | { readonly kind: 'unknown_account' };
+
 export type LoginState = {
   readonly step: 'identifier' | 'code';
   /** A request in progress; while set, further submissions are ignored (UIR-AUTH-04). */
@@ -16,7 +23,7 @@ export type LoginState = {
   readonly identifier: string;
   readonly identifierError: 'format' | null;
   readonly destination: string | null;
-  readonly demoCode: string | null;
+  readonly demo: DemoAid | null;
   /** Epoch ms when a new code may be requested (BR-13), from the server's answer. */
   readonly resendAt: number | null;
   readonly codeStatus: 'active' | 'locked' | 'expired';
@@ -35,7 +42,7 @@ export const initialLoginState: LoginState = {
   identifier: '',
   identifierError: null,
   destination: null,
-  demoCode: null,
+  demo: null,
   resendAt: null,
   codeStatus: 'active',
   attemptsLeft: null,
@@ -52,7 +59,7 @@ export type LoginAction =
   | {
       readonly type: 'CODE_ISSUED';
       readonly destination: string;
-      readonly demoCode: string | null;
+      readonly demo: DemoAid | null;
       readonly resendAt: number;
     }
   | { readonly type: 'CODE_ALREADY_SENT'; readonly destination: string; readonly resendAt: number }
@@ -85,7 +92,7 @@ export function loginReducer(state: LoginState, action: LoginAction): LoginState
         step: 'code',
         pending: null,
         destination: action.destination,
-        demoCode: action.demoCode,
+        demo: action.demo,
         resendAt: action.resendAt,
         codeStatus: 'active',
         attemptsLeft: null,
@@ -102,7 +109,7 @@ export function loginReducer(state: LoginState, action: LoginAction): LoginState
         step: 'code',
         pending: null,
         destination: action.destination,
-        demoCode: null,
+        demo: null,
         resendAt: action.resendAt,
         codeStatus: 'active',
         attemptsLeft: null,

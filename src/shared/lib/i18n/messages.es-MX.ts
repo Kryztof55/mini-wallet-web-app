@@ -39,6 +39,8 @@ export const messages = {
   'auth.resend.sent': 'Te enviamos un código nuevo.',
   'auth.change_identifier': 'Cambiar celular o correo',
   'auth.demo_hint': 'Ambiente de prueba — código: {code}',
+  'auth.demo_unknown_account':
+    'Ambiente de prueba — este celular o correo no es una cuenta demo. Usa una de las cuentas del README.',
   'auth.error.service': 'No pudimos continuar en este momento. Intenta de nuevo.',
   'auth.error.network': 'No hay conexión. Revisa tu internet e intenta de nuevo.',
   'auth.error.timeout': 'Esto está tardando más de lo normal. Intenta de nuevo.',

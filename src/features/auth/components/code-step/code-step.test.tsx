@@ -9,7 +9,7 @@ const NOW = new Date('2026-10-14T18:00:00Z').getTime();
 
 const base: CodeStepProps = {
   destination: '•••• 5678',
-  demoCode: null,
+  demo: null,
   codeStatus: 'active',
   codeError: null,
   attemptsLeft: null,
@@ -146,11 +146,15 @@ describe('[TC-COMP-04] CodeStep and OneTimeCodeField', () => {
     expect(onChangeIdentifier).toHaveBeenCalledOnce();
   });
 
-  it('[UIR-AUTH-16][AC-AUTH-18] demo hint only when the server sent a demo code', () => {
+  it('[UIR-AUTH-16][AC-AUTH-18] demo hint only when the server sent a demo aid', () => {
     const { rerenderWith } = setup();
     expect(screen.queryByText(/Ambiente de prueba/)).not.toBeInTheDocument();
-    rerenderWith({ demoCode: '482915' });
+    rerenderWith({ demo: { kind: 'code', code: '482915' } });
     expect(screen.getByText('Ambiente de prueba — código: 482915')).toBeVisible();
+    // Not a demo account: no code that could never verify, a pointer to the README instead.
+    rerenderWith({ demo: { kind: 'unknown_account' } });
+    expect(screen.getByText(/no es una cuenta demo/)).toBeVisible();
+    expect(screen.queryByText(/código: \d/)).not.toBeInTheDocument();
   });
 
   it('[UIR-AUTH-04] verifying: busy label, read-only field, presses ignored', async () => {
@@ -163,7 +167,11 @@ describe('[TC-COMP-04] CodeStep and OneTimeCodeField', () => {
   });
 
   it('has no axe violations', async () => {
-    const { container } = setup({ demoCode: '482915', codeError: 'incorrect', attemptsLeft: 2 });
+    const { container } = setup({
+      demo: { kind: 'code', code: '482915' },
+      codeError: 'incorrect',
+      attemptsLeft: 2,
+    });
     vi.useRealTimers();
     expect(await getA11yViolations(container)).toEqual([]);
   });

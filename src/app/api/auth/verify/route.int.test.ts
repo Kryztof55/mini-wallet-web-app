@@ -135,9 +135,10 @@ describe('[TC-INT-04][FR-AUTH-06][FR-AUTH-13][FR-AUTH-14][BR-11][BR-12][AC-AUTH-
   });
 
   it('unknown identifiers fail like a wrong code and never verify (OQ-14)', async () => {
-    const demo = await issueCode('5599990000');
+    // No code is issued for an unknown identifier; any well-formed code fails.
+    expect(await issueCode('5599990000')).toBeUndefined();
     const response = await POST(
-      jsonPost('/api/auth/verify', { identifier: '5599990000', code: demo }),
+      jsonPost('/api/auth/verify', { identifier: '5599990000', code: '123456' }),
     );
     expect(await response.json()).toMatchObject({
       code: 'CODE_INCORRECT',

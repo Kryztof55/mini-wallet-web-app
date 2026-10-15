@@ -124,7 +124,8 @@ See TS-00 §3.4. No module-specific deviations.
 | `destination` | string | Masked identifier (UIR-AUTH-06) |
 | `expiresInSec` | number | `OTP_TTL_SEC` |
 | `resendAvailableInSec` | number | `OTP_RESEND_COOLDOWN_SEC` |
-| `demoCode` | string, optional | Present **only** when mock controls are enabled (never with `APP_ENV=production`); feeds the demo hint (UIR-AUTH-16) and E2E |
+| `demoCode` | string, optional | Present **only** when mock controls are enabled (never with `APP_ENV=production`) **and** the identifier has an account; feeds the demo hint (UIR-AUTH-16) and E2E |
+| `demoUnknownAccount` | `true`, optional | Mock controls enabled and no account for the identifier: the demo hint says it is not a demo account (OQ-14 amendment) |
 
 Unknown identifiers also receive `202` (OQ-14); no challenge can ever verify for them.
 
@@ -225,7 +226,7 @@ Unknown identifiers also receive `202` (OQ-14); no challenge can ever verify for
   - The proxy logs `security.csrf.rejected` (with `reason`) and `auth.session.rejected` (with `layer`: proxy, layout or controller).
 - **Implementation notes (TASK-10):**
   - Code delivery is a port (`OtpDelivery.send`) next to the repositories; the mock never sends and fails for seeded users with `codeRequestFails`, so a failed delivery issues no challenge and starts no cooldown.
-  - Unknown identifiers get a decoy challenge (`code: null`) and, with mock controls on, a displayed `demoCode` that can never verify — the response shape is identical (OQ-14).
+  - Unknown identifiers get a decoy challenge (`code: null`). With mock controls on they get `demoUnknownAccount: true` instead of a `demoCode` (amended 2026-10-15: a code that could never verify confused testers); with mock controls off the response is identical to a known account's (OQ-14).
   - `x-mock-outcome: otp_expired` ages the stored challenge past its TTL, so it stays expired for later attempts.
   - A verified code is deleted (single use). Invalid `timeZone` falls back to `America/Mexico_City`.
   - `auth.code.rejected` / `auth.verify.rejected` are logged by the service (it is where the rule is evaluated), with `errorCode`.
@@ -304,3 +305,4 @@ Per FS-01 §13. Technical notes: `autocomplete="username"` + `inputmode="email"`
 | 1.3 | 2026-10-14 | Claude (AI-assisted) | TASK-10: `OtpDelivery` port, decoy behavior, `otp_expired` persistence, single-use codes, log origins |
 | 1.4 | 2026-10-14 | Claude (AI-assisted) | Canonical signature encoding required |
 | 1.5 | 2026-10-14 | Project owner | Folder structure per ADR-010 (features / shared / core); §3.3 updated |
+| 1.6 | 2026-10-15 | Project owner | `demoUnknownAccount` replaces the decoy demo code outside production (OQ-14 amendment) |

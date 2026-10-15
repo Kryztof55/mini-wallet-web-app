@@ -13,6 +13,7 @@ export const CodeIssuedSchema = z.object({
   expiresInSec: z.number(),
   resendAvailableInSec: z.number(),
   demoCode: z.string().optional(),
+  demoUnknownAccount: z.literal(true).optional(),
 });
 export type CodeIssued = z.infer<typeof CodeIssuedSchema>;
 

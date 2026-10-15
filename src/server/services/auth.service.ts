@@ -34,8 +34,14 @@ export type CodeIssued = {
   readonly destination: MaskedIdentifier;
   readonly expiresInSec: number;
   readonly resendAvailableInSec: number;
-  /** Only when mock controls are enabled (UIR-AUTH-16); never in production. */
+  /**
+   * Demo aids, only when mock controls are enabled (UIR-AUTH-16); never in production.
+   * A known account gets its code; an unknown identifier gets `demoUnknownAccount` instead
+   * of a code that could never verify (owner decision 2026-10-15). In production both are
+   * absent, so the response stays identical for known and unknown identifiers (OQ-14).
+   */
   readonly demoCode?: string;
+  readonly demoUnknownAccount?: true;
 };
 
 export type RequestCodeError = DomainError<
@@ -148,8 +154,11 @@ export function createAuthService(deps: AuthServiceDeps) {
       destination: maskIdentifier(identifier),
       expiresInSec: policy.ttlSec,
       resendAvailableInSec: policy.resendCooldownSec,
-      // For a decoy the code is displayed but can never verify, same as a real typo.
-      ...(deps.mockControlsEnabled ? { demoCode: code } : {}),
+      ...(deps.mockControlsEnabled
+        ? user
+          ? { demoCode: code }
+          : { demoUnknownAccount: true as const }
+        : {}),
     });
   }
 

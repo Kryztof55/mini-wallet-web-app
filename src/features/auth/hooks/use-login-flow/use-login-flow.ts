@@ -73,11 +73,16 @@ export function useLoginFlow({
         dispatch(resend ? { type: 'RESEND_REQUESTED' } : { type: 'CODE_REQUESTED', identifier });
         const result = await api.requestCode(identifier);
         if (result.ok) {
-          const { destination, demoCode, resendAvailableInSec } = result.value.data;
+          const { destination, demoCode, demoUnknownAccount, resendAvailableInSec } =
+            result.value.data;
           dispatch({
             type: 'CODE_ISSUED',
             destination,
-            demoCode: demoCode ?? null,
+            demo: demoCode
+              ? { kind: 'code', code: demoCode }
+              : demoUnknownAccount
+                ? { kind: 'unknown_account' }
+                : null,
             resendAt: now() + resendAvailableInSec * 1000,
           });
           return;

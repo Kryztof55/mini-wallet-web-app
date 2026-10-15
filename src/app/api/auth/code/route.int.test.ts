@@ -63,11 +63,14 @@ describe('[TC-INT-03][FR-AUTH-01][FR-AUTH-02][FR-AUTH-12][BR-10][BR-13][AC-AUTH-
     expect((await requestCode('5512345678')).status).toBe(202);
   });
 
-  it('answers an unknown identifier exactly like a known one (OQ-14), throttling included', async () => {
-    const known = await (await requestCode('5512345678')).json();
+  it('unknown identifier: same 202 and throttling (OQ-14); with mock controls, no code but a demo notice', async () => {
     const unknown = await (await requestCode('5599990000')).json();
-    expect(Object.keys(unknown).sort()).toEqual(Object.keys(known).sort());
-    expect(unknown.destination).toBe('•••• 0000');
+    expect(unknown).toEqual({
+      destination: '•••• 0000',
+      expiresInSec: 300,
+      resendAvailableInSec: 30,
+      demoUnknownAccount: true,
+    });
     expect((await requestCode('5599990000')).status).toBe(429);
   });
 

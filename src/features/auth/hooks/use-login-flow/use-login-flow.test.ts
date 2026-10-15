@@ -28,11 +28,31 @@ describe('[TC-PL-01][UIR-AUTH-04][UIR-AUTH-09][UIR-AUTH-10][UIR-AUTH-12][UIR-AUT
       step: 'code',
       pending: null,
       destination: '•••• 5678',
-      demoCode: '482915',
+      demo: { kind: 'code', code: '482915' },
       resendAt: NOW + 30_000,
       codeStatus: 'active',
       notice: null,
     });
+  });
+
+  it('not a demo account (non-production): code step with the unknown-account notice', async () => {
+    const api = fakeAuthApi({
+      requestCode: vi
+        .fn()
+        .mockResolvedValue(issued({ demoCode: undefined, demoUnknownAccount: true })),
+    });
+    const { result } = setup(api);
+    await act(() => result.current.requestCode('5599990000'));
+    expect(result.current.state).toMatchObject({ step: 'code', demo: { kind: 'unknown_account' } });
+  });
+
+  it('production (no demo aids): code step without any demo hint', async () => {
+    const api = fakeAuthApi({
+      requestCode: vi.fn().mockResolvedValue(issued({ demoCode: undefined })),
+    });
+    const { result } = setup(api);
+    await act(() => result.current.requestCode('5512345678'));
+    expect(result.current.state).toMatchObject({ step: 'code', demo: null });
   });
 
   it('sends exactly one request when submitted twice quickly (AC-AUTH-05)', async () => {
@@ -123,7 +143,7 @@ describe('[TC-PL-01][UIR-AUTH-04][UIR-AUTH-09][UIR-AUTH-10][UIR-AUTH-12][UIR-AUT
       codeStatus: 'active',
       attemptsLeft: null,
       codeError: null,
-      demoCode: '000111',
+      demo: { kind: 'code', code: '000111' },
       notice: 'code_resent',
       codeVersion: version + 1,
     });
@@ -145,7 +165,7 @@ describe('[TC-PL-01][UIR-AUTH-04][UIR-AUTH-09][UIR-AUTH-10][UIR-AUTH-12][UIR-AUT
     expect(result.current.state).toMatchObject({
       step: 'code',
       destination: 'a•••@demo.mx',
-      demoCode: null,
+      demo: null,
       resendAt: NOW + 20_000,
       notice: 'already_sent',
     });

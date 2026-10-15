@@ -28,7 +28,7 @@ function codeErrorText(error: CodeError, attemptsLeft: number | null): string {
 
 export type CodeStepProps = Pick<
   LoginState,
-  'destination' | 'demoCode' | 'codeStatus' | 'codeError' | 'attemptsLeft' | 'resendAt' | 'notice'
+  'destination' | 'demo' | 'codeStatus' | 'codeError' | 'attemptsLeft' | 'resendAt' | 'notice'
 > & {
   readonly verifying: boolean;
   readonly resending: boolean;
@@ -47,7 +47,7 @@ export type CodeStepProps = Pick<
  */
 export function CodeStep({
   destination,
-  demoCode,
+  demo,
   codeStatus,
   codeError,
   attemptsLeft,
@@ -148,9 +148,11 @@ export function CodeStep({
         }}
       />
 
-      {demoCode ? (
+      {demo ? (
         <p className="rounded-md border border-dashed border-border-strong px-3 py-2 text-sm text-text-secondary">
-          {t('auth.demo_hint', { code: demoCode })}
+          {demo.kind === 'code'
+            ? t('auth.demo_hint', { code: demo.code })
+            : t('auth.demo_unknown_account')}
         </p>
       ) : null}
 

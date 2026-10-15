@@ -138,7 +138,7 @@ export function LoginView({
         <CodeStep
           key={state.codeVersion}
           destination={state.destination}
-          demoCode={state.demoCode}
+          demo={state.demo}
           codeStatus={state.codeStatus}
           codeError={state.codeError}
           attemptsLeft={state.attemptsLeft}

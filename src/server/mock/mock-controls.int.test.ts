@@ -14,7 +14,7 @@ describe('[TC-INT-12][NFR-10] mock controls disabled', () => {
   it.each([
     { APP_ENV: 'production', MOCK_CONTROLS_ENABLED: 'true' },
     { APP_ENV: 'development', MOCK_CONTROLS_ENABLED: 'false' },
-  ])('ignores x-mock-outcome (logged), hides the demo code and hides reset — %o', async (env) => {
+  ])('ignores x-mock-outcome (logged), hides the demo aids and hides reset — %o', async (env) => {
     setupApiEnv(env);
     const logs = captureLogs();
 
@@ -26,7 +26,15 @@ describe('[TC-INT-12][NFR-10] mock controls disabled', () => {
       ),
     );
     expect(response.status).toBe(202);
-    expect(await response.json()).not.toHaveProperty('demoCode');
+    const known = await response.json();
+    expect(known).not.toHaveProperty('demoCode');
+
+    // Without demo aids, an unknown identifier is answered exactly like a known one (OQ-14).
+    const unknown = await (
+      await requestCode(jsonPost('/api/auth/code', { identifier: '5599990000' }))
+    ).json();
+    expect(unknown).not.toHaveProperty('demoUnknownAccount');
+    expect(Object.keys(unknown).sort()).toEqual(Object.keys(known).sort());
     expect(logs).toContainEqual(
       expect.objectContaining({ event: 'mock.outcome.ignored', level: 'warn' }),
     );
