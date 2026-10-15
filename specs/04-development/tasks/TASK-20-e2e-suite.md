@@ -83,6 +83,7 @@ Defined in the [test plan](../../05-testing/test-plan.md); a task is done when t
 | Date | Note |
 |---|---|
 | 2026-10-14 | TC-E2E-13 and TC-E2E-14 written during TASK-16 (`tests/e2e/transfer.spec.ts`) as the real-browser check of the amount and summary steps. Login/logout helpers shared in `tests/e2e/session.ts`. |
+| 2026-10-14 | TC-E2E-15…18 and TC-E2E-20 written during TASK-18 (`tests/e2e/confirmation.spec.ts`). TC-E2E-16 drains the balance with a second request while the summary is open, so insufficient funds is real, not forced. |
 
 ## 8. AI usage
 

@@ -2,9 +2,10 @@
 
 import type { Route } from 'next';
 import { useRouter } from 'next/navigation';
-import { useEffect } from 'react';
+import { useEffect, useSyncExternalStore } from 'react';
 import { HOME_PATH } from '@/lib/routes';
 import { requiredStep, type TransferStep } from './state/draft';
+import { clearTransferCompleted, hasTransferCompleted } from './completion-marker';
 import { useDraft } from './state/draft-context';
 
 export const STEP_PATHS: Record<TransferStep, Route> = {
@@ -13,21 +14,29 @@ export const STEP_PATHS: Record<TransferStep, Route> = {
   summary: '/transfer/summary',
 };
 
+const noSubscription = () => () => undefined;
+
 /**
  * UIR-TX-14: a step opened without its prerequisites (deep link, reload) sends the user to the
- * first incomplete step, and renders nothing until then. A completed transfer goes Home.
+ * first incomplete step, and renders nothing until then. A finished flow (cancelled in this
+ * draft, or a completed transfer marked in session storage, AC-CONF-11) goes Home instead.
  * Returns whether the step may render.
  */
 export function useStepGuard(step: TransferStep): boolean {
   const draft = useDraft();
   const router = useRouter();
-  const missing = draft.completed ? null : requiredStep(draft, step);
-  const ready = !draft.completed && missing === null;
+  // Read on the client only: the server snapshot is false, so hydration never mismatches.
+  const marked = useSyncExternalStore(noSubscription, hasTransferCompleted, () => false);
+  const finished = draft.completed || marked;
+  const missing = finished ? null : requiredStep(draft, step);
+  const ready = !finished && missing === null;
 
   useEffect(() => {
-    if (draft.completed) router.replace(HOME_PATH as Route);
-    else if (missing) router.replace(STEP_PATHS[missing]);
-  }, [draft.completed, missing, router]);
+    if (finished) {
+      clearTransferCompleted();
+      router.replace(HOME_PATH as Route);
+    } else if (missing) router.replace(STEP_PATHS[missing]);
+  }, [finished, missing, router]);
 
   return ready;
 }

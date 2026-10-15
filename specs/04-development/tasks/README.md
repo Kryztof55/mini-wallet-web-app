@@ -21,7 +21,7 @@ File name: `TASK-NN-kebab-case-name.md`. Generated from the [implementation plan
 | [TASK-15](./TASK-15-transfer-recipient.md) | Build the transfer layout, draft state and recipient step | M3 | Done |
 | [TASK-16](./TASK-16-transfer-amount-summary.md) | Build the amount and summary steps | M3 | Done |
 | [TASK-17](./TASK-17-transfers-api.md) | Implement the transfers API | M4 | Done |
-| [TASK-18](./TASK-18-confirmation-flow.md) | Build the confirmation flow | M4 | Pending |
+| [TASK-18](./TASK-18-confirmation-flow.md) | Build the confirmation flow | M4 | Done |
 | [TASK-19](./TASK-19-receipt.md) | Build the receipt and post-transfer navigation | M4 | Pending |
 | [TASK-20](./TASK-20-e2e-suite.md) | Write the E2E suite | M5 | Pending |
 | [TASK-21](./TASK-21-a11y-responsive-pass.md) | Run the accessibility and responsive pass | M5 | Pending |

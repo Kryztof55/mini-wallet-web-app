@@ -2,8 +2,8 @@ import { render, screen, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { getA11yViolations } from '@/test/axe';
-import { emptyDraft, type TransferDraft } from './state/draft';
-import { SummaryStep, type ConfirmableDraft } from './summary-step';
+import { emptyDraft, type ConfirmableDraft, type TransferDraft } from './state/draft';
+import { SummaryStep } from './summary-step';
 import { draftProbe, mxn, RECIPIENT, TransferProviders } from './test-utils';
 
 const router = vi.hoisted(() => ({ push: vi.fn(), replace: vi.fn() }));

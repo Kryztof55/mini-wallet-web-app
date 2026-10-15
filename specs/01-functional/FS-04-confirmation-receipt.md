@@ -371,6 +371,11 @@ Then I see "No encontramos este comprobante." and no data from that transfer
 | `conf.unresolved.title` | "No pudimos confirmar el estado de tu envío" | Unresolved |
 | `conf.unresolved.body` | "Si lo intentas de nuevo no se enviará dos veces. El resultado también aparecerá en tus movimientos." | Unresolved |
 | `conf.change_data` | "Cambiar datos" | Back to summary |
+| `conf.funds.body_no_balance` | "No tienes saldo suficiente para este envío." | Insufficient funds when the server sent no balance |
+| `conf.rule.title` | "No pudimos hacer tu envío" | E5 rule violation |
+| `conf.rule.recipient` / `conf.rule.concept` / `conf.rule.other` | "Elige de nuevo a quién le envías." / "Revisa el concepto: hasta 40 caracteres, sin saltos de línea." / "Revisa los datos del envío e inténtalo de nuevo." | E5 (other codes reuse FS-03 copy) |
+| `conf.home` | "Ir al inicio" | Unknown error / unresolved action |
+| `conf.redirecting` | "Abriendo tu comprobante…" | Between success and the receipt |
 | `common.retry` | "Intentar de nuevo" | Retry |
 | `common.cancel` | "Cancelar" | Cancel |
 | `common.reference` | "Referencia: {code}" | Errors |
@@ -427,3 +432,4 @@ Applies: A11Y-01, 02, 03, 04, 08, 09, 10, 11, 12, 13, 16, 17, 18, 20, 22, 25, 26
 | 1.0 | 2026-10-13 | Project owner | Approved |
 | 1.1 | 2026-10-14 | Claude (AI-assisted) | Traceability now points to the written TS (no behavior change) |
 | 1.2 | 2026-10-14 | Claude (AI-assisted) | TASK-04: toast copy keys (`common.close`, `common.notification`, `common.notifications_region`) |
+| 1.3 | 2026-10-14 | Claude (AI-assisted) | TASK-18: §12 adds the keys the build needed (rule-violation copy, no-balance variant, "Ir al inicio", redirecting); no behavior change |

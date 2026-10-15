@@ -18,7 +18,10 @@ function guard(step: 'recipient' | 'amount' | 'summary', draft: TransferDraft) {
   return renderHook(() => useStepGuard(step), { wrapper: Wrapper }).result.current;
 }
 
-beforeEach(() => router.replace.mockClear());
+beforeEach(() => {
+  router.replace.mockClear();
+  window.sessionStorage.clear();
+});
 
 describe('[TC-PL-05][UIR-TX-14][BR-03] useStepGuard', () => {
   it('amount without recipient → replaced to recipient; renders nothing meanwhile', () => {
@@ -39,6 +42,14 @@ describe('[TC-PL-05][UIR-TX-14][BR-03] useStepGuard', () => {
   it('a completed transfer → Home', () => {
     expect(guard('summary', { ...emptyDraft, recipient, amount, completed: true })).toBe(false);
     expect(router.replace).toHaveBeenCalledWith('/');
+  });
+
+  it('[AC-CONF-11] Back from a receipt (completion marker) → Home, not step 1; marker consumed', () => {
+    window.sessionStorage.setItem('mw.transfer.completed', '1');
+    expect(guard('amount', emptyDraft)).toBe(false);
+    expect(router.replace).toHaveBeenCalledWith('/');
+    expect(router.replace).not.toHaveBeenCalledWith('/transfer/recipient');
+    expect(window.sessionStorage.getItem('mw.transfer.completed')).toBeNull();
   });
 
   it('renders when the prerequisites are there', () => {

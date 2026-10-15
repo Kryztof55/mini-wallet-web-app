@@ -1,7 +1,7 @@
 'use client';
 
 import Link from 'next/link';
-import { useEffect, type ReactNode } from 'react';
+import { useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { HideBalanceToggle } from '@/components/wallet/hide-balance-toggle';
@@ -11,28 +11,29 @@ import { Money } from '@/core/money';
 import { useHideBalance } from '@/features/home/hide-balance';
 import { formatMoney } from '@/lib/format/money';
 import { t } from '@/lib/i18n/t';
+import { Notice } from '@/components/ui/notice';
+import { DetailRow as Row } from '@/components/wallet/detail-row';
 import { CancelTransfer } from './cancel-transfer';
-import type { TransferDraft } from './state/draft';
+import { confirmableDraft, type ConfirmableDraft } from './state/draft';
 import { useDraft, useDraftDispatch } from './state/draft-context';
 import { StepHeading } from './step-heading';
 import { useTransferBalance } from './transfer-data';
 import { STEP_PATHS, useStepGuard } from './use-step-guard';
 
-export type ConfirmableDraft = TransferDraft & {
-  readonly recipient: NonNullable<TransferDraft['recipient']>;
-  readonly amount: Money;
-  readonly attempt: NonNullable<TransferDraft['attempt']>;
-};
-
 /**
  * Step 3 (FS-03): everything that will be sent, current and resulting balance (masked when the
  * user hides the balance), specific edit actions and "Enviar $X". Reaching it fixes the attempt
- * key for this exact data (BR-07). `onConfirm` is wired by the confirmation flow (TS-04).
+ * key for this exact data (BR-07). While the confirmation is processing, the button is busy
+ * and editing, cancelling and leaving are not offered (UIR-CONF-01, UIR-CONF-02).
  */
 export function SummaryStep({
   onConfirm,
+  processing = false,
+  slow = false,
 }: {
   readonly onConfirm?: (draft: ConfirmableDraft) => void;
+  readonly processing?: boolean;
+  readonly slow?: boolean;
 }) {
   const ready = useStepGuard('summary');
   const draft = useDraft();
@@ -43,11 +44,12 @@ export function SummaryStep({
     if (ready) dispatch({ type: 'summaryReached', newKey: crypto.randomUUID() });
   }, [ready, dispatch]);
 
-  const { recipient, amount, attempt } = draft;
+  const { recipient, amount } = draft;
   if (!ready || !recipient || !amount) return null;
 
   const confirm = () => {
-    if (attempt) onConfirm?.({ ...draft, recipient, amount, attempt });
+    const confirmable = confirmableDraft(draft);
+    if (confirmable) onConfirm?.(confirmable);
   };
 
   return (
@@ -79,38 +81,33 @@ export function SummaryStep({
           </div>
         ) : null}
 
-        <div className="flex flex-wrap gap-x-4 gap-y-2 border-t border-border pt-4">
-          <Link
-            href={STEP_PATHS.recipient}
-            className="rounded-md px-1 py-1 text-sm font-medium text-text-link hover:underline"
-          >
-            {t('tx.summary.change_recipient')}
-          </Link>
-          <Link
-            href={STEP_PATHS.amount}
-            className="rounded-md px-1 py-1 text-sm font-medium text-text-link hover:underline"
-          >
-            {t('tx.summary.change_amount')}
-          </Link>
-        </div>
+        {processing ? null : (
+          <div className="flex flex-wrap gap-x-4 gap-y-2 border-t border-border pt-4">
+            <Link
+              href={STEP_PATHS.recipient}
+              className="rounded-md px-1 py-1 text-sm font-medium text-text-link hover:underline"
+            >
+              {t('tx.summary.change_recipient')}
+            </Link>
+            <Link
+              href={STEP_PATHS.amount}
+              className="rounded-md px-1 py-1 text-sm font-medium text-text-link hover:underline"
+            >
+              {t('tx.summary.change_amount')}
+            </Link>
+          </div>
+        )}
       </Card>
 
-      <Button fullWidth onClick={confirm}>
+      {slow ? <Notice tone="info">{t('conf.slow')}</Notice> : null}
+      <Button fullWidth busy={processing} busyLabel={t('conf.processing')} onClick={confirm}>
         {t('tx.summary.confirm', { amount: formatMoney(amount) })}
       </Button>
-      <div className="flex justify-center">
-        <CancelTransfer />
-      </div>
-    </div>
-  );
-}
-
-/** Label/value pair; two columns only when there is room (FS-03 §13). */
-function Row({ label, children }: { readonly label: string; readonly children: ReactNode }) {
-  return (
-    <div className="flex flex-col gap-1 sm:grid sm:grid-cols-[minmax(0,10rem)_1fr] sm:gap-4">
-      <dt className="text-sm text-text-secondary">{label}</dt>
-      <dd className="min-w-0">{children}</dd>
+      {processing ? null : (
+        <div className="flex justify-center">
+          <CancelTransfer />
+        </div>
+      )}
     </div>
   );
 }

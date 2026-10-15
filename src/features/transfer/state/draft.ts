@@ -129,3 +129,15 @@ export function requiredStep(draft: TransferDraft, step: TransferStep): Transfer
   if (step === 'summary' && !draft.amount) return 'amount';
   return null;
 }
+
+/** A draft ready to submit: recipient, amount and the attempt key of this exact data (BR-07). */
+export type ConfirmableDraft = TransferDraft & {
+  readonly recipient: Recipient;
+  readonly amount: Money;
+  readonly attempt: NonNullable<TransferDraft['attempt']>;
+};
+
+export function confirmableDraft(draft: TransferDraft): ConfirmableDraft | null {
+  const { recipient, amount, attempt } = draft;
+  return recipient && amount && attempt ? { ...draft, recipient, amount, attempt } : null;
+}

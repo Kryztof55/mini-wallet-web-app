@@ -46,7 +46,12 @@ const loadBalanceFromApi: LoadBalance = async () => {
   return result.ok ? { ok: true, value: result.value.data.balance } : result;
 };
 
-type TransferBalance = { readonly state: BalanceState; readonly retry: () => Promise<void> };
+type TransferBalance = {
+  readonly state: BalanceState;
+  readonly retry: () => Promise<void>;
+  /** The server told us the current balance (insufficient funds at confirmation, UIR-CONF-09). */
+  readonly update: (balance: Money) => void;
+};
 
 const TransferDataContext = createContext<TransferData | null>(null);
 const TransferBalanceContext = createContext<TransferBalance | null>(null);
@@ -86,7 +91,8 @@ export function TransferDataProvider({
         : { status: 'error', requestId: result.error.requestId },
     );
   }, [loadBalance]);
-  const balance = useMemo(() => ({ state, retry }), [state, retry]);
+  const update = useCallback((next: Money) => setState({ status: 'ready', value: next }), []);
+  const balance = useMemo(() => ({ state, retry, update }), [state, retry, update]);
 
   return (
     <TransferDataContext.Provider value={value}>
