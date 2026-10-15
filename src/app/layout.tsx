@@ -6,7 +6,7 @@ import { ToastProvider } from '@/shared/ui/toast';
 import { ThemeProvider } from '@/shared/components/theme';
 import { t } from '@/shared/lib/i18n/t';
 import { resolveThemePreference, THEME_COOKIE } from '@/shared/lib/theme';
-import './globals.css';
+import '@/styles/globals.css';
 
 export const metadata: Metadata = {
   title: { default: 'Mini Wallet', template: '%s · Mini Wallet' },

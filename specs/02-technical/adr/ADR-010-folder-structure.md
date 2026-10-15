@@ -55,6 +55,7 @@ inside shared:  components → ui, hooks, api → lib → core
 
 - Positive: scope is visible in every import (`@/features/transfer/…` vs `@/shared/…`); breaking a rule fails lint; adding a component means adding a folder, not editing a barrel.
 - Negative: about 130 files moved and every import rewritten (done by script, resolving each import to its file; history kept with `git mv`). `index.ts` files must be updated when a folder gains an export.
+- `src/styles/` holds the global CSS split by role; the compiled CSS is byte-identical to the single-file version. Moving `no-raw-colors.test.ts` there revealed it had never run (no Vitest project included `src/test/*.test.ts`); it now runs and passes.
 - Task cards TASK-01…TASK-20 keep the paths of their time as a historical record; the table below maps them.
 
 | Before | After |
@@ -73,6 +74,7 @@ inside shared:  components → ui, hooks, api → lib → core
 | `src/features/confirmation/*` | `src/features/transfer/{components,hooks,state}/`, receipt → `src/features/receipt/components/`, `view-heading` → `src/shared/ui/view-heading/` |
 | `src/components/ui/index.ts` | removed |
 | `src/core/<module>.ts` | `src/core/{common,money,identity,auth,contacts,transfers}/` (see §4) |
+| `src/app/globals.css`, `src/app/theme-tokens.test.ts`, `src/test/no-raw-colors.test.ts` | `src/styles/` (`globals.css` split into `tokens.css`, `tailwind-theme.css`, `base.css`, `utilities.css`; tests `tokens.test.ts`, `no-raw-colors.test.ts`) |
 
 ## 6. Bindings introduced
 

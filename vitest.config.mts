@@ -37,6 +37,7 @@ export default defineConfig({
             'src/shared/api/**/*.test.ts',
             'src/server/**/*.test.ts',
             'src/app/**/*.test.ts',
+            'src/styles/**/*.test.ts',
             'src/*.test.ts',
             'src/test/smoke/**/*.test.ts',
           ],

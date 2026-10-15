@@ -288,7 +288,7 @@ Levels and IDs follow the [specs README](../README.md#24-ids). Tests reference t
 | TC-UNIT-21 | Configuration | NFR-10 | defaults from ASM-15…17; missing SESSION_SECRET fails; production forces MOCK_CONTROLS_ENABLED=false | `src/shared/lib/config.test.ts` | High | TASK-06 | ✅ |
 | TC-UNIT-22 | Contact repository uniqueness | BR-08 | same normalized identifier → existing contact returned, no duplicate (FS-03 EC-08) | `src/server/repositories/contact.repository.test.ts` | High | TASK-06 | ✅ |
 | TC-UNIT-23 | Browser HTTP client | NFR-06, ADR-009 | timeout aborts and returns TIMEOUT; fetch TypeError → NETWORK_ERROR; schema mismatch → INTERNAL_ERROR; sends x-request-id, idempotency-key, JSON content type; 401 triggers session-ended redirect | `src/shared/lib/http/client.test.ts` | High | TASK-08 | ✅ |
-| TC-UNIT-24 | Theme token contrast | A11Y-10, NFR-16 | every semantic text/background pair ≥ 4.5:1 and every boundary/focus/action color ≥ 3:1 in light AND dark, read from the real token file; default palette removed | `src/app/theme-tokens.test.ts` | High | TASK-03 | ✅ |
+| TC-UNIT-24 | Theme token contrast | A11Y-10, NFR-16 | every semantic text/background pair ≥ 4.5:1 and every boundary/focus/action color ≥ 3:1 in light AND dark, read from the real token file; default palette removed | `src/styles/tokens.test.ts`, `src/styles/no-raw-colors.test.ts` | High | TASK-03 | ✅ |
 
 ### 6.2 Presentation logic
 

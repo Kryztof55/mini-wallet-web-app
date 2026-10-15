@@ -69,7 +69,6 @@ flowchart LR
 src/
   app/                              # routes only (Next.js App Router)
     layout.tsx                      # <html lang="es-MX" data-theme>, providers, skip link
-    globals.css                     # design tokens per theme (§9)
     (public)/login/page.tsx
     (private)/layout.tsx            # authoritative session check (getSession)
     (private)/page.tsx              # Home (streamed sections)
@@ -78,6 +77,8 @@ src/
     (private)/transfer/again/[transferId]/page.tsx
     (private)/receipts/[transferId]/page.tsx
     api/…/route.ts                  # controllers (auth, me, contacts, transfers, client-logs, mock)
+  styles/                           # global CSS (§9): globals.css (entry) · tokens.css · tailwind-theme.css · base.css · utilities.css
+                                    # + tokens.test.ts (contrast) · no-raw-colors.test.ts (NFR-16)
   proxy.ts                          # route gate: requestId, CSRF, session (ADR-001)
   instrumentation.ts                # logger init (ADR-006)
   core/                             # domain: pure TS rules and types, no React/Next/I/O

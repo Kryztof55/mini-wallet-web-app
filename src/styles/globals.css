@@ -1,0 +1,9 @@
+/*
+ * Global styles entry (imported once by src/app/layout.tsx). Order matters only for readers:
+ * tokens → Tailwind mapping → element defaults → utilities.
+ */
+@import 'tailwindcss';
+@import './tokens.css';
+@import './tailwind-theme.css';
+@import './base.css';
+@import './utilities.css';

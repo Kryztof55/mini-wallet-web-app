@@ -7,7 +7,9 @@ import { describe, expect, it } from 'vitest';
  * Reads the real token file, so a palette change that breaks contrast fails here (jsdom
  * cannot compute contrast; E2E axe checks rendered pages too, TC-E2E-21).
  */
-const css = readFileSync(join(process.cwd(), 'src/app/globals.css'), 'utf8');
+const css = ['tokens.css', 'tailwind-theme.css']
+  .map((file) => readFileSync(join(process.cwd(), 'src/styles', file), 'utf8'))
+  .join('\n');
 
 function readTokens(): Map<string, { light: string; dark: string }> {
   const tokens = new Map<string, { light: string; dark: string }>();

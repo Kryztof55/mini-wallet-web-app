@@ -122,6 +122,7 @@ const boundaries = [
     [
       'src/app/**/*.{ts,tsx}',
       'src/test/**/*.{ts,tsx}',
+      'src/styles/**/*.ts',
       'src/*.ts',
       'src/core/**/*.test.ts',
       'src/server/**/*.test.ts',

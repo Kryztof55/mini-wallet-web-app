@@ -105,8 +105,10 @@ all green. E2E when the task touches flows (TASK-20 owns the suite).
 
 - Colors only through semantic token utilities (`bg-surface`, `text-text-primary`,
   `text-status-error`, …). Tailwind's default palette is removed; raw colors fail
-  `src/test/no-raw-colors.test.ts`. New tokens go in `src/app/globals.css` as
-  `light-dark(light, dark)` and must pass `src/app/theme-tokens.test.ts` (contrast).
+  `src/styles/no-raw-colors.test.ts`. Styles live in `src/styles/`: `globals.css` (entry, imports
+  only), `tokens.css` (semantic tokens as `light-dark(light, dark)`), `tailwind-theme.css`
+  (token → utility mapping), `base.css`, `utilities.css`. New tokens go in `tokens.css` and its
+  `@theme` mapping, and must pass `src/styles/tokens.test.ts` (contrast).
 - `Button` has no `disabled` prop on purpose: primary actions stay enabled with invalid
   input and show errors on press (UIR-AUTH-03, UIR-TX-13). Use `busy` during requests.
 - Use the base components (`TextField`, `ErrorState` + `ReferenceCode`, `SkeletonGroup`,
