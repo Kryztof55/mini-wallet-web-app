@@ -2,7 +2,7 @@
 
 | Field | Value |
 |---|---|
-| **Status** | Draft |
+| **Status** | Approved |
 | **Version** | 0.2 |
 | **Author** | Claude (AI-assisted draft) |
 | **Reviewer** | Project owner |
@@ -52,29 +52,29 @@ Turn the approved specs into a working Next.js + TypeScript wallet that satisfie
 
 | ID | Task | Covers | Depends on | Milestone | Estimate | Actual | Status |
 |---|---|---|---|---|---|---|---|
-| [TASK-01](../04-development/tasks/TASK-01-scaffold-project.md) | Scaffold the project and tooling | TS-00 §3.3, §14 · CON-01 | — | M0 | 0.5 h | — | Pending |
-| [TASK-02](../04-development/tasks/TASK-02-setup-test-tooling.md) | Set up the test tooling | ADR-005 · NFR-08, NFR-09 | TASK-01 | M0 | 0.5 h | — | Pending |
-| [TASK-03](../04-development/tasks/TASK-03-themes-and-tokens.md) | Implement design tokens, themes and theme switching | UX-22 · NFR-16 · A11Y-10, A11Y-21, A11Y-26 · UIR-AUTH-18 | TASK-01, TASK-06 | M0 | 1.25 h | — | Pending |
-| [TASK-04](../04-development/tasks/TASK-04-base-ui-components.md) | Build the base UI components | NFR-11 · A11Y-03, 04, 05, 07, 08, 13, 18, 19, 24 · UIR-AUTH-03, UIR-TX-13 | TASK-03 | M0 | 1.5 h | — | Pending |
-| [TASK-05](../04-development/tasks/TASK-05-domain-rules.md) | Implement the domain types and business rules | BR-01…BR-17 (domain side) · NFR-03 · UIR-AUTH-06, UIR-HOME-07, UIR-HOME-08 | TASK-01 | M0 | 1.5 h | — | Pending |
-| [TASK-06](../04-development/tasks/TASK-06-config-and-mocks.md) | Implement configuration and the mock layer | NFR-10 · ASM-03, ASM-04, ASM-16, ASM-17 · FR-CONF-11 | TASK-05 | M0 | 1.25 h | — | Pending |
-| [TASK-07](../04-development/tasks/TASK-07-observability.md) | Implement the observability foundation | NFR-04 · NFR-05 (logs) · UIR-CONF-11 | TASK-01 | M0 | 0.75 h | — | Pending |
-| [TASK-08](../04-development/tasks/TASK-08-http-layers.md) | Build the server HTTP helpers and the browser HTTP client | TS-00 §5–§6 · ADR-009 · NFR-06 | TASK-05, TASK-07 | M0 | 1.25 h | — | Pending |
-| [TASK-09](../04-development/tasks/TASK-09-session-and-security.md) | Implement session handling and request security | BR-14 · NFR-05, NFR-17 · FR-AUTH-08, FR-AUTH-09 · UIR-AUTH-15 · AC-AUTH-13, 14, 19 | TASK-06, TASK-07, TASK-08 | M1 | 1.5 h | — | Pending |
-| [TASK-10](../04-development/tasks/TASK-10-auth-api.md) | Implement the auth API | FR-AUTH-01, 02, 05, 06, 10, 12…16 · BR-10…BR-13 · OQ-14 | TASK-09 | M1 | 1.25 h | — | Pending |
-| [TASK-11](../04-development/tasks/TASK-11-login-screens.md) | Build the login screens | FR-AUTH-01…05, 07, 11…16 · UIR-AUTH-01…17 · AC-AUTH-01…12, 15…18 | TASK-04, TASK-10 | M1 | 2 h | — | Pending |
-| [TASK-12](../04-development/tasks/TASK-12-home-api.md) | Implement the Home API and services | FR-HOME-01…03, 10 · BR-14 | TASK-09 | M2 | 0.5 h | — | Pending |
-| [TASK-13](../04-development/tasks/TASK-13-home-screen.md) | Build the Home screen | FR-HOME-01…11 · FR-AUTH-10 · UIR-HOME-01…13 · AC-HOME-01…12 | TASK-04, TASK-12 | M2 | 2 h | — | Pending |
-| [TASK-14](../04-development/tasks/TASK-14-contacts-api.md) | Implement the contacts API | FR-TX-02, 04 · BR-08, BR-09, BR-10, BR-16 | TASK-09 | M3 | 0.5 h | — | Pending |
-| [TASK-15](../04-development/tasks/TASK-15-transfer-recipient.md) | Build the transfer layout, draft state and recipient step | FR-TX-02…04, 08, 09 · UIR-TX-01…09, 14, 19, 20 · AC-TX-05…10, 13, 14, 16 | TASK-04, TASK-14 | M3 | 2 h | — | Pending |
-| [TASK-16](../04-development/tasks/TASK-16-transfer-amount-summary.md) | Build the amount and summary steps | FR-TX-01, 05, 06, 07, 11 · BR-01, 02, 04, 15 · UIR-TX-10…13, 15…18 · AC-TX-01…04, 11, 12 | TASK-15 | M3 | 2 h | — | Pending |
-| [TASK-17](../04-development/tasks/TASK-17-transfers-api.md) | Implement the transfers API | FR-CONF-01, 08, 11, 13 · BR-06, BR-07, BR-17 · UIR-CONF-17 · AC-TX-15, AC-CONF-04, 15, 16 | TASK-06, TASK-14 | M4 | 1.5 h | — | Pending |
-| [TASK-18](../04-development/tasks/TASK-18-confirmation-flow.md) | Build the confirmation flow | FR-CONF-02…07 · UIR-CONF-01…11, 16 · AC-CONF-02…10 | TASK-16, TASK-17 | M4 | 2 h | — | Pending |
-| [TASK-19](../04-development/tasks/TASK-19-receipt.md) | Build the receipt and post-transfer navigation | FR-CONF-03, 09, 10 · UIR-CONF-07, 12…15 · UIR-TX-21 · UIR-HOME-11 · AC-CONF-01, 11…14, 17 · AC-HOME-09 | TASK-18 | M4 | 1 h | — | Pending |
-| [TASK-20](../04-development/tasks/TASK-20-e2e-suite.md) | Write the E2E suite | NFR-09 · NFR-14 · AC-* (E2E level) | TASK-11, TASK-13, TASK-19 | M5 | 2 h | — | Pending |
-| [TASK-21](../04-development/tasks/TASK-21-a11y-responsive-pass.md) | Run the accessibility and responsive pass | NFR-14 · A11Y-01…26 · UX-01 | TASK-20 | M5 | 1.25 h | — | Pending |
-| [TASK-22](../04-development/tasks/TASK-22-delivery-docs.md) | Write the delivery documents | DEL-01…05 | TASK-21 | M5 | 1.25 h | — | Pending |
-| | | | | **Total** | **29.25 h** | | |
+| [TASK-01](../04-development/tasks/TASK-01-scaffold-project.md) | Scaffold the project and tooling | TS-00 §3.3, §14 · CON-01 | — | M0 | 0.5 h | ~1 h | Done |
+| [TASK-02](../04-development/tasks/TASK-02-setup-test-tooling.md) | Set up the test tooling | ADR-005 · NFR-08, NFR-09 | TASK-01 | M0 | 0.5 h | ~0.5 h | Done |
+| [TASK-03](../04-development/tasks/TASK-03-themes-and-tokens.md) | Implement design tokens, themes and theme switching | UX-22 · NFR-16 · A11Y-10, A11Y-21, A11Y-26 · UIR-AUTH-18 | TASK-01, TASK-06 | M0 | 1.25 h | ~1.25 h | Done |
+| [TASK-04](../04-development/tasks/TASK-04-base-ui-components.md) | Build the base UI components | NFR-11 · A11Y-03, 04, 05, 07, 08, 13, 18, 19, 24 · UIR-AUTH-03, UIR-TX-13 | TASK-03 | M0 | 1.5 h | ~1.5 h | Done |
+| [TASK-05](../04-development/tasks/TASK-05-domain-rules.md) | Implement the domain types and business rules | BR-01…BR-17 (domain side) · NFR-03 · UIR-AUTH-06, UIR-HOME-07, UIR-HOME-08 | TASK-01 | M0 | 1.5 h | ~0.75 h | Done |
+| [TASK-06](../04-development/tasks/TASK-06-config-and-mocks.md) | Implement configuration and the mock layer | NFR-10 · ASM-03, ASM-04, ASM-16, ASM-17 · FR-CONF-11 | TASK-05 | M0 | 1.25 h | ~1 h | Done |
+| [TASK-07](../04-development/tasks/TASK-07-observability.md) | Implement the observability foundation | NFR-04 · NFR-05 (logs) · UIR-CONF-11 | TASK-01 | M0 | 0.75 h | ~0.75 h | Done |
+| [TASK-08](../04-development/tasks/TASK-08-http-layers.md) | Build the server HTTP helpers and the browser HTTP client | TS-00 §5–§6 · ADR-009 · NFR-06 | TASK-05, TASK-07 | M0 | 1.25 h | ~1 h | Done |
+| [TASK-09](../04-development/tasks/TASK-09-session-and-security.md) | Implement session handling and request security | BR-14 · NFR-05, NFR-17 · FR-AUTH-08, FR-AUTH-09 · UIR-AUTH-15 · AC-AUTH-13, 14, 19 | TASK-06, TASK-07, TASK-08 | M1 | 1.5 h | ~1.75 h | Done |
+| [TASK-10](../04-development/tasks/TASK-10-auth-api.md) | Implement the auth API | FR-AUTH-01, 02, 05, 06, 10, 12…16 · BR-10…BR-13 · OQ-14 | TASK-09 | M1 | 1.25 h | ~1.25 h | Done |
+| [TASK-11](../04-development/tasks/TASK-11-login-screens.md) | Build the login screens | FR-AUTH-01…05, 07, 11…16 · UIR-AUTH-01…17 · AC-AUTH-01…12, 15…18 | TASK-04, TASK-10 | M1 | 2 h | ~2.5 h | Done |
+| [TASK-12](../04-development/tasks/TASK-12-home-api.md) | Implement the Home API and services | FR-HOME-01…03, 10 · BR-14 | TASK-09 | M2 | 0.5 h | ~0.75 h | Done |
+| [TASK-13](../04-development/tasks/TASK-13-home-screen.md) | Build the Home screen | FR-HOME-01…11 · FR-AUTH-10 · UIR-HOME-01…13 · AC-HOME-01…12 | TASK-04, TASK-12 | M2 | 2 h | ~2.25 h | Done |
+| [TASK-14](../04-development/tasks/TASK-14-contacts-api.md) | Implement the contacts API | FR-TX-02, 04 · BR-08, BR-09, BR-10, BR-16 | TASK-09 | M3 | 0.5 h | ~0.5 h | Done |
+| [TASK-15](../04-development/tasks/TASK-15-transfer-recipient.md) | Build the transfer layout, draft state and recipient step | FR-TX-02…04, 08, 09 · UIR-TX-01…09, 14, 19, 20 · AC-TX-05…10, 13, 14, 16 | TASK-04, TASK-14 | M3 | 2 h | ~2.5 h | Done |
+| [TASK-16](../04-development/tasks/TASK-16-transfer-amount-summary.md) | Build the amount and summary steps | FR-TX-01, 05, 06, 07, 11 · BR-01, 02, 04, 15 · UIR-TX-10…13, 15…18 · AC-TX-01…04, 11, 12 | TASK-15 | M3 | 2 h | ~2.25 h | Done |
+| [TASK-17](../04-development/tasks/TASK-17-transfers-api.md) | Implement the transfers API | FR-CONF-01, 08, 11, 13 · BR-06, BR-07, BR-17 · UIR-CONF-17 · AC-TX-15, AC-CONF-04, 15, 16 | TASK-06, TASK-14 | M4 | 1.5 h | ~1.75 h | Done |
+| [TASK-18](../04-development/tasks/TASK-18-confirmation-flow.md) | Build the confirmation flow | FR-CONF-02…07 · UIR-CONF-01…11, 16 · AC-CONF-02…10 | TASK-16, TASK-17 | M4 | 2 h | ~2.25 h | Done |
+| [TASK-19](../04-development/tasks/TASK-19-receipt.md) | Build the receipt and post-transfer navigation | FR-CONF-03, 09, 10 · UIR-CONF-07, 12…15 · UIR-TX-21 · UIR-HOME-11 · AC-CONF-01, 11…14, 17 · AC-HOME-09 | TASK-18 | M4 | 1 h | ~1.25 h | Done |
+| [TASK-20](../04-development/tasks/TASK-20-e2e-suite.md) | Write the E2E suite | NFR-09 · NFR-14 · AC-* (E2E level) | TASK-11, TASK-13, TASK-19 | M5 | 2 h | ~1.5 h | In review |
+| [TASK-21](../04-development/tasks/TASK-21-a11y-responsive-pass.md) | Run the accessibility and responsive pass | NFR-14 · A11Y-01…26 · UX-01 | TASK-20 | M5 | 1.25 h | ~1.5 h | In review |
+| [TASK-22](../04-development/tasks/TASK-22-delivery-docs.md) | Write the delivery documents | DEL-01…05 | TASK-21 | M5 | 1.25 h | ~0.75 h | In review |
+| | | | | **Total** | **29.25 h** | **~30.5 h** | |
 
 ## 6. Critical path
 
@@ -181,9 +181,12 @@ See [specs README §5](../README.md#5-quality-gates).
 
 The challenge asks to declare the real time spent in the README (DEL-02). Each task card records its **Actual time**; TASK-22 adds them up, together with the time spent on the specs, for the README.
 
+**As delivered:** the cards' *Actual time* values turned out to be rough effort estimates (they add up to ~30.5 h), not clock time. The README declares the clock time instead: ~6.5 h for the specs and ~14 h for implementation, **~20.5 h in total**, taken from the project creation time, file and git timestamps and the commit history. Gaps without traces inside each block were reading and analysis (confirmed by the owner); the night between the blocks is the only pause.
+
 ## 12. Change history
 
 | Version | Date | Author | Change |
 |---|---|---|---|
 | 0.1 | 2026-10-14 | Claude (AI-assisted) | First draft |
 | 0.2 | 2026-10-14 | Claude (AI-assisted) | Removed dates, days and daily checkpoints at the owner's request; plan is an ordered task list |
+| 0.3 | 2026-10-15 | Claude (AI-assisted) | TASK-22: actual time and status per task; §11 clock time declared in the README |

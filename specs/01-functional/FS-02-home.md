@@ -4,7 +4,7 @@
 |---|---|
 | **ID** | FS-02 |
 | **Module** | HOME |
-| **Status** | Approved |
+| **Status** | Implemented |
 | **Version** | 1.3 |
 | **Author** | Claude (AI-assisted draft) |
 | **Reviewer** | Project owner |

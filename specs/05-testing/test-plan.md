@@ -2,7 +2,7 @@
 
 | Field | Value |
 |---|---|
-| **Status** | Draft |
+| **Status** | Approved |
 | **Version** | 0.2 |
 | **Author** | Claude (AI-assisted draft) |
 | **Reviewer** | Project owner |

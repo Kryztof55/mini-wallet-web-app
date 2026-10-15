@@ -144,11 +144,12 @@ all green. E2E when the task touches flows (TASK-20 owns the suite).
 - Folder-structure refactor done (ADR-010) on `refactor/folder-structure`.
 - TASK-21 in review: scripted a11y/responsive pass done and its 8 findings fixed (reflow at
   320 px, spoken masks and amounts); TC-MAN-02 waits for the owner's VoiceOver run (guide in
-  the card, §10). **Next: TASK-22** delivery docs, on `chore/m5-quality-delivery`.
+  the card, §10).
 - Owner decision 2026-10-15 (OQ-14 amendment): no demo hint on login step 1; demo accounts
   live in the README; outside production an unknown identifier gets `demoUnknownAccount`
   (hint says "not a demo account") instead of a code that could never verify.
-- TASK-22: complete the README (starter with demo accounts exists), DECISIONS.md, AI_USAGE.md.
+- TASK-22 in review: README, DECISIONS.md and AI_USAGE.md written; time spent declared as
+  clock time (~20.5 h: specs ~6.5 h + implementation ~14 h).
 
 ## 10. Known pitfalls
 

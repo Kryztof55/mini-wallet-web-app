@@ -4,7 +4,7 @@
 |---|---|
 | **ID** | FS-01 |
 | **Module** | AUTH |
-| **Status** | Approved |
+| **Status** | Implemented |
 | **Version** | 1.4 |
 | **Author** | Claude (AI-assisted draft) |
 | **Reviewer** | Project owner |
