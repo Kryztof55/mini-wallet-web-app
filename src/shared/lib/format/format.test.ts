@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import { formatFullDateTime, formatRelativeDate } from './date';
-import { formatMoney, formatSignedAmount } from './money';
+import { formatMoney, formatSignedAmount, spokenMoney } from './money';
 
 const mxn = (amountMinor: number) => ({ amountMinor, currency: 'MXN' as const });
 
@@ -9,6 +9,15 @@ describe('[TC-UNIT-17][UIR-HOME-07][UIR-HOME-08][NFR-13] formatters', () => {
     expect(formatMoney(mxn(1234567))).toBe('$12,345.67');
     expect(formatMoney(mxn(0))).toBe('$0.00');
     expect(formatMoney(mxn(999999999))).toBe('$9,999,999.99');
+  });
+
+  it('A11Y-17: speaks amounts in words for the currency, without grouping separators', () => {
+    expect(spokenMoney(mxn(1234567))).toBe('12345 pesos con 67 centavos');
+    expect(spokenMoney(mxn(25000))).toBe('250 pesos');
+    expect(spokenMoney(mxn(100))).toBe('1 peso');
+    expect(spokenMoney(mxn(101))).toBe('1 peso con 1 centavo');
+    expect(spokenMoney(mxn(5))).toBe('0 pesos con 5 centavos');
+    expect(spokenMoney(mxn(0))).toBe('0 pesos');
   });
 
   it('formats signed amounts with direction (true minus sign for outgoing)', () => {

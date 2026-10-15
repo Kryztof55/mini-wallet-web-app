@@ -286,6 +286,8 @@ Then I am on Login with the notice "Cerraste sesión."
 | `home.balance.hide` | "Ocultar saldo" | Toggle (not pressed) |
 | `home.balance.show` | "Mostrar saldo" | Not used: the toggle keeps the name "Ocultar saldo" and exposes `aria-pressed` (a name that flips together with the pressed state reads as contradictory to screen-reader users) |
 | `home.balance.hidden` | "Saldo oculto" | Accessible text of the masked balance |
+| `money.spoken.pesos` / `money.spoken.pesos_one` | "{n} pesos" / "{n} peso" | Spoken amount, no grouping separators (A11Y-17) |
+| `money.spoken.cents` / `money.spoken.cents_one` | "{pesos} con {n} centavos" / "{pesos} con 1 centavo" | Spoken amount with cents (A11Y-17) |
 | `home.greeting.anonymous` | "Hola" | Greeting without a name (EC-06) |
 | `home.balance.zero` | "No tienes saldo disponible" | Zero balance note |
 | `home.balance.error` | "No pudimos cargar tu saldo." | Balance error |
@@ -353,3 +355,4 @@ None blocking. OQ-07 (reflect new transaction) and OQ-11 (hide balance) are appl
 | 1.1 | 2026-10-14 | Claude (AI-assisted) | Traceability now points to the written TS (no behavior change) |
 | 1.2 | 2026-10-14 | Claude (AI-assisted) | TASK-04: `common.loading` for loading regions |
 | 1.3 | 2026-10-14 | Claude (AI-assisted) | TASK-13: toggle keeps one name with aria-pressed; greeting is the view's h1; copy keys for hidden balance and anonymous greeting |
+| 1.4 | 2026-10-14 | Claude (AI-assisted) | TASK-21: copy keys for spoken amounts ("12345 pesos con 67 centavos"); no behavior change |

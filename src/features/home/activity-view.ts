@@ -1,9 +1,10 @@
 import type { Money } from '@/core/money';
 import type { TransactionDirection, TransactionStatus } from '@/core/transfers';
 import { formatFullDateTime, formatRelativeDate } from '@/shared/lib/format/date';
-import { formatSignedAmount } from '@/shared/lib/format/money';
+import { formatSignedAmount, spokenMoney } from '@/shared/lib/format/money';
 import { initialsOf } from '@/shared/lib/format/initials';
 import { t } from '@/shared/lib/i18n/t';
+import { spokenMaskedIdentifier } from '@/shared/components/masked-identifier';
 
 /** What the API returns for an activity item (TS-02 §4). */
 export type ActivityItemData = {
@@ -39,17 +40,20 @@ export function toActivityItemView(
   now: Date,
   timeZone: string,
 ): ActivityItemView {
-  // EC-03: no name → the masked identifier stands in.
-  const name = item.counterparty.name?.trim() || item.counterparty.maskedIdentifier;
+  // EC-03: no name → the masked identifier stands in; it is spoken as words (A11Y-17).
+  const realName = item.counterparty.name?.trim() || null;
+  const name = realName ?? item.counterparty.maskedIdentifier;
+  const spokenName = realName ?? spokenMaskedIdentifier(item.counterparty.maskedIdentifier);
   const directionLabel = t(`tx.direction.${item.direction}`);
   const amountText = formatSignedAmount(item.amount, item.direction);
   const statusLabel = item.status === 'completed' ? null : t(`tx.status.${item.status}`);
   const parts = [
     t(item.direction === 'out' ? 'tx.item.to' : 'tx.item.from', {
       direction: directionLabel,
-      name,
+      name: spokenName,
     }),
-    amountText,
+    // Direction is already in the words ("Enviado a"); the amount is spoken, not "−$" (A11Y-17).
+    spokenMoney(item.amount),
     formatFullDateTime(item.occurredAt, timeZone),
     ...(item.concept ? [t('tx.item.concept', { concept: item.concept })] : []),
     ...(statusLabel ? [t('tx.item.status', { status: statusLabel })] : []),
@@ -58,7 +62,7 @@ export function toActivityItemView(
     id: item.id,
     direction: item.direction,
     name,
-    initials: item.counterparty.name ? initialsOf(item.counterparty.name) : '#',
+    initials: realName ? initialsOf(realName) : '#',
     concept: item.concept,
     amountText,
     directionLabel,

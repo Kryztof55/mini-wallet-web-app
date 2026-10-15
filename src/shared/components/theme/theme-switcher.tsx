@@ -23,7 +23,8 @@ export function ThemeSwitcher({ className = '' }: { readonly className?: string 
       }}
       orientation="horizontal"
       loop
-      className={`inline-flex gap-0.5 rounded-full border border-border bg-surface-sunken p-0.5 ${className}`}
+      // Wraps instead of overflowing at 320 px with text spacing or large text (A11Y-12).
+      className={`inline-flex max-w-full flex-wrap gap-0.5 rounded-3xl border border-border bg-surface-sunken p-0.5 ${className}`}
     >
       {THEME_PREFERENCES.map((preference) => {
         const Icon = THEME_ICONS[preference];

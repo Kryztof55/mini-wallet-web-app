@@ -25,8 +25,11 @@ export function ContactItem({
     >
       <Avatar name={name} />
       <span className="flex min-w-0 flex-col">
-        <span className="truncate font-medium text-text-primary">{name}</span>
-        <span className="text-sm text-text-secondary">{maskedIdentifier}</span>
+        {/* Wraps rather than truncating: large text must not hide who you pay (A11Y-12). */}
+        <span className="font-medium [overflow-wrap:anywhere] text-text-primary">{name}</span>
+        <span className="text-sm [overflow-wrap:anywhere] text-text-secondary">
+          {maskedIdentifier}
+        </span>
       </span>
     </button>
   );

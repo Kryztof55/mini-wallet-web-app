@@ -142,15 +142,18 @@ all green. E2E when the task touches flows (TASK-20 owns the suite).
 - Done: TASK-01 to TASK-19 (the whole user flow). TASK-20: all 23 E2E green on 4 projects;
   pending the 10× stability run (`npx playwright test --repeat-each=10`).
 - Folder-structure refactor done (ADR-010) on `refactor/folder-structure`.
-- **Next: TASK-21** (a11y/responsive pass incl. Home masked-name spoken form, manual checks
-  TC-MAN-01…04) → TASK-22 delivery docs, on `chore/m5-quality-delivery`.
+- TASK-21 in review: scripted a11y/responsive pass done and its 8 findings fixed (reflow at
+  320 px, spoken masks and amounts); TC-MAN-02 waits for the owner's VoiceOver run (guide in
+  the card, §10). **Next: TASK-22** delivery docs, on `chore/m5-quality-delivery`.
 - Pending owner decision: demo-accounts hint on login step 1 and no demo code for
   unknown identifiers (non-production only).
-- Then: TASK-21 a11y/responsive pass (incl. Home masked-name spoken form) → TASK-22 delivery docs
-  (README with demo accounts, DECISIONS.md, AI_USAGE.md).
+- TASK-22: README with demo accounts, DECISIONS.md, AI_USAGE.md.
 
 ## 10. Known pitfalls
 
+- `MoneyText` and masked identifiers render a visual span (`aria-hidden`) plus an `sr-only`
+  spoken one ("250 pesos", "celular terminación 5678"). `toHaveText` / `textContent` on a
+  container sees both; assert the visual text with `getByText(…, { exact: true })`.
 - Next.js 16.4: the `middleware` convention is deprecated → `src/proxy.ts`. Folders
   starting with `_` are private in the App Router (that is why the reset route is
   `/api/mock/reset`).

@@ -22,7 +22,7 @@ export function Checkbox({ label, hint, id, className, ...inputProps }: Checkbox
         type="checkbox"
         id={inputId}
         aria-describedby={hint ? hintId : undefined}
-        className="mt-0.5 size-5 shrink-0 cursor-pointer accent-action-primary"
+        className="size-6 shrink-0 cursor-pointer accent-action-primary"
         {...inputProps}
       />
       <div className="flex flex-col gap-0.5">

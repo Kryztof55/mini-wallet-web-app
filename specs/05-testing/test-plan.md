@@ -204,27 +204,27 @@ Generated from the test cases in §6; every BR, UIR and AC is covered.
 | AC-CONF-17 | Receipt of another user | TC-INT-11, TC-E2E-19 | E2E, INT | ✅ |
 | A11Y-01 | — | TC-E2E-21 | E2E | ✅ |
 | A11Y-02 | — | TC-E2E-21 | E2E | ✅ |
-| A11Y-03 | — | TC-COMP-01, TC-MAN-01 | COMP, MAN | ⬜ |
-| A11Y-04 | — | TC-E2E-21, TC-MAN-01 | E2E, MAN | ⬜ |
+| A11Y-03 | — | TC-COMP-01, TC-MAN-01 | COMP, MAN | ✅ |
+| A11Y-04 | — | TC-E2E-21, TC-MAN-01 | E2E, MAN | ✅ |
 | A11Y-05 | — | TC-COMP-01 | COMP | ✅ |
 | A11Y-06 | — | TC-E2E-21 | E2E | ✅ |
 | A11Y-07 | — | TC-COMP-01 | COMP | ✅ |
 | A11Y-08 | — | TC-COMP-01, TC-MAN-02 | COMP, MAN | ⬜ |
-| A11Y-10 | — | TC-UNIT-24, TC-E2E-21, TC-MAN-04 | E2E, MAN, UNIT | ⬜ |
+| A11Y-10 | — | TC-UNIT-24, TC-E2E-21, TC-MAN-04 | E2E, MAN, UNIT | ✅ |
 | A11Y-11 | — | TC-E2E-21 | E2E | ✅ |
-| A11Y-12 | — | TC-MAN-03 | MAN | ⬜ |
-| A11Y-13 | — | TC-COMP-01, TC-MAN-03 | COMP, MAN | ⬜ |
+| A11Y-12 | — | TC-E2E-21, TC-MAN-03 | E2E, MAN | ✅ |
+| A11Y-13 | — | TC-COMP-01, TC-MAN-03 | COMP, MAN | ✅ |
 | A11Y-14 | — | TC-MAN-02 | MAN | ⬜ |
 | A11Y-16 | — | TC-MAN-02 | MAN | ⬜ |
 | A11Y-17 | — | TC-MAN-02 | MAN | ⬜ |
 | A11Y-18 | — | TC-COMP-01 | COMP | ✅ |
 | A11Y-19 | — | TC-COMP-01 | COMP | ✅ |
-| A11Y-20 | — | TC-MAN-04 | MAN | ⬜ |
+| A11Y-20 | — | TC-MAN-04 | MAN | ✅ |
 | A11Y-21 | — | TC-E2E-21 | E2E | ✅ |
-| A11Y-22 | — | TC-MAN-04 | MAN | ⬜ |
+| A11Y-22 | — | TC-MAN-04 | MAN | ✅ |
 | A11Y-23 | — | TC-E2E-21 | E2E | ✅ |
-| A11Y-24 | — | TC-COMP-01, TC-COMP-13, TC-MAN-01 | COMP, MAN | ⬜ |
-| A11Y-25 | — | TC-MAN-03 | MAN | ⬜ |
+| A11Y-24 | — | TC-COMP-01, TC-COMP-13, TC-MAN-01 | COMP, MAN | ✅ |
+| A11Y-25 | — | TC-MAN-03 | MAN | ✅ |
 | A11Y-26 | — | TC-COMP-02, TC-E2E-22 | COMP, E2E | ✅ |
 | FR-AUTH-01 | — | TC-INT-03 | INT | ✅ |
 | FR-AUTH-02 | — | TC-INT-03 | INT | ✅ |
@@ -254,7 +254,7 @@ Generated from the test cases in §6; every BR, UIR and AC is covered.
 | NFR-14 | — | TC-E2E-21 | E2E | ✅ |
 | NFR-16 | — | TC-UNIT-24 | UNIT | ✅ |
 | NFR-17 | — | TC-INT-01 | INT | ✅ |
-| UX-01 | — | TC-MAN-03 | MAN | ⬜ |
+| UX-01 | — | TC-MAN-03 | MAN | ✅ |
 | UX-22 | — | TC-PL-09, TC-COMP-02, TC-INT-14, TC-E2E-22 | COMP, E2E, INT, PL | ✅ |
 
 ## 6. Test cases
@@ -367,7 +367,7 @@ Levels and IDs follow the [specs README](../README.md#24-ids). Tests reference t
 | TC-E2E-18 | Unknown error | AC-CONF-09 | forced unknown_error → fallback copy, reference, retry, Home | `tests/e2e/confirmation.spec.ts` | High | TASK-20 | ✅ |
 | TC-E2E-19 | Receipt navigation | AC-CONF-11, AC-CONF-12, AC-CONF-13, AC-CONF-14, AC-CONF-17, UIR-CONF-07 | Back → Home; reload same receipt, no new transaction; copy folio; send again pre-selects recipient; other user's receipt → not found | `tests/e2e/confirmation.spec.ts` | High | TASK-20 | ✅ |
 | TC-E2E-20 | No double submission | AC-AUTH-05, AC-CONF-02 | double click Continue/Verify/Enviar → one request each (network log) | `tests/e2e/confirmation.spec.ts` | High | TASK-20 | ✅ |
-| TC-E2E-21 | Accessibility scan | NFR-14, A11Y-01, A11Y-02, A11Y-04, A11Y-06, A11Y-10, A11Y-11, A11Y-21, A11Y-23 | axe on every screen and outcome view in light and dark; page titles; focus to heading on navigation | `tests/e2e/a11y.spec.ts` | High | TASK-20 | ✅ |
+| TC-E2E-21 | Accessibility scan | NFR-14, A11Y-01, A11Y-02, A11Y-04, A11Y-06, A11Y-10, A11Y-11, A11Y-12, A11Y-21, A11Y-23 | axe on every screen and outcome view in light and dark; page titles; focus to heading on navigation; no horizontal scroll at 320 px with a text-spacing override | `tests/e2e/a11y.spec.ts` | High | TASK-20 | ✅ |
 | TC-E2E-22 | Theme | UX-22, A11Y-26 | no cookie + dark scheme → dark on first paint (before hydration); switching persists across reload | `tests/e2e/theme.spec.ts` | High | TASK-20 | ✅ |
 | TC-E2E-23 | Reference code correlation | NFR-04, UIR-CONF-11 | reference shown on a forced error equals the response x-request-id prefix | `tests/e2e/confirmation.spec.ts` | Medium | TASK-20 | ✅ |
 
@@ -375,10 +375,10 @@ Levels and IDs follow the [specs README](../README.md#24-ids). Tests reference t
 
 | TC | Title | Covers | Key cases → expected result | Location | Priority | Built in | Status |
 |---|---|---|---|---|---|---|---|
-| TC-MAN-01 | Keyboard-only walkthrough | A11Y-03, A11Y-04, A11Y-24 | login → home → transfer → each outcome → receipt with keyboard only; no traps; focus always visible and not obscured | Checklist §8 | High | TASK-21 | ⬜ |
+| TC-MAN-01 | Keyboard-only walkthrough | A11Y-03, A11Y-04, A11Y-24 | login → home → transfer → each outcome → receipt with keyboard only; no traps; focus always visible and not obscured | Checklist §8 | High | TASK-21 |✅ |
 | TC-MAN-02 | Screen-reader smoke test | A11Y-08, A11Y-17, A11Y-14, A11Y-16 | VoiceOver: login (paste code), balance and list reading, amount errors, outcomes, folio spelled out; cooldown not announced every second | Checklist §8 | High | TASK-21 | ⬜ |
-| TC-MAN-03 | Resize and reflow | A11Y-12, A11Y-13, A11Y-25, UX-01 | 320 px width and 200 % text on every screen; portrait/landscape; targets ≥ 44 px for primary actions | Checklist §8 | High | TASK-21 | ⬜ |
-| TC-MAN-04 | Forced colors, reduced motion, text spacing | A11Y-20, A11Y-10, A11Y-22 | OS forced-colors keeps focus/borders; no non-essential animation with reduced motion; spacing override doesn't break layout | Checklist §8 | Medium | TASK-21 | ⬜ |
+| TC-MAN-03 | Resize and reflow | A11Y-12, A11Y-13, A11Y-25, UX-01 | 320 px width and 200 % text on every screen; portrait/landscape; targets ≥ 44 px for primary actions | Checklist §8 | High | TASK-21 |✅ |
+| TC-MAN-04 | Forced colors, reduced motion, text spacing | A11Y-20, A11Y-10, A11Y-22 | OS forced-colors keeps focus/borders; no non-essential animation with reduced motion; spacing override doesn't break layout | Checklist §8 | Medium | TASK-21 |✅ |
 
 ## 7. Negative scenarios and edge cases
 
@@ -444,3 +444,4 @@ Edge cases from FS-01…FS-04 §11 are folded into the cases above (see the "Key
 |---|---|---|---|
 | 0.1 | 2026-10-14 | Claude (AI-assisted) | First draft generated from FS/TS; coverage verified for every BR, UIR and AC |
 | 0.2 | 2026-10-14 | Claude (AI-assisted) | TASK-03: TC-UNIT-24 (theme token contrast) added; 89 cases |
+| 0.3 | 2026-10-14 | Claude (AI-assisted) | TASK-21: TC-MAN-01/03/04 passed (scripted pass in Chromium, findings fixed); TC-E2E-21 also guards reflow at 320 px (A11Y-12); TC-MAN-02 awaits the owner's VoiceOver run |

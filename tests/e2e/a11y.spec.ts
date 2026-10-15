@@ -5,7 +5,8 @@ import { loginAs, logout, main } from './session';
 /**
  * TC-E2E-21: axe (WCAG 2.x A/AA) on every screen and outcome view. Each Playwright project
  * runs it in its color scheme, so light and dark are both covered on desktop and mobile.
- * Also checks the page title and that focus lands on the view's heading.
+ * Also checks the page title and that focus lands on the view's heading, and reflow at 320 px
+ * with a text-spacing override (A11Y-12).
  */
 async function expectView(
   page: Page,
@@ -20,6 +21,20 @@ async function expectView(
 }
 
 const amount = (page: Page) => page.getByRole('textbox', { name: 'Monto' });
+
+/** WCAG 1.4.12 text-spacing override (the values of the standard bookmarklet). */
+const TEXT_SPACING = `* { line-height: 1.5 !important; letter-spacing: 0.12em !important;
+  word-spacing: 0.16em !important; } p { margin-bottom: 2em !important; }`;
+
+/** A11Y-12: at 320 CSS px with text spacing overridden, nothing scrolls horizontally. */
+async function expectReflow(page: Page, view: string) {
+  await page.addStyleTag({ content: TEXT_SPACING });
+  const { scrollWidth, clientWidth } = await page.evaluate(() => ({
+    scrollWidth: document.documentElement.scrollWidth,
+    clientWidth: document.documentElement.clientWidth,
+  }));
+  expect(scrollWidth, `${view}: horizontal scroll at 320 px`).toBeLessThanOrEqual(clientWidth);
+}
 
 async function toSummary(page: Page) {
   await page.getByRole('link', { name: 'Enviar dinero' }).click();
@@ -111,6 +126,47 @@ test.describe('[TC-E2E-21][NFR-14] Accessibility scan', () => {
       await expectNoA11yViolations();
     });
   }
+
+  // Found by the TASK-21 pass: the theme switcher overflowed 320 px with text spacing, and
+  // activity rows overlapped their status badge. Guards those layouts from regressing.
+  test('[A11Y-12] 320 px with text spacing: no horizontal scroll on any main view', async ({
+    page,
+    forceOutcome,
+  }) => {
+    await page.setViewportSize({ width: 320, height: 640 });
+    await page.goto('/login');
+    await expectReflow(page, 'login');
+
+    await loginAs(page, 'ana@demo.mx');
+    await expectReflow(page, 'home');
+
+    await page.getByRole('link', { name: 'Enviar dinero' }).click();
+    await expect(page).toHaveURL('/transfer/recipient');
+    await expectReflow(page, 'recipient');
+
+    await page.getByRole('button', { name: /^Enviar a Luis Pérez/ }).click();
+    await amount(page).fill('99999');
+    await expect(main(page).getByText(/supera tu saldo/)).toBeVisible();
+    await expectReflow(page, 'amount with error');
+
+    await amount(page).fill('250');
+    await page.getByRole('button', { name: 'Continuar' }).click();
+    await expect(page).toHaveURL('/transfer/summary');
+    await expectReflow(page, 'summary');
+
+    await forceOutcome('**/api/transfers', 'network_error');
+    await page.getByRole('button', { name: 'Enviar $250.00' }).click();
+    await expect(
+      page.getByRole('heading', { level: 1, name: 'No pudimos conectarnos' }),
+    ).toBeFocused();
+    await expectReflow(page, 'outcome');
+
+    await page.unroute('**/api/transfers');
+    await forceOutcome('**/api/transfers', 'success');
+    await page.getByRole('button', { name: 'Intentar de nuevo' }).click();
+    await expect(page).toHaveURL(/\/receipts\/trf_/);
+    await expectReflow(page, 'receipt');
+  });
 
   test('receipt and receipt not found', async ({ page, forceOutcome, expectNoA11yViolations }) => {
     await loginAs(page, 'ana@demo.mx');

@@ -51,7 +51,10 @@ describe('[TC-COMP-04] CodeStep and OneTimeCodeField', () => {
   it('[UIR-AUTH-05][UIR-AUTH-06][AC-AUTH-01] focuses the field, which announces the masked destination and length', () => {
     const { input } = setup();
     expect(input).toHaveFocus();
-    expect(input).toHaveAccessibleDescription('Enviamos un código de 6 dígitos a •••• 5678.');
+    expect(input).toHaveAccessibleDescription(
+      'Enviamos un código de 6 dígitos a celular terminación 5678.',
+    );
+    expect(screen.getByText('Enviamos un código de 6 dígitos a •••• 5678.')).toBeVisible();
     expect(input).toHaveAttribute('inputmode', 'numeric');
     expect(input).toHaveAttribute('autocomplete', 'one-time-code');
     expect(input).not.toHaveAttribute('maxlength');

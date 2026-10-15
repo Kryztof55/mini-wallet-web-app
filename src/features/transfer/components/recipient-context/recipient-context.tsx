@@ -12,16 +12,20 @@ export function RecipientContext({
   readonly maskedIdentifier: string;
 }) {
   return (
-    <div className="flex items-center gap-3 rounded-lg border border-border bg-surface-raised p-3">
+    // When the name would get narrower than 6rem (large text), "Cambiar" drops to its own line.
+    <div className="flex flex-wrap items-center gap-3 rounded-lg border border-border bg-surface-raised p-3">
       <Avatar name={name} />
-      <div className="flex min-w-0 flex-1 flex-col">
-        <span className="truncate font-medium">{name}</span>
-        <MaskedIdentifierText masked={maskedIdentifier} className="text-sm text-text-secondary" />
+      <div className="flex min-w-0 flex-1 basis-24 flex-col">
+        <span className="font-medium [overflow-wrap:anywhere]">{name}</span>
+        <MaskedIdentifierText
+          masked={maskedIdentifier}
+          className="text-sm [overflow-wrap:anywhere] text-text-secondary"
+        />
       </div>
       <Link
         href="/transfer/recipient"
         aria-label={t('tx.change_recipient_aria')}
-        className="rounded-md px-2 py-1 text-sm font-medium text-text-link hover:bg-action-secondary"
+        className="ms-auto inline-flex min-h-11 shrink-0 items-center rounded-md px-3 text-sm font-medium text-text-link hover:bg-action-secondary"
       >
         {t('tx.change')}
       </Link>

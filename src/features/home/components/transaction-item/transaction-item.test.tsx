@@ -45,7 +45,7 @@ describe('[TC-COMP-07][UIR-HOME-06][UIR-HOME-07][UIR-HOME-08][UIR-HOME-09] Trans
     renderList([item()]);
     const row = screen.getByRole('listitem');
     expect(within(row).getByText(/^Enviado a Luis Pérez/)).toHaveTextContent(
-      'Enviado a Luis Pérez, −$250.00, 14 de octubre de 2026, 14:32, concepto Tacos',
+      'Enviado a Luis Pérez, 250 pesos, 14 de octubre de 2026, 14:32, concepto Tacos',
     );
     expect(row.querySelector('[aria-hidden="true"]')).toHaveTextContent('Luis Pérez');
   });
@@ -75,7 +75,21 @@ describe('[TC-COMP-07][UIR-HOME-06][UIR-HOME-07][UIR-HOME-08][UIR-HOME-09] Trans
     const [first, second] = screen.getAllByRole('listitem');
     expect(within(first as HTMLElement).getByTitle(long)).toHaveClass('truncate');
     expect(first).toHaveTextContent(`Enviado a ${long}`);
-    expect(second).toHaveTextContent('Enviado a •••• 5678');
+    // Visually the mask; spoken as words, never as "bullet bullet…" (A11Y-17).
+    expect(within(second as HTMLElement).getByText('•••• 5678')).toBeVisible();
+    expect(second).toHaveTextContent('Enviado a celular terminación 5678');
+    expect(second).not.toHaveTextContent('Enviado a ••••');
+  });
+
+  it('A11Y-17: an unnamed e-mail counterparty is spoken by its parts', () => {
+    const view = toActivityItemView(
+      item({ direction: 'in', counterparty: { name: '  ', maskedIdentifier: 'l•••@demo.mx' } }),
+      NOW,
+      TZ,
+    );
+    expect(view.name).toBe('l•••@demo.mx');
+    expect(view.initials).toBe('#');
+    expect(view.accessibleText).not.toContain('•');
   });
 
   it('dates: yesterday and older', () => {

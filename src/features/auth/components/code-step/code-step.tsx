@@ -5,6 +5,7 @@ import { Button } from '@/shared/ui/button';
 import { Notice } from '@/shared/ui/notice';
 import { parseOtpCode } from '@/core/auth';
 import { t } from '@/shared/lib/i18n/t';
+import { spokenMaskedIdentifier } from '@/shared/components/masked-identifier';
 import type { CodeError, LoginState } from '@/features/auth/state/login-state';
 import { OneTimeCodeField } from '@/features/auth/components/one-time-code-field';
 import { ResendCountdown } from '@/features/auth/components/resend-countdown';
@@ -116,8 +117,16 @@ export function CodeStep({
     <form noValidate onSubmit={handleSubmit} className="flex flex-col gap-6">
       <div className="flex flex-col gap-2">
         <h1 className="text-2xl font-bold tracking-tight">{t('auth.code.title')}</h1>
+        {/* Shows the mask, reads it as words — "celular terminación 5678" (A11Y-17). */}
         <p id={instructionsId} className="text-base text-text-secondary">
-          {t('auth.code.instructions', { destination: destination ?? '' })}
+          <span aria-hidden="true">
+            {t('auth.code.instructions', { destination: destination ?? '' })}
+          </span>
+          <span className="sr-only">
+            {t('auth.code.instructions', {
+              destination: destination ? spokenMaskedIdentifier(destination) : '',
+            })}
+          </span>
         </p>
       </div>
 

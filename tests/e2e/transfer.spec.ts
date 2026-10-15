@@ -99,9 +99,13 @@ test.describe('[FS-03] New transaction', () => {
     await expect(page).toHaveURL('/transfer/summary');
     await expect(page.getByRole('heading', { level: 1, name: 'Revisa tu envío' })).toBeFocused();
     await expect(summaryValue(page, 'Para')).toContainText('Luis Pérez');
-    await expect(summaryValue(page, 'Monto')).toHaveText('$250.00');
+    // Amounts show "$250.00" and are read "250 pesos" (A11Y-17).
+    await expect(summaryValue(page, 'Monto').getByText('$250.00', { exact: true })).toBeVisible();
+    await expect(
+      summaryValue(page, 'Monto').getByText('250 pesos', { exact: true }),
+    ).toBeAttached();
     await expect(summaryValue(page, 'Concepto')).toHaveText('Tacos');
-    await expect(summaryValue(page, 'Saldo después del envío')).toHaveText('$12,095.67');
+    await expect(summaryValue(page, 'Saldo después del envío')).toContainText('$12,095.67');
     await expect(page.getByRole('button', { name: 'Enviar $250.00' })).toBeVisible();
     await expectNoA11yViolations();
     await page.screenshot({ path: test.info().outputPath('summary.png'), fullPage: true });
@@ -115,7 +119,7 @@ test.describe('[FS-03] New transaction', () => {
     await continueButton(page).click();
     await expect(page).toHaveURL('/transfer/summary');
     await expect(summaryValue(page, 'Para')).toContainText('Luis Pérez');
-    await expect(summaryValue(page, 'Monto')).toHaveText('$300.00');
+    await expect(summaryValue(page, 'Monto')).toContainText('$300.00');
     await expect(summaryValue(page, 'Concepto')).toHaveText('Tacos');
   });
 

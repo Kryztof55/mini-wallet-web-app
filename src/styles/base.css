@@ -28,6 +28,14 @@
     outline-offset: 2px;
   }
 
+  /* A long word in a heading wraps instead of overflowing at 320 px / large text (A11Y-12);
+     `anywhere` also lets a heading inside a flex row shrink below its longest word. */
+  h1,
+  h2,
+  h3 {
+    overflow-wrap: anywhere;
+  }
+
   a {
     color: var(--text-link);
     text-underline-offset: 0.2em;
