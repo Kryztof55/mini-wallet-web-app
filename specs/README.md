@@ -66,7 +66,7 @@ IDs are **stable**: once assigned they are never reused or renumbered, even if t
 | `TS-NN` | Technical spec | `TS-05` | 02-technical |
 | `ADR-NNN` | Architecture decision record | `ADR-002` | 02-technical/adr |
 | `TASK-NN` | Development task | `TASK-07` | 04-development/tasks |
-| `TC-<LEVEL>-NN` | Test case (`UNIT`, `PL` presentation logic, `COMP`, `INT`, `E2E`) | `TC-E2E-04` | 05-testing |
+| `TC-<LEVEL>-NN` | Test case (`UNIT`, `PL` presentation logic, `COMP`, `INT`, `E2E`, `MAN` manual) | `TC-E2E-04` | 05-testing |
 | `ERR-<CODE>` | Domain error code | `ERR-INSUFFICIENT_FUNDS` | TS |
 | `EVT-<domain.event>` | Log / telemetry event | `EVT-tx.confirm.failed` | TS-05 |
 
@@ -147,19 +147,23 @@ Links are relative (`[FS-03](../01-functional/FS-03-new-transaction.md)`) so the
 | ID | Title | Phase | Status | Version |
 |---|---|---|---|---|
 | — | Templates (`_templates/`) | 0 | Approved | 1.0 |
-| — | Requirements analysis (`00-context/requirements-analysis.md`) | 1 | Approved | 1.0 |
+| — | Requirements analysis (`00-context/requirements-analysis.md`) | 1 | Approved | 1.1 |
 | — | User needs & UX analysis (`00-context/user-needs-ux-analysis.md`) | 1 | Approved | 1.0 |
 | — | Accessibility requirements (`00-context/accessibility-requirements.md`) | 1 | Approved | 1.0 |
-| — | Assumptions & open questions (`00-context/assumptions-and-questions.md`) | 1 | Approved | 1.0 |
+| — | Assumptions & open questions (`00-context/assumptions-and-questions.md`) | 1 | Approved | 1.1 |
 | — | Glossary (`00-context/glossary.md`) | 1 | Approved | 1.0 |
-| FS-01 | Login | 2 | Approved | 1.1 |
-| FS-02 | Home | 2 | Approved | 1.1 |
-| FS-03 | New transaction | 2 | Approved | 1.1 |
-| FS-04 | Confirmation and receipt | 2 | Approved | 1.1 |
-| TS-00 | Overall architecture and technology bindings | 3 | Draft | 0.1 |
-| TS-01…04 | Auth & session, Home, Transactions, Confirmation | 3 | Draft | 0.1 |
-| TS-05 | Observability and traceability (server and client logging) | 3 | Draft | 0.1 |
+| FS-01 | Login | 2 | Implemented | 1.5 |
+| FS-02 | Home | 2 | Implemented | 1.4 |
+| FS-03 | New transaction | 2 | Implemented | 1.4 |
+| FS-04 | Confirmation and receipt | 2 | Implemented | 1.4 |
+| TS-00 | Overall architecture and technology bindings | 3 | Implemented | 1.9 |
+| TS-01 | Auth & session | 3 | Implemented | 1.6 |
+| TS-02…04 | Home, Transactions, Confirmation | 3 | Implemented | 1.4 |
+| TS-05 | Observability and traceability (server and client logging) | 3 | Implemented | 1.4 |
 | ADR-001…008 | Routing, rendering, state, session & CSRF, testing, logging, theming, UI components | 3 | Accepted | — |
-| ADR-009 | Runtime validation at boundaries (Zod) | 3 | Proposed | — |
-| — | Implementation plan (`03-plan/`) | 4 | Pending | — |
-| — | Test plan (`05-testing/`) | 5 | Pending | — |
+| ADR-009 | Runtime validation at boundaries (Zod) | 3 | Accepted | — |
+| ADR-010 | Folder structure (features / shared / core) | 3 | Accepted | — |
+| — | Implementation plan (`03-plan/implementation-plan.md`) | 4 | Approved | 0.3 |
+| TASK-01…19 | Task cards (`04-development/tasks/`) | 4 | Done | — |
+| TASK-20…22 | E2E suite, a11y pass, delivery docs | 4 | In review (10× E2E run, VoiceOver run, time spent) | — |
+| — | Test plan (`05-testing/test-plan.md`) — 89 TCs, full BR/UIR/AC matrix; 88 passed, TC-MAN-02 pending | 5 | Approved | 0.4 |

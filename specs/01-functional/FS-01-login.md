@@ -4,8 +4,8 @@
 |---|---|
 | **ID** | FS-01 |
 | **Module** | AUTH |
-| **Status** | Approved |
-| **Version** | 1.1 |
+| **Status** | Implemented |
+| **Version** | 1.4 |
 | **Author** | Claude (AI-assisted draft) |
 | **Reviewer** | Project owner |
 | **Last updated** | 2026-10-13 |
@@ -80,7 +80,7 @@ Let a returning user get into their wallet with only their phone number or email
 | BR-13 | Business | **Code throttling.** A new code for the same identifier cannot be issued sooner than 30 seconds after the previous one, unless the previous one is locked by failed attempts. | On resend (server) | Request rejected with the remaining wait time |
 | BR-14 | Business | **Session required.** Every private view and every private operation requires a valid session; the server rejects requests without one. | Every private request (server) | Redirect to Login / `UNAUTHENTICATED` error |
 
-Values (5 minutes, 3 attempts, 30 seconds, demo code `123456`) come from ASM-15 and are configuration, not hard-coded behavior.
+Values (5 minutes, 3 attempts, 30 seconds) come from ASM-15; codes are random per challenge and are configuration, not hard-coded behavior.
 
 ### 5.2 UI rules
 
@@ -101,7 +101,7 @@ Values (5 minutes, 3 attempts, 30 seconds, demo code `123456`) come from ASM-15 
 | UIR-AUTH-13 | Change identifier | User chooses "Change phone or email" or browser Back from the code step | Returns to step 1 with the identifier pre-filled and focused. | FR-AUTH-15, UX-06 |
 | UIR-AUTH-14 | Post-login navigation | Verification succeeds | Navigate to the originally requested private view if any, otherwise Home; Login is replaced in the history so Back does not return to it. | FR-AUTH-07, FR-AUTH-08, UX-18 |
 | UIR-AUTH-15 | No flash for authenticated users | Authenticated user opens Login | Redirect to Home before the login form is ever rendered. | FR-AUTH-09 |
-| UIR-AUTH-16 | Demo code hint | Environment is not production | A clearly labeled hint shows the demo code on the code step. Never rendered in production. | FR-AUTH-16 |
+| UIR-AUTH-16 | Demo code hint | Environment is not production | A clearly labeled hint shows the code issued for the current challenge (it changes with every new code). For an identifier that is not a demo account, no code is shown; the hint says so and points to the demo accounts in the README. Never rendered in production. | FR-AUTH-16 |
 | UIR-AUTH-17 | Session-ended notice | User arrives at Login because the session expired/was invalid, or after logging out | A notice explains why ("Your session ended…" / "You have logged out"). | FR-AUTH-10, FR-AUTH-11, UX-18 |
 | UIR-AUTH-18 | Theme control | Any login step | The theme switcher is available, as on every screen. | UX-22, A11Y-26 |
 
@@ -194,7 +194,7 @@ flowchart TD
 | Masked destination | `•••• 5678` / `a•••@correo.com` | Normalized identifier (UIR-AUTH-06) |
 | Remaining attempts | "Te quedan 2 intentos" / "Te queda 1 intento" | Server response to a failed verification |
 | Resend cooldown | `m:ss` | Server response (time until a new code is allowed) |
-| Demo code hint | `123456` | Configuration; non-production only |
+| Demo code hint | Current code, e.g. `482915` | Server response, non-production only |
 | Reference code (on errors) | Short monospaced code | Correlation ID (NFR-04) |
 
 ## 10. Acceptance criteria
@@ -343,6 +343,8 @@ And nothing is submitted until I press "Verify"
 ```gherkin
 Given the app runs in a non-production environment
 Then the code step shows the demo code hint
+Given the app runs in a non-production environment and the identifier is not a demo account
+Then no code is shown and the hint points to the demo accounts in the README
 Given the app runs in production
 Then the demo code hint is never rendered
 ```
@@ -366,7 +368,7 @@ And no private data is returned
 | EC-05 | Code pasted with spaces or dashes, or with letters | Spaces/dashes removed; letters rejected (field accepts digits only) |
 | EC-06 | Double click on Continue or Verify | One request only (UIR-AUTH-04) |
 | EC-07 | Browser Back from the code step | Step 1 with identifier pre-filled (UIR-AUTH-13) |
-| EC-08 | Page reload on the code step | Returns to step 1; requesting another code is subject to the cooldown (BR-13) |
+| EC-08 | Page reload on the code step | Returns to step 1; requesting another code is subject to the cooldown (BR-13). Pressing Continue within the cooldown goes to the code step without a new code and says so (`auth.code.already_sent`): the code already sent is still valid |
 | EC-09 | Login completed in one tab while another tab shows Login | The other tab goes to Home on its next navigation or interaction |
 | EC-10 | Logout in one tab while another tab shows a private view | The other tab is sent to Login on its next private request (BR-14) |
 | EC-11 | Session credential removed or tampered with manually | Treated as no session (BR-14) |
@@ -392,17 +394,21 @@ UI copy is in Spanish (es-MX), per OQ-01. Keys are stable; texts may be refined 
 | `auth.code.label` | "Código de verificación" | Code field label |
 | `auth.code.error.required` | "Ingresa el código de 6 dígitos." | Empty code |
 | `auth.code.error.format` | "El código debe tener 6 dígitos." | Wrong length |
-| `auth.code.error.incorrect` | "El código no es correcto. Te quedan {n} intentos." / "…Te queda 1 intento." | Wrong code (plural-aware) |
+| `auth.code.error.incorrect` | "El código no es correcto. Te quedan {n} intentos." | Wrong code, 2+ attempts left |
+| `auth.code.error.incorrect_one` | "El código no es correcto. Te queda 1 intento." | Wrong code, 1 attempt left |
+| `auth.code.already_sent` | "Ya te enviamos un código hace poco. Usa ese código o espera para pedir otro." | EC-08: Continue within the cooldown |
 | `auth.code.error.locked` | "Superaste los intentos permitidos. Solicita un código nuevo." | 3 failures |
 | `auth.code.error.expired` | "Este código expiró. Solicita uno nuevo." | Expired code |
 | `auth.verify` | "Verificar" | Step 2 primary action |
 | `auth.verify.loading` | "Verificando…" | Step 2 in progress |
 | `auth.resend` | "Solicitar código nuevo" | Resend action |
-| `auth.resend.cooldown` | "Podrás solicitar un código nuevo en {m:ss}." | Cooldown text |
+| `auth.resend.cooldown` | "Podrás solicitar un código nuevo en {time}." | Cooldown text; `time` is `m:ss` |
+| `auth.resend.loading` | "Enviando código…" | New code in progress |
 | `auth.resend.available` | "Ya puedes solicitar un código nuevo." | Announced once when the cooldown ends |
 | `auth.resend.sent` | "Te enviamos un código nuevo." | New code issued |
 | `auth.change_identifier` | "Cambiar celular o correo" | Back to step 1 |
 | `auth.demo_hint` | "Ambiente de prueba — código: {code}" | Non-production only |
+| `auth.demo_unknown_account` | "Ambiente de prueba — este celular o correo no es una cuenta demo. Usa una de las cuentas del README." | Non-production only; identifier with no account |
 | `auth.error.service` | "No pudimos continuar en este momento. Intenta de nuevo." | Simulated service error |
 | `auth.error.network` | "No hay conexión. Revisa tu internet e intenta de nuevo." | Network error |
 | `auth.error.timeout` | "Esto está tardando más de lo normal. Intenta de nuevo." | Timeout |
@@ -410,6 +416,11 @@ UI copy is in Spanish (es-MX), per OQ-01. Keys are stable; texts may be refined 
 | `common.retry` | "Intentar de nuevo" | Retry action |
 | `auth.session.ended` | "Tu sesión terminó. Inicia sesión de nuevo para continuar." | Expired/invalid session |
 | `auth.logout.done` | "Cerraste sesión." | After logout |
+| `common.skip_to_content` | "Saltar al contenido" | Skip link, every screen (A11Y-03) |
+| `theme.label` | "Tema" | Theme switcher accessible name (UIR-AUTH-18) |
+| `theme.system` | "Sistema" | Follow the OS |
+| `theme.light` | "Claro" | Light theme |
+| `theme.dark` | "Oscuro" | Dark theme |
 
 ## 13. Accessibility and responsive behavior
 
@@ -433,13 +444,13 @@ Applies: A11Y-01, 02, 03, 04, 05, 06, 07, 08, 10, 12, 13, 14, 16, 21, 23, 25, 26
 | ASM-04 | Seeded test users and identifiers to demonstrate every state | Error states harder to demo |
 | ASM-05 | Simulated login errors are triggered deterministically by specific test identifiers or a wrong code | Flaky tests |
 | ASM-12 | Session lasts until logout; no forced expiry, but invalid sessions are handled | Expiry warning needed |
-| ASM-15 | Demo code `123456`, 5-minute validity, 3 attempts, 30-second cooldown | Configuration values change |
+| ASM-15 | Random code per challenge (shown in the demo hint outside production), 5-minute validity, 3 attempts, 30-second cooldown | Configuration values change |
 
 ## 15. Open questions
 
 | ID | Question | Blocking? | Answer / decision |
 |---|---|---|---|
-| OQ-14 | **Unknown identifier (E2):** should the app say "no account found" at step 1, or always continue to the code step and fail generically at verification? | No | **Recommendation:** always continue to the code step and fail generically, so the login does not reveal which phones/emails have an account (prevents account enumeration). The masked destination helps users spot typos. Trade-off: a user with a typo only finds out at the code step. **Resolved 2026-10-13: option (b), as recommended.** |
+| OQ-14 | **Unknown identifier (E2):** should the app say "no account found" at step 1, or always continue to the code step and fail generically at verification? | No | **Recommendation:** always continue to the code step and fail generically, so the login does not reveal which phones/emails have an account (prevents account enumeration). The masked destination helps users spot typos. Trade-off: a user with a typo only finds out at the code step. **Resolved 2026-10-13: option (b), as recommended.** | **Amended 2026-10-15 (owner):** outside production the demo hint does not show a code for an unknown identifier (it could never verify and confused testers); it says the identifier is not a demo account. Production keeps identical answers. Demo accounts are documented in the README, not on the login screen.
 
 ## 16. Traceability
 
@@ -460,3 +471,7 @@ Applies: A11Y-01, 02, 03, 04, 05, 06, 07, 08, 10, 12, 13, 14, 16, 21, 23, 25, 26
 | 0.2 | 2026-10-13 | Claude (AI-assisted) | Approach approved; BR-10…14 registered in 00-context; OQ-14 resolved |
 | 1.0 | 2026-10-13 | Project owner | Approved |
 | 1.1 | 2026-10-14 | Claude (AI-assisted) | Traceability now points to the written TS (no behavior change) |
+| 1.2 | 2026-10-14 | Claude (AI-assisted) | One-time code is random per challenge; the demo hint shows the current code outside production (owner decision, resolves conflict between fixed demo code and AC-AUTH-10) |
+| 1.3 | 2026-10-14 | Claude (AI-assisted) | TASK-03: copy keys for the skip link and the theme switcher (shared by every screen) |
+| 1.4 | 2026-10-14 | Claude (AI-assisted) | TASK-11: EC-08 reuses the code already sent within the cooldown; plural copy split into two keys; `auth.resend.loading` |
+| 1.5 | 2026-10-15 | Project owner | UIR-AUTH-16 / AC-AUTH-18 / OQ-14: no demo code for unknown identifiers outside production; demo accounts listed in the README |

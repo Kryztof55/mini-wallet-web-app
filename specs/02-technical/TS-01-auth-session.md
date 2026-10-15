@@ -4,8 +4,8 @@
 |---|---|
 | **ID** | TS-01 |
 | **Module** | AUTH |
-| **Status** | Draft |
-| **Version** | 0.1 |
+| **Status** | Implemented |
+| **Version** | 1.4 |
 | **Author** | Claude (AI-assisted draft) |
 | **Reviewer** | Project owner |
 | **Last updated** | 2026-10-14 |
@@ -64,15 +64,26 @@ sequenceDiagram
 ### 3.3 Module structure
 
 ```
-src/features/auth/            # components, useLoginFlow, useCountdown
+src/features/auth/components/{login-view,identifier-step,code-step,one-time-code-field,resend-countdown,session-notice,step-error}/
+src/features/auth/hooks/{use-login-flow,use-countdown}/
+src/features/auth/state/login-state.ts
+src/shared/api/auth.ts                   # POST /api/auth/{code,verify,logout} client
+src/shared/components/app-header/        # AppHeader + LogoutButton
 src/app/(public)/login/page.tsx
 src/app/api/auth/{code,verify,logout}/route.ts
-src/middleware.ts
-src/server/session/           # sign/verify, getSession, cookie options
+src/proxy.ts
+src/server/session/{cookie,session}.ts   # sign/verify, cookie serialize/read; getSession, createSession, destroySession
+src/server/security/{csrf,routes,csp}.ts # CSRF layers 2–3, route classification, CSP with nonce
+src/server/http/with-session.ts          # controller authority wrapper
+src/shared/lib/routes.ts                 # loginUrl(), LOGIN_PATH, RETURN_TO_HEADER, HIGHLIGHT_PARAM
+src/shared/components/bfcache-guard/     # reload on bfcache restore of private pages
+src/app/(private)/layout.tsx             # page authority
 src/server/services/auth.service.ts
-src/server/repositories/{user,otp-challenge,session}.repository.ts
-src/domain/{identifier,otp,return-to}.ts
+src/server/repositories/{ports,in-memory}.ts
+src/core/{identity,auth}/
 ```
+
+**Folder structure (ADR-010):** the block above is current. Paths inside the *As built* notes below are those of the task that wrote them; ADR-010 maps them to today's folders.
 
 ### 3.4 Technology bindings
 
@@ -113,6 +124,8 @@ See TS-00 §3.4. No module-specific deviations.
 | `destination` | string | Masked identifier (UIR-AUTH-06) |
 | `expiresInSec` | number | `OTP_TTL_SEC` |
 | `resendAvailableInSec` | number | `OTP_RESEND_COOLDOWN_SEC` |
+| `demoCode` | string, optional | Present **only** when mock controls are enabled (never with `APP_ENV=production`) **and** the identifier has an account; feeds the demo hint (UIR-AUTH-16) and E2E |
+| `demoUnknownAccount` | `true`, optional | Mock controls enabled and no account for the identifier: the demo hint says it is not a demo account (OQ-14 amendment) |
 
 Unknown identifiers also receive `202` (OQ-14); no challenge can ever verify for them.
 
@@ -205,6 +218,20 @@ Unknown identifiers also receive `202` (OQ-14); no challenge can ever verify for
 - **Cookie:** `session`, `HttpOnly; Secure` (relaxed only on `http://localhost`); `SameSite=Lax; Path=/`; no `Max-Age` beyond the store's lifetime.
 - **Brute force:** max 3 attempts per code (BR-12); resend throttled (BR-13); responses identical for unknown identifiers (OQ-14).
 - **Open redirect:** `sanitizeReturnTo` (unit-tested).
+- **Implementation notes (TASK-09):**
+  - Route classification is secure by default: every page except `/login` and every `/api/*` except `health`, `auth/{code,verify,logout}`, `client-logs` and `mock/*` is private.
+  - The proxy forwards `x-return-to` (path + query) so a private layout that finds no session can redirect back with `returnTo`.
+  - `/login` with a valid cookie bounces to `returnTo` (or Home) **unless** `reason` is present: the server already found that session invalid (e.g. store lost on restart), so bouncing would loop. The stale cookie is harmless and is replaced on the next login; clearing it from a GET would make logout-by-link possible.
+  - Controllers use `withApi(route, withSession(handler))`; `withSession` answers `401` without running the handler.
+  - The proxy logs `security.csrf.rejected` (with `reason`) and `auth.session.rejected` (with `layer`: proxy, layout or controller).
+- **Implementation notes (TASK-10):**
+  - Code delivery is a port (`OtpDelivery.send`) next to the repositories; the mock never sends and fails for seeded users with `codeRequestFails`, so a failed delivery issues no challenge and starts no cooldown.
+  - Unknown identifiers get a decoy challenge (`code: null`). With mock controls on they get `demoUnknownAccount: true` instead of a `demoCode` (amended 2026-10-15: a code that could never verify confused testers); with mock controls off the response is identical to a known account's (OQ-14).
+  - `x-mock-outcome: otp_expired` ages the stored challenge past its TTL, so it stays expired for later attempts.
+  - A verified code is deleted (single use). Invalid `timeZone` falls back to `America/Mexico_City`.
+  - `auth.code.rejected` / `auth.verify.rejected` are logged by the service (it is where the rule is evaluated), with `errorCode`.
+- **Hardening (TASK-12):** only the canonical base64url spelling of the signature is accepted (the last character has two unused bits, so several spellings decode to the same bytes); found through a flaky tamper test.
+- **Implementation notes (TASK-11):** after a successful verification the client does a full navigation (`location.replace`), not a router navigation: the client router cache would otherwise restore `/login` on Back without asking the server. `BfcacheGuard` reloads Login and private pages restored from the back/forward cache, so the proxy and `getSession()` always decide.
 - **Never logged:** code, session ID, full identifier (TS-05).
 
 ## 11. Observability
@@ -254,7 +281,7 @@ Per FS-01 §13. Technical notes: `autocomplete="username"` + `inputmode="email"`
 
 ## 16. Known limitations and technical debt
 
-- Fixed demo code; no hashing of codes (production: hash + per-challenge random code).
+- Codes stored in plain text in memory (production: store a hash, deliver by SMS/email, never return it to the client).
 - Sessions lost on restart; no expiry warning (A11Y-16 path documented).
 
 ## 17. Traceability
@@ -272,3 +299,10 @@ Per FS-01 §13. Technical notes: `autocomplete="username"` + `inputmode="email"`
 | Version | Date | Author | Change |
 |---|---|---|---|
 | 0.1 | 2026-10-14 | Claude (AI-assisted) | First draft |
+| 1.0 | 2026-10-14 | Project owner | Approved |
+| 1.1 | 2026-10-14 | Claude (AI-assisted) | One-time code is random per challenge; the demo hint shows the current code outside production (owner decision, resolves conflict between fixed demo code and AC-AUTH-10) |
+| 1.2 | 2026-10-14 | Claude (AI-assisted) | TASK-09: module files, secure-by-default route classification, `x-return-to`, no-bounce rule for `/login?reason=…`, `withSession` |
+| 1.3 | 2026-10-14 | Claude (AI-assisted) | TASK-10: `OtpDelivery` port, decoy behavior, `otp_expired` persistence, single-use codes, log origins |
+| 1.4 | 2026-10-14 | Claude (AI-assisted) | Canonical signature encoding required |
+| 1.5 | 2026-10-14 | Project owner | Folder structure per ADR-010 (features / shared / core); §3.3 updated |
+| 1.6 | 2026-10-15 | Project owner | `demoUnknownAccount` replaces the decoy demo code outside production (OQ-14 amendment) |

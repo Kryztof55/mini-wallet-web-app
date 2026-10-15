@@ -4,8 +4,8 @@
 |---|---|
 | **ID** | TS-05 |
 | **Module** | OBS |
-| **Status** | Draft |
-| **Version** | 0.1 |
+| **Status** | Implemented |
+| **Version** | 1.3 |
 | **Author** | Claude (AI-assisted draft) |
 | **Reviewer** | Project owner |
 | **Last updated** | 2026-10-14 |
@@ -53,13 +53,15 @@ flowchart LR
 ### 3.3 Module structure
 
 ```
-src/middleware.ts                 # ensureRequestId
+src/proxy.ts                 # ensureRequestId
 src/instrumentation.ts
 src/server/logging/{logger,context,events,redaction}.ts
 src/app/api/client-logs/route.ts
-src/lib/observability/report-client-event.ts
-src/components/ui/ReferenceCode.tsx
+src/shared/lib/observability/{request-id,report-client-event}.ts
+src/shared/ui/reference-code/
 ```
+
+**Folder structure (ADR-010):** the block above is current. Paths inside the *As built* notes below are those of the task that wrote them; ADR-010 maps them to today's folders.
 
 ### 3.4 Technology bindings
 
@@ -85,7 +87,7 @@ See TS-00 §3.4 (pino, `AsyncLocalStorage`, Next.js instrumentation).
 | **Limits** | ≤ 10 events per request; ≤ 2 KB per event; 20 requests/min per session or IP |
 
 **Request:** `{ events: ClientEvent[] }` — only catalog events with `client.` or listed client-origin names (`tx.confirm.timeout`, `tx.confirm.unresolved`, `client.render.error`, `client.http.network_error`).
-**Success:** `204`. **Errors:** `400` · `403` · `413` (too large) · `429 RATE_LIMITED`.
+**Success:** `204`. **Errors:** `400 VALIDATION_ERROR` · `403` · `413 PAYLOAD_TOO_LARGE` · `415 UNSUPPORTED_MEDIA_TYPE` · `429 RATE_LIMITED` (with `Retry-After`).
 
 ## 6. Rules: where they are enforced
 
@@ -115,7 +117,7 @@ Logging never throws into business code: logger failures are swallowed after a b
 
 **Never logged:** session ID / cookie values, one-time codes, full identifiers, names of counterparties, `authorization` headers, request bodies as a whole.
 **Logged masked:** identifiers (`•••• 5678`, `a•••@correo.com`) only when needed.
-**Redaction paths:** `req.headers.cookie`, `req.headers.authorization`, `*.identifier`, `*.code`, `*.name`, `*.destination`, `*.sessionId`.
+**Redaction paths:** `cookie`, `authorization`, `identifier`, `code`, `otpCode`, `name`, `destination`, `sessionId`, at the top level and one level deep, plus `req.headers.cookie` / `req.headers.authorization`.
 
 ## 11. Observability — standard
 
@@ -128,7 +130,7 @@ Logging never throws into business code: logger failures are swallowed after a b
 | `requestId` | Yes (server) | From context |
 | `userId` | When authenticated | Internal ID |
 | `route`, `method`, `status`, `durationMs` | Request summary lines | Emitted once per API request by the controller wrapper |
-| `code` | On failures | `ErrorCode` |
+| `errorCode` | On failures | `ErrorCode`. Named `errorCode` because `code` is a redacted path (one-time codes) |
 | module fields | Per event | See catalog |
 
 ### 11.2 Levels
@@ -151,7 +153,7 @@ Logging never throws into business code: logger failures are swallowed after a b
 | TX | `tx.contacts.loaded`, `tx.contacts.failed`, `tx.contact.created`, `tx.contact.duplicate`, `tx.contact.rejected`, `tx.contact.save_failed` (TS-03) |
 | CONF | `tx.confirm.requested`, `tx.confirm.completed`, `tx.confirm.failed`, `tx.confirm.rejected`, `tx.confirm.network_unavailable`, `tx.confirm.error`, `tx.confirm.replayed`, `tx.confirm.idempotency_conflict`, `tx.status.checked`, `tx.confirm.timeout`*, `tx.confirm.unresolved`*, `receipt.viewed`, `receipt.not_found` (TS-04) |
 | MOCK | `mock.outcome.forced`, `mock.outcome.ignored`, `mock.reset` (TS-04, TS-00) |
-| PREFS | `prefs.theme.changed` (Server Action) |
+| PREFS | `prefs.theme.changed`, `prefs.theme.rejected` (Server Action) |
 | CLIENT | `client.render.error`*, `client.http.network_error`* |
 
 \* Client-origin events received through `/api/client-logs`.
@@ -205,3 +207,8 @@ Logging never throws into business code: logger failures are swallowed after a b
 | Version | Date | Author | Change |
 |---|---|---|---|
 | 0.1 | 2026-10-14 | Claude (AI-assisted) | First draft |
+| 1.0 | 2026-10-14 | Project owner | Approved |
+| 1.1 | 2026-10-14 | Claude (AI-assisted) | TASK-07: error code field renamed `errorCode` (conflicted with the redacted `code` path); redaction paths listed as implemented |
+| 1.2 | 2026-10-14 | Claude (AI-assisted) | TASK-08: client-logs error codes made explicit (`PAYLOAD_TOO_LARGE`, `UNSUPPORTED_MEDIA_TYPE`); the request summary line is written by the `withApi` controller wrapper |
+| 1.3 | 2026-10-14 | Claude (AI-assisted) | TASK-03: `prefs.theme.rejected` for invalid theme values sent to the Server Action |
+| 1.4 | 2026-10-14 | Project owner | Folder structure per ADR-010 (features / shared / core); §3.3 updated |

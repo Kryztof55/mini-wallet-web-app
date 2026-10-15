@@ -4,8 +4,8 @@
 |---|---|
 | **ID** | TS-04 |
 | **Module** | CONF |
-| **Status** | Draft |
-| **Version** | 0.1 |
+| **Status** | Implemented |
+| **Version** | 1.0 |
 | **Author** | Claude (AI-assisted draft) |
 | **Reviewer** | Project owner |
 | **Last updated** | 2026-10-14 |
@@ -63,15 +63,29 @@ sequenceDiagram
 ### 3.3 Module structure
 
 ```
-src/features/confirmation/                     # useConfirmTransfer, outcome views
-src/app/(private)/transfer/summary/page.tsx    # hosts ConfirmButton and outcome views
+src/features/transfer/components/{transfer-confirmation,outcome-views}/   # hosted by the summary page
+src/features/transfer/hooks/use-confirm-transfer/
+src/features/transfer/state/confirm-state.ts
+src/features/receipt/components/{receipt-details,receipt-not-found,copy-folio-button}/
+src/shared/api/transfers.ts                    # POST /api/transfers, GET attempts client + receipt schema
+src/shared/lib/transfer-completion.ts          # completion marker (sessionStorage)
+src/shared/ui/view-heading/
+src/app/(private)/transfer/summary/page.tsx
 src/app/(private)/receipts/[transferId]/page.tsx
 src/app/api/transfers/route.ts
 src/app/api/transfers/attempts/[key]/route.ts
 src/server/services/transfers.service.ts
-src/server/repositories/{attempt,transfer}.repository.ts
+src/server/repositories/{ports,in-memory}.ts
 src/server/mock/outcome-simulator.ts
 ```
+
+**Folder structure (ADR-010):** the block above is current. Paths inside the *As built* notes below are those of the task that wrote them; ADR-010 maps them to today's folders.
+
+**As built (TASK-17):** no separate repository files; the ports in `src/server/repositories/ports.ts` gain `attempts.claim(userId, key, payloadHash, now)` (atomic check-and-set: claims a new key or a same-payload `not_processed` one, otherwise returns the stored attempt) and `ledger.commitTransfer(…)` (one atomic step: BR-02 against the current balance, debit, outgoing transaction, favorite `lastUsedAt`, receipt). In memory, atomicity comes from doing the check and the write with no `await` in between. Service order: claim → rules (BR-03/10/16 → BR-09 → BR-04/01 → BR-15) → BR-02 against the balance → simulated outcome → commit. A rule failure is stored as `failed`, so a retry with the same key returns the same `422`. `payloadHash` is SHA-256 of a fixed-order array (recipient, amount, currency, trimmed concept). Folio: `MW-` + 6 characters without 0/O/1/I/L. Timeout sub-cases sleep `simulatedDelays()` derived from the client timings: `late` = timeout + half the first check delay (11 s by default: after the client gives up, before its first check); `unresolved` = timeout + all check delays + 5 s (29 s), then `not_processed`. The status endpoint answers `not_processed` for a malformed key too.
+
+**As built (TASK-18):** `src/features/confirmation/`: `api.ts` (Zod schemas; status checks reuse the attempt's request ID and their own 5 s timeout), `confirm-state.ts` (pure reducer and the §8 mapping, `nextFromConfirm` / `stateFromStatus`), `use-confirm-transfer.ts` (timeline; every timer and request belongs to a "run" that unmount aborts), `outcome-views.tsx` (`VerifyingView`, `OutcomeView`), `transfer-confirmation.tsx` (hosts `SummaryStep` and the views on `/transfer/summary`). `ConfirmButton`/`ProcessingNotice` are `SummaryStep` props (`processing`, `slow`): busy button, edit links and Cancel hidden. A `202` starts the checks at once; a timeout waits the first delay. **Deviation from §6 (UIR-CONF-07):** success does **not** reset the draft — with an empty draft the mounted step guard would redirect to step 1 and race the navigation to the receipt (same race as Cancel, TASK-16); leaving the transfer layout discards the draft anyway. The completion marker is read by `useStepGuard` through `useSyncExternalStore` (server snapshot `false`, so no hydration mismatch and no flash), consumed there, and cleared by `StartTransferLink` ("Enviar dinero"). "Cambiar monto" after insufficient funds stores the server's balance in the flow (`useTransferBalance().update`), so the amount step shows BR-02 against it.
+
+**As built (TASK-19):** `src/app/(private)/receipts/[transferId]/page.tsx` (server; `getReceipt`, `receipt.viewed` / `receipt.not_found`, date in the session time zone, hide-balance cookie) renders `ReceiptDetails` or `ReceiptNotFound` (`src/features/confirmation/receipt/`). The folio is spelled out to assistive technology; `CopyFolioButton` confirms with a toast and reports a blocked clipboard. **"Enviar otra vez"** cannot be built from the receipt alone (the client only has the masked identifier), so the stored receipt keeps an internal recipient reference (`receipts.getRecipient`, never sent as is) and `/transfer/again/[transferId]` (server, inside the transfer layout) resolves it with `getSendAgainRecipient` (the favorite if it still exists, else a one-off), then `SendAgain` dispatches `seedRecipient` and replaces to the amount step; no step guard is mounted there, so nothing races. The movement created by a transfer shares the transfer's ID, so "Ir al inicio" links to `/?highlight={transferId}` (UIR-HOME-11).
 
 ### 3.4 Technology bindings
 
@@ -256,6 +270,8 @@ Per FS-04 §13. Technical notes: one polite live region announces "Enviando", th
 ## 16. Known limitations and technical debt
 
 - `unknown_error` in the mock never moves money; production would require status verification for that case too.
+- The recipient is never credited, even when the identifier belongs to a seeded user (the mock has no inter-account ledger).
+- A request holds its connection during a simulated timeout (up to 29 s); a real backend would process asynchronously.
 - Completion marker in `sessionStorage` is a pragmatic history fix; a router-level history API would be cleaner.
 
 ## 17. Traceability
@@ -272,3 +288,8 @@ Per FS-04 §13. Technical notes: one polite live region announces "Enviando", th
 | Version | Date | Author | Change |
 |---|---|---|---|
 | 0.1 | 2026-10-14 | Claude (AI-assisted) | First draft |
+| 1.0 | 2026-10-14 | Project owner | Approved |
+| 1.1 | 2026-10-14 | Claude (AI-assisted) | TASK-17: §3.3 as-built (claim/commit ports, service order, delays), §16 two mock limitations |
+| 1.2 | 2026-10-14 | Claude (AI-assisted) | TASK-18: §3.3 as-built; success keeps the draft (documented deviation from §6, avoids a guard race) |
+| 1.3 | 2026-10-14 | Claude (AI-assisted) | TASK-19: §3.3 as-built (receipt page, send-again route, internal recipient reference, shared transfer/movement ID) |
+| 1.4 | 2026-10-14 | Project owner | Folder structure per ADR-010 (features / shared / core); §3.3 updated |

@@ -4,13 +4,13 @@
 |---|---|
 | **ID** | TS-00 |
 | **Module** | CORE |
-| **Status** | Draft |
-| **Version** | 0.1 |
+| **Status** | Implemented |
+| **Version** | 1.8 |
 | **Author** | Claude (AI-assisted draft) |
 | **Reviewer** | Project owner |
 | **Last updated** | 2026-10-14 |
 | **Implements** | NFR-01…03, 05…07, 11…13, 16, 17 · CON-01…08 · cross-cutting parts of FS-01…FS-04 |
-| **Related decisions** | ADR-001…ADR-008 · ADR-009 (proposed) |
+| **Related decisions** | ADR-001…ADR-009 |
 
 > This is the only TS that names technologies outside of ADRs: §3.4 is the **technology bindings** table that every module TS refers to.
 
@@ -31,15 +31,17 @@ Define the structure every module follows so that business rules live once, ever
 
 | Layer | Responsibility | Location | May depend on |
 |---|---|---|---|
-| Presentation (UI) | Render state, capture input, implement UI rules (UIR-*) | `src/components/**`, `src/features/*/components` | Presentation logic, domain types |
-| Presentation logic | Screen state, reducers, hooks, calls through the HTTP client | `src/features/*/hooks`, `src/features/*/state` | Domain, HTTP client |
-| HTTP client (browser) | Typed calls, timeout/cancellation, correlation + idempotency headers, response → `Result` | `src/lib/http` | Domain |
+| Presentation (UI) | Render state, capture input, implement UI rules (UIR-*) | `src/features/*/components`, `src/shared/components`, `src/shared/ui` | Presentation logic, domain types |
+| Presentation logic | Screen state, reducers, hooks, calls through the API clients | `src/features/*/hooks`, `src/features/*/state`, `src/shared/hooks` | Domain, API clients |
+| HTTP client (browser) | Typed calls, timeout/cancellation, correlation + idempotency headers, response → `Result`; one client module per API (Zod contracts) | `src/shared/lib/http`, `src/shared/api` | Domain |
 | Interface (controllers) | Route Handlers: session, input parsing, call service, map errors to HTTP | `src/app/api/**/route.ts` | Server helpers, services |
 | Application (services) | Use cases; enforce BR-*; idempotency; logging | `src/server/services` (server-only) | Domain, repository ports |
-| Domain | Types, value objects, pure rules and validators | `src/domain` | Nothing |
+| Core (domain) | Types, value objects, pure rules and validators | `src/core` | Nothing |
 | Infrastructure (repositories, mocks) | In-memory data, simulated latency/outcomes, session/OTP stores | `src/server/repositories`, `src/server/mock` (server-only) | Domain (ports) |
 
-**Dependency rule:** arrows point inward (UI → logic → client → controllers → services → domain). The domain imports nothing. Services depend on repository **ports** (interfaces), not on the in-memory implementations. Server-only modules cannot be imported from client code (build fails).
+**Dependency rule:** arrows point inward (UI → logic → client → controllers → services → domain). The core imports nothing from the project, the framework or I/O. Services depend on repository **ports** (interfaces), not on the in-memory implementations. Server-only modules cannot be imported from client code (build fails).
+
+**Folder rule (ADR-010):** `app → features → shared → core`, and `server → shared/lib, core`. A feature never imports another feature; whatever two features need lives in `shared`. Inside `shared`: `components → ui, hooks, api → lib → core`. ESLint `no-restricted-imports` enforces every arrow (`eslint.config.mjs`).
 
 ### 3.2 Diagram
 
@@ -65,45 +67,41 @@ flowchart LR
 
 ```
 src/
-  app/
-    layout.tsx                    # <html lang="es-MX" data-theme>, providers, skip link
-    globals.css                   # design tokens per theme (§9)
+  app/                              # routes only (Next.js App Router)
+    layout.tsx                      # <html lang="es-MX" data-theme>, providers, skip link
     (public)/login/page.tsx
-    (private)/layout.tsx          # authoritative session check (getSession)
-    (private)/page.tsx            # Home (streamed sections)
-    (private)/transfer/layout.tsx # TransferDraftProvider + step guard
+    (private)/layout.tsx            # authoritative session check (getSession)
+    (private)/page.tsx              # Home (streamed sections)
+    (private)/transfer/layout.tsx   # flow data + draft providers
     (private)/transfer/{recipient,amount,summary}/page.tsx
+    (private)/transfer/again/[transferId]/page.tsx
     (private)/receipts/[transferId]/page.tsx
-    api/auth/{code,verify,logout}/route.ts
-    api/me/{summary,transactions}/route.ts
-    api/contacts/route.ts
-    api/transfers/route.ts
-    api/transfers/attempts/[key]/route.ts
-    api/client-logs/route.ts
-    api/__mock/reset/route.ts     # non-production only
-  middleware.ts                   # or proxy.ts (ADR-001 note)
-  instrumentation.ts              # logger init (ADR-006)
-  domain/                         # money, identifier, otp, contact, transfer, errors, result
-  server/                         # server-only
-    services/                     # auth, account, contacts, transfers, preferences
-    repositories/                 # ports + in-memory implementations
-    mock/                         # seed data, outcome simulator, latency
-    http/                         # controller helpers: withSession, parseBody, toResponse
-    session/                      # sign/verify cookie, getSession
-    logging/                      # logger, request context, redaction
-    actions/                      # theme Server Action
-  lib/
-    http/                         # browser HTTP client
-    config.ts                     # typed configuration (§8)
-    i18n/messages.es-MX.ts        # copy keys from FS §12
-    format/                       # money, dates, masking (shared, pure)
-  components/
-    ui/                           # base components (ADR-008)
-    domain/                       # MoneyText, MoneyInput, TransactionItem…
-  features/
-    auth/ home/ transfer/ confirmation/ theme/   # screen components, hooks, reducers
-tests/e2e/                        # Playwright
+    api/…/route.ts                  # controllers (auth, me, contacts, transfers, client-logs, mock)
+  styles/                           # global CSS (§9): globals.css (entry) · tokens.css · tailwind-theme.css · base.css · utilities.css
+                                    # + tokens.test.ts (contrast) · no-raw-colors.test.ts (NFR-16)
+  proxy.ts                          # route gate: requestId, CSRF, session (ADR-001)
+  instrumentation.ts                # logger init (ADR-006)
+  core/                             # domain: pure TS rules and types, no React/Next/I/O
+    common/                         # Result, error catalog, branded IDs, text helpers
+    money/  identity/  auth/  contacts/  transfers/   # one folder per domain concept, each with index.ts
+  features/                         # one folder per product area; never import each other
+    auth/  home/  transfer/  receipt/
+      components/<name>/            # <name>.tsx · <name>.test.tsx · index.ts
+      hooks/<name>/                 # same shape
+      state/                        # reducers, contexts, view state
+  shared/                           # used by two or more features
+    ui/<name>/                      # primitives (ADR-008): button, dialog, text-field, toast…
+    components/<name>/              # product pieces: app-header, hide-balance, money-text, theme…
+    hooks/<name>/                   # use-section-retry
+    api/                            # browser clients of our API: auth, account, contacts, transfers
+    lib/                            # infrastructure for client and server: http, i18n, format, config, routes, observability
+  server/                           # server-only
+    services/  repositories/  mock/  http/  session/  security/  logging/  actions/
+  test/                             # test helpers (setup, axe, API helpers)
+tests/e2e/                          # Playwright
 ```
+
+Each component or hook folder has an `index.ts` that re-exports only that folder (named exports; `export *` is not allowed for client modules). Import the folder (`@/shared/ui/button`), never a file inside it, and never a central barrel.
 
 ### 3.4 Technology bindings
 
@@ -111,7 +109,7 @@ tests/e2e/                        # Playwright
 |---|---|---|
 | Language | TypeScript (strict) | CON-01 |
 | Framework | Next.js, App Router | ADR-001 |
-| Route groups / protected views | `(public)` / `(private)` + middleware (`proxy` convention in recent versions) + `getSession()` in private layout and controllers | ADR-001 |
+| Route groups / protected views | `(public)` / `(private)` + Next.js `proxy` (`src/proxy.ts`, the Next.js 16 name for middleware) + `getSession()` in private layout and controllers | ADR-001 |
 | Server-rendered reads | React Server Components, dynamic, `no-store`, Suspense per section | ADR-002 |
 | Server entry points for client calls | Route Handlers under `/api` | ADR-002 |
 | Server-only boundary | `server-only` package | ADR-002 |
@@ -120,7 +118,7 @@ tests/e2e/                        # Playwright
 | Client state | React Context + `useReducer` (transfer draft, theme) | ADR-003 |
 | Session | Signed opaque ID, `HttpOnly; Secure; SameSite=Lax` cookie; in-memory session store | ADR-004 |
 | CSRF | Origin / `Sec-Fetch-Site` check, JSON + custom header, no CORS, safe GETs | ADR-004 |
-| Runtime validation at boundaries | Zod schemas in controllers and the HTTP client | ADR-009 (proposed) |
+| Runtime validation at boundaries | Zod schemas in controllers and the HTTP client | ADR-009 |
 | Logging | pino + `x-request-id` + `AsyncLocalStorage` | ADR-006 |
 | Theming | CSS custom properties per `data-theme`, `theme` cookie, `prefers-color-scheme` | ADR-007 |
 | UI primitives | Radix UI (Dialog, Toast, theme selector) | ADR-008 |
@@ -164,6 +162,7 @@ Rules are exposed as pure functions returning `Result` (e.g. `validateAmount(amo
 | `CSRF_REJECTED` | 403 | Origin / fetch-metadata / custom header check failed | No | All mutations |
 | `NOT_FOUND` | 404 | Resource absent **or not owned** (never reveal which) | No | Receipts, attempts |
 | `IDEMPOTENCY_KEY_REUSED` | 409 | Same key, different payload | No | Transfers |
+| `PAYLOAD_TOO_LARGE` | 413 | Body or item over its size limit | No | Client logs |
 | `UNSUPPORTED_MEDIA_TYPE` | 415 | Mutation not `application/json` | No | All mutations |
 | `INVALID_IDENTIFIER` | 422 | BR-10 / BR-05 | No | Auth, contacts, transfers |
 | `INVALID_CODE_FORMAT` | 422 | BR-11 | No | Auth |
@@ -183,12 +182,13 @@ Rules are exposed as pure functions returning `Result` (e.g. `validateAmount(amo
 | `SERVICE_UNAVAILABLE` | 503 | Simulated dependency outage (login, home data) | Yes | Auth, home, contacts |
 | `NETWORK_ERROR` | — | Client: request failed to reach the server | Yes | HTTP client |
 | `TIMEOUT` | — | Client: no response within the configured timeout | Yes (same key / status check) | HTTP client |
+| `ABORTED` | — | Client: the caller cancelled (unmount, navigation); never shown to users | — | HTTP client |
 
 ### 5.3 Error flow
 
 - Domain/services return `Result` with a `DomainError`; they do not throw for expected failures.
 - Controllers map `DomainError.code` → HTTP status via one table (`toResponse`); unexpected exceptions become `INTERNAL_ERROR` and are logged with the stack.
-- The HTTP client maps every response (or failure) to `Result<T, ClientError>` where `ClientError` adds `NETWORK_ERROR` and `TIMEOUT`.
+- The HTTP client maps every response (or failure) to `Result<T, ClientError>` where `ClientError` adds `NETWORK_ERROR`, `TIMEOUT` and `ABORTED`; every result carries the `requestId`. A `401` triggers one global handler (full navigation to `/login?reason=session_ended&returnTo=…`). A 2xx that fails the response schema is `INTERNAL_ERROR`.
 - UI chooses copy by `code` (i18n keys), never displays `message` from the server.
 - Error containment: `error.tsx` in `(private)` and per Home section boundaries; `global-error.tsx` as last resort with the reference code.
 
@@ -226,10 +226,10 @@ Typed, validated at startup; defaults from ASM-15…ASM-17.
 
 | Key | Default | Notes |
 |---|---|---|
+| `APP_ENV` | `development` | `development` \| `test` \| `production`. E2E runs a production build with `APP_ENV=test` |
 | `SESSION_SECRET` | — (required) | HMAC key (ADR-004) |
 | `APP_ORIGIN` | `http://localhost:3000` | Used by CSRF origin check |
-| `MOCK_CONTROLS_ENABLED` | `true` in dev/test, **forced `false` in production builds** | Enables `x-mock-outcome`, `/api/__mock/reset`, demo code hint |
-| `OTP_DEMO_CODE` | `123456` | ASM-15 |
+| `MOCK_CONTROLS_ENABLED` | `true` in development/test; **always off when `APP_ENV=production`** | Enables `x-mock-outcome`, `/api/mock/reset`, demo code hint |
 | `OTP_TTL_SEC` / `OTP_MAX_ATTEMPTS` / `OTP_RESEND_COOLDOWN_SEC` | `300` / `3` / `30` | BR-12, BR-13 |
 | `TRANSFER_SLOW_MS` / `TRANSFER_TIMEOUT_MS` | `3000` / `10000` | ASM-17 |
 | `TRANSFER_STATUS_CHECK_DELAYS_MS` | `2000,4000,8000` | ASM-17 |
@@ -272,13 +272,16 @@ All other well-formed identifiers proceed to the code step and fail verification
 - Real business rules still apply first: a genuinely insufficient balance always yields `INSUFFICIENT_FUNDS`.
 
 ### 9.3 Other simulations
-- Home/contacts: failures driven by seeded users; `x-mock-outcome: service_unavailable` also supported.
+- Home/contacts: failures driven by seeded users; `x-mock-outcome: service_unavailable` also supported (`GET /api/me/*`, `GET/POST /api/contacts`).
+- Auth: `x-mock-outcome: service_unavailable` on `POST /api/auth/code` and `POST /api/auth/verify`; `x-mock-outcome: otp_expired` on `POST /api/auth/verify` makes the current challenge expire (tests AC-AUTH-09 without waiting 5 minutes).
 - Latency on every repository call (`MOCK_LATENCY_MS`) to make loading states visible.
-- `POST /api/__mock/reset` restores seed data (tests).
+- `POST /api/mock/reset` restores seed data (tests).
 
 ## 10. Security, session and permissions
 
 See TS-01 and ADR-004. Cross-cutting rules: private responses `no-store`; no sensitive data in client storage; all inputs validated server-side with schemas and domain rules; security headers (`Content-Security-Policy` without inline scripts except framework needs, `X-Content-Type-Options: nosniff`, `Referrer-Policy: same-origin`, `frame-ancestors 'none'`).
+
+**Implementation (TASK-09):** the proxy sets a per-request nonce CSP on pages (`script-src 'self' 'nonce-…' 'strict-dynamic'`; `'unsafe-eval'` only in development; Next.js applies the nonce to its own scripts, verified 12/12 on `/login`). `style-src` allows `'unsafe-inline'` because UI primitives set `style` attributes and inject scroll-lock styles; scripts never do. Static headers in `next.config.ts`: `X-Content-Type-Options`, `Referrer-Policy`, `X-Frame-Options: DENY`, `Permissions-Policy`, `Cross-Origin-Opener-Policy`. HSTS is left to the hosting layer.
 
 ## 11. Observability
 
@@ -305,12 +308,14 @@ Standard and event catalog in TS-05 (ADR-006). Every module TS lists its events.
 | Surfaces | `surface`, `surface-raised`, `surface-sunken`, `overlay` |
 | Text | `text-primary`, `text-secondary`, `text-inverse`, `text-link` |
 | Borders / focus | `border`, `border-strong`, `focus-ring` |
-| Actions | `action-primary`, `action-primary-hover`, `action-primary-text`, `action-secondary` |
+| Actions | `action-primary`, `action-primary-hover`, `action-primary-text`, `action-secondary`, `action-secondary-hover`, `action-secondary-text` |
 | Status | `status-success`, `status-error`, `status-warning`, `status-info` (+ `*-surface` variants) |
 | Money | `amount-in`, `amount-out` |
 | Spacing / radius / type | 4-px spacing scale; radius `sm/md/lg`; type scale with rem units |
 
-Every text/background pair is contrast-checked in both themes (A11Y-10).
+Every text/background pair is contrast-checked in both themes (A11Y-10) by an automated test that reads the token file (TC-UNIT-24).
+
+**Implementation (TASK-03):** each token is defined once as `light-dark(<light>, <dark>)` on `:root`; `data-theme` on `<html>` only sets `color-scheme` (`system` → `light dark`, `light`, `dark`), so the server-rendered attribute alone selects the theme with zero JavaScript. Tailwind's default palette is removed (`--color-*: initial`) and replaced with utilities mapped to these tokens, so components cannot use raw colors (also guarded by a test). Palette: cool slate neutrals, añil (indigo) actions, jade for money in and success, grana (cochineal) for errors, maize for warnings. System font stack (no web-font download on the critical path).
 
 ### 13.2 Layout foundations
 
@@ -331,7 +336,7 @@ Every text/background pair is contrast-checked in both themes (A11Y-10).
 
 - TypeScript `strict`, `noUncheckedIndexedAccess`, `noImplicitOverride`; ESLint forbids `any`, non-null assertions and unused exports.
 - Exhaustive `switch` over unions with a `never` check.
-- No business logic in components; no HTTP concerns in services; no I/O in domain.
+- No business logic in components; no HTTP concerns in services; no I/O or framework imports in `src/core` (domain).
 - Files and folders in kebab-case; components in PascalCase; one component per file.
 - Every UIR implemented in a component or hook has a test referencing its ID in the test name.
 - Commits follow the plan's Conventional Commits rule with task IDs.
@@ -345,9 +350,9 @@ Per ADR-005 and the test plan. TS-00-specific: unit tests for `Money`, `parseIde
 | Risk | Likelihood | Impact | Mitigation |
 |---|---|---|---|
 | In-memory state differs between middleware and server runtime | Medium | Session gate inconsistent | Middleware only verifies cookie signature (no store); store lookups happen in server code |
-| Mock controls leak to production | Low | Outcome manipulation | Build-time flag forced off in production; integration test |
+| Mock controls leak to production | Low | Outcome manipulation | Forced off whenever `APP_ENV=production`; integration test |
 | Scope exceeds 3 days | Medium | Missing Musts | Scope-cut list in the plan; Should/Could items isolated |
-| Framework convention changes (middleware → proxy) | Medium | Setup friction | Verify at scaffolding (ADR-001) |
+| Framework convention changes (middleware → proxy) | — | — | Resolved in TASK-01: Next.js 16.4 deprecates `middleware`; we use `src/proxy.ts` |
 
 ## 17. Known limitations and technical debt
 
@@ -372,3 +377,13 @@ Per ADR-005 and the test plan. TS-00-specific: unit tests for `Money`, `parseIde
 | Version | Date | Author | Change |
 |---|---|---|---|
 | 0.1 | 2026-10-14 | Claude (AI-assisted) | First draft |
+| 1.0 | 2026-10-14 | Project owner | Approved |
+| 1.1 | 2026-10-14 | Claude (AI-assisted) | ADR-009 accepted; mock outcomes for auth and contacts listed (needed by the test plan) |
+| 1.2 | 2026-10-14 | Claude (AI-assisted) | TASK-01 findings: `src/proxy.ts` (Next.js 16.4 deprecates `middleware`); `APP_ENV` decouples mock controls from `NODE_ENV` so E2E can run a production build |
+| 1.3 | 2026-10-14 | Claude (AI-assisted) | One-time code is random per challenge; the demo hint shows the current code outside production (owner decision, resolves conflict between fixed demo code and AC-AUTH-10) |
+| 1.4 | 2026-10-14 | Claude (AI-assisted) | TASK-08: `PAYLOAD_TOO_LARGE` (413) added to the catalog (client-logs already answered 413 without a code); client-only `ABORTED`; HTTP client contract details in §5.3 |
+| 1.5 | 2026-10-14 | Project owner | Domain layer folder renamed `src/domain` → `src/core` (owner preference); dependency rule now enforced by ESLint |
+| 1.6 | 2026-10-14 | Project owner | Wallet-specific components folder renamed `src/components/domain` → `src/components/wallet` (avoids confusion with `src/core`) |
+| 1.7 | 2026-10-14 | Claude (AI-assisted) | TASK-03: token implementation with `light-dark()` + `color-scheme`; secondary action tokens; contrast verified by TC-UNIT-24 |
+| 1.8 | 2026-10-14 | Claude (AI-assisted) | TASK-09: CSP with nonce from the proxy and static security headers |
+| 1.9 | 2026-10-14 | Project owner | ADR-010: folder structure `features / shared / core`, one folder per component with `index.ts`, ESLint-enforced dependency direction (§3.1, §3.3) |

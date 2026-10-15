@@ -4,8 +4,8 @@
 |---|---|
 | **ID** | TS-03 |
 | **Module** | TX |
-| **Status** | Draft |
-| **Version** | 0.1 |
+| **Status** | Implemented |
+| **Version** | 1.1 |
 | **Author** | Claude (AI-assisted draft) |
 | **Reviewer** | Project owner |
 | **Last updated** | 2026-10-14 |
@@ -57,12 +57,24 @@ stateDiagram-v2
 ```
 src/app/(private)/transfer/layout.tsx           # server: session, initial balance + favorites; client provider
 src/app/(private)/transfer/{recipient,amount,summary}/page.tsx
-src/features/transfer/                           # steps, draft reducer, hooks
-src/components/domain/{MoneyInput,ContactItem,RecipientContext}.tsx
+src/app/(private)/transfer/again/[transferId]/page.tsx
+src/features/transfer/components/{recipient-step,amount-step,summary-step,new-contact-form,favorites-section,concept-field,money-input,contact-item,recipient-context,avatar,step-heading,cancel-transfer,send-again}/
+src/features/transfer/hooks/{use-step-guard,use-save-contact,use-amount-field}/
+src/features/transfer/state/{draft,draft-context,transfer-data}.ts(x)
+src/shared/api/contacts.ts                      # GET/POST /api/contacts client
+src/shared/components/{detail-row,masked-identifier,money-text,hide-balance}/
 src/app/api/contacts/route.ts
 src/server/services/contacts.service.ts
-src/domain/{money,transfer-rules,contact}.ts
+src/core/{money,transfers,contacts,common}/
 ```
+
+**Folder structure (ADR-010):** the block above is current. Paths inside the *As built* notes below are those of the task that wrote them; ADR-010 maps them to today's folders.
+
+**As built (TASK-15):** `FavoritesList` → `favorites-section.tsx`; `CancelTransferDialog` → `CancelTransfer` (`cancel-transfer.tsx`); `useTransferDraft` → `useDraft` / `useDraftDispatch`; `contactsApi.create` → `contactsApi.save`. Added `TransferDataProvider` (server data as `Loaded<T>`), `StepHeading`, `Avatar` and `MaskedIdentifierText` (`src/components/wallet/masked-identifier.tsx`, spoken form via `parseMaskedIdentifier` in `src/core/identifier.ts`). The draft also carries `notice` (saved / duplicate / save-failed, shown once on the amount step) and `completed` (UIR-TX-21).
+
+**As built (TASK-20 fixes):** favorites are client state in `TransferDataProvider`; a contact saved in the flow is added at once (`rememberFavorite`, ordered with `compareByRecentUse` from `src/core/contact.ts`, the same order the server uses). Submit buttons don't take focus on mouse down, so a blur error appearing above the button can't make the click miss.
+
+**As built (TASK-16):** domain helpers are `cleanAmountText` / `formatAmountText` / `editAmountText` (caret mapping by digit index) in `src/core/money-input.ts` and `truncateCharacters` / `stripControlCharacters` in `src/core/text.ts`. `MoneyInput` (`src/components/wallet/money-input.tsx`) writes the formatted value and caret during the change event, and Backspace/Delete beside a grouping comma removes the digit beyond it. The balance is client state in `TransferDataProvider` (`useTransferBalance`), so a retry on the amount step (`GET /api/me/summary` only) also feeds the summary. `ConceptField` lives in `src/features/transfer/`. The transfer layout also reads the hide-balance cookie and wraps the flow in `HideBalanceProvider`; the summary reuses Home's toggle (`HideBalanceToggle`). `SummaryStep` dispatches `summaryReached` (BR-07 key) and hands a `ConfirmableDraft` to `onConfirm`, which TS-04 wires. Cancel dispatches `cancelled` (empty draft + `completed`), not `reset`: with an empty draft the mounted step guard would redirect to step 1 and win over the navigation Home.
 
 ### 3.4 Technology bindings
 
@@ -75,7 +87,7 @@ See TS-00 §3.4. Cancel dialog uses the Radix Dialog wrapper (ADR-008).
 | `Contact` | Entity/DTO | `{ id: ContactId; name; maskedIdentifier; lastUsedAt: ISO \| null }` | Unique by normalized identifier per user (BR-08) |
 | `Recipient` | Tagged union | `{ kind: 'contact'; contactId; name; maskedIdentifier } \| { kind: 'oneOff'; name; identifier: Identifier; maskedIdentifier }` | `oneOff` only when not saved |
 | `TransferDraft` | Value | `{ recipient: Recipient \| null; amount: Money \| null; concept: string; attempt: { key: AttemptKey; fingerprint: string } \| null }` | `attempt` set only when the summary is reached |
-| `DraftAction` | Tagged union | `recipientSelected \| amountConfirmed \| conceptChanged \| summaryReached \| reset \| seedRecipient` | Handled exhaustively |
+| `DraftAction` | Tagged union | `recipientSelected \| amountConfirmed \| conceptChanged \| summaryReached \| noticeShown \| completed \| cancelled \| reset \| seedRecipient` | Handled exhaustively |
 
 **Attempt key rule (BR-07):** on `summaryReached`, compute `draftFingerprint(recipient, amount, concept)`; keep the existing key if the fingerprint is unchanged, otherwise generate a new UUID. `reset` clears everything.
 
@@ -226,3 +238,8 @@ Per FS-03 §13. Technical notes: `MoneyInput` keeps a visible label and `aria-de
 | Version | Date | Author | Change |
 |---|---|---|---|
 | 0.1 | 2026-10-14 | Claude (AI-assisted) | First draft |
+| 1.0 | 2026-10-14 | Project owner | Approved |
+| 1.1 | 2026-10-14 | Project owner | Wallet-specific components folder renamed `src/components/domain` → `src/components/wallet` (avoids confusion with `src/core`) |
+| 1.2 | 2026-10-14 | Claude (AI-assisted) | TASK-15: §3.3 as-built names; draft adds `notice` and `completed` (no behavior change to the contracts) |
+| 1.3 | 2026-10-14 | Claude (AI-assisted) | TASK-16: §3.3 as-built notes for amount, concept, balance retry and summary |
+| 1.4 | 2026-10-14 | Project owner | Folder structure per ADR-010 (features / shared / core); §3.3 updated |

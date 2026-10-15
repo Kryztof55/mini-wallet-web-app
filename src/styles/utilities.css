@@ -1,0 +1,22 @@
+/* Project utilities used by components. */
+
+@utility tabular-nums-amount {
+  font-variant-numeric: tabular-nums;
+  font-feature-settings: 'tnum';
+}
+
+/* Skip link: hidden until focused (A11Y-03). */
+@utility skip-link {
+  position: absolute;
+  inset-inline-start: 1rem;
+  top: -100%;
+  z-index: 50;
+  padding: 0.5rem 1rem;
+  border-radius: var(--radius-md);
+  background-color: var(--action-primary);
+  color: var(--action-primary-text);
+  font-weight: 600;
+  &:focus-visible {
+    top: 1rem;
+  }
+}

@@ -3,7 +3,7 @@
 | Field | Value |
 |---|---|
 | **ID** | ADR-009 |
-| **Status** | Proposed |
+| **Status** | Accepted |
 | **Date** | 2026-10-14 |
 | **Deciders** | Project owner (with Claude, AI-assisted) |
 | **Affects** | TS-00, TS-01…TS-04 (controllers, HTTP client) |
