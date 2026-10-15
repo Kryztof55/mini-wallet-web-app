@@ -19,7 +19,7 @@ import { STEP_PATHS, useStepGuard } from './use-step-guard';
 /** Step 1 (FS-03): choose a favorite or add a new contact. */
 export function RecipientStep({ api = defaultApi }: { readonly api?: ContactsApi }) {
   const ready = useStepGuard('recipient');
-  const { favorites, ownIdentifiers } = useTransferData();
+  const { favorites, ownIdentifiers, rememberFavorite } = useTransferData();
   const dispatch = useDraftDispatch();
   const router = useRouter();
   const { submit, saving } = useSaveContact(api);
@@ -87,8 +87,20 @@ export function RecipientStep({ api = defaultApi }: { readonly api?: ContactsApi
               onSubmit={async (input) => {
                 const outcome = await submit(input);
                 if (!outcome) return;
-                if (outcome.ok) choose(outcome.recipient, outcome.notice);
-                else setServerError(outcome.error);
+                if (!outcome.ok) {
+                  setServerError(outcome.error);
+                  return;
+                }
+                const { recipient, notice } = outcome;
+                if (notice?.kind === 'saved' && recipient.kind === 'contact') {
+                  rememberFavorite({
+                    id: recipient.contactId,
+                    name: recipient.name,
+                    maskedIdentifier: recipient.maskedIdentifier,
+                    lastUsedAt: null,
+                  });
+                }
+                choose(recipient, notice);
               }}
             />
           </div>

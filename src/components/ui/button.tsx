@@ -32,9 +32,18 @@ export function Button({
   type = 'button',
   className,
   onClick,
+  onMouseDown,
   children,
   ...rest
 }: ButtonProps) {
+  // A submit button doesn't take focus on mouse down. Otherwise the field being left shows its
+  // blur error first, the layout shifts, and the release lands off the button: no submit. The
+  // submit handler validates everything and moves focus to the first invalid field anyway.
+  const handleMouseDown = (event: MouseEvent<HTMLButtonElement>) => {
+    if (type === 'submit') event.preventDefault();
+    onMouseDown?.(event);
+  };
+
   const handleClick = (event: MouseEvent<HTMLButtonElement>) => {
     if (busy) {
       event.preventDefault();
@@ -50,6 +59,7 @@ export function Button({
       aria-disabled={busy || undefined}
       className={cn(buttonClasses({ variant, size, fullWidth }), className)}
       onClick={handleClick}
+      onMouseDown={handleMouseDown}
       {...rest}
     >
       {busy ? (

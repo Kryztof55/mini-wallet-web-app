@@ -118,10 +118,11 @@ all green. E2E when the task touches flows (TASK-20 owns the suite).
 
 ## 9. Current state
 
-- Done: TASK-01 to TASK-19 (the whole user flow). E2E written: 01–20 except 12 and 21–23.
-- **Next: TASK-20** (E2E suite: remaining TC-E2E-12 new-contact variants, 21 accessibility
-  scan, 22 theme, 23 reference-code correlation; mark the others already green). Branch per
-  `chore/m5-quality-delivery`.
+- Done: TASK-01 to TASK-19 (the whole user flow). TASK-20: all 23 E2E green on 4 projects;
+  pending the 10× stability run (`npx playwright test --repeat-each=10`).
+- **Next: folder-structure refactor** (owner request: clearer layers, one folder per component
+  with its test and `index.ts`, no central barrels; ADR + TS-00 §3.3 update; own branch). Then
+  TASK-21 and TASK-22 on `chore/m5-quality-delivery`.
 - Pending owner decision: demo-accounts hint on login step 1 and no demo code for
   unknown identifiers (non-production only).
 - Then: TASK-21 a11y/responsive pass (incl. Home masked-name spoken form) → TASK-22 delivery docs
@@ -157,6 +158,9 @@ all green. E2E when the task touches flows (TASK-20 owns the suite).
 - Fake timers + route handlers: the request reaches its `setTimeout` only after real async
   work (session HMAC), and `vi.waitFor` advances fake timers while polling. Wait with
   `setImmediate` turns until `vi.getTimerCount() > 0` (see `outcomes.int.test.ts`).
+- Blur validation + a submit button below the field: mouse down blurs, the error renders, the
+  layout shifts and the click misses. `Button type="submit"` prevents default on mouse down;
+  keep it that way (jsdom has no layout, so only E2E catches this).
 - E2E: scope text assertions to `main(page)` (`tests/e2e/session.ts`). Outside `<main>` the
   live region keeps the last announcement (a fixed error can still "exist"), and streamed
   Suspense segments can leave hidden copies. Only toasts are asserted at page level.

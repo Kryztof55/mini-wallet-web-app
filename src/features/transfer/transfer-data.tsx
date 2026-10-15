@@ -9,6 +9,7 @@ import {
   useState,
   type ReactNode,
 } from 'react';
+import { compareByRecentUse } from '@/core/contact';
 import type { Identifier } from '@/core/identifier';
 import type { Money } from '@/core/money';
 import type { Result } from '@/core/result';
@@ -53,7 +54,12 @@ type TransferBalance = {
   readonly update: (balance: Money) => void;
 };
 
-const TransferDataContext = createContext<TransferData | null>(null);
+type TransferDataValue = TransferData & {
+  /** A contact saved during this flow shows up in favorites at once (AC-TX-06). */
+  readonly rememberFavorite: (contact: ContactView) => void;
+};
+
+const TransferDataContext = createContext<TransferDataValue | null>(null);
 const TransferBalanceContext = createContext<TransferBalance | null>(null);
 
 /**
@@ -92,16 +98,29 @@ export function TransferDataProvider({
     );
   }, [loadBalance]);
   const update = useCallback((next: Money) => setState({ status: 'ready', value: next }), []);
+
+  const [favorites, setFavorites] = useState(value.favorites);
+  const rememberFavorite = useCallback((contact: ContactView) => {
+    setFavorites((current) =>
+      current.ok && !current.value.some((c) => c.id === contact.id)
+        ? { ok: true, value: [...current.value, contact].sort(compareByRecentUse) }
+        : current,
+    );
+  }, []);
+  const data = useMemo(
+    () => ({ ...value, favorites, rememberFavorite }),
+    [value, favorites, rememberFavorite],
+  );
   const balance = useMemo(() => ({ state, retry, update }), [state, retry, update]);
 
   return (
-    <TransferDataContext.Provider value={value}>
+    <TransferDataContext.Provider value={data}>
       <TransferBalanceContext.Provider value={balance}>{children}</TransferBalanceContext.Provider>
     </TransferDataContext.Provider>
   );
 }
 
-export function useTransferData(): TransferData {
+export function useTransferData(): TransferDataValue {
   const data = useContext(TransferDataContext);
   if (!data) throw new Error('useTransferData must be used inside <TransferDataProvider>');
   return data;

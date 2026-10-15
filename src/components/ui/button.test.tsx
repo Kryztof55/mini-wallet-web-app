@@ -1,4 +1,4 @@
-import { render, screen } from '@testing-library/react';
+import { fireEvent, render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { describe, expect, it, vi } from 'vitest';
 import { getA11yViolations } from '@/test/axe';
@@ -92,5 +92,19 @@ describe('[TC-COMP-01][UIR-AUTH-03][UIR-TX-13][A11Y-13] Button', () => {
       </div>,
     );
     expect(await getA11yViolations(container)).toEqual([]);
+  });
+});
+
+describe('[TC-COMP-01][UIR-TX-13] submit button and focus', () => {
+  it('a submit button does not take focus on mouse down (no blur-error layout shift eats the click)', () => {
+    render(
+      <>
+        <Button type="submit">Continuar</Button>
+        <Button>Otro</Button>
+      </>,
+    );
+    // fireEvent returns false when the default action was prevented.
+    expect(fireEvent.mouseDown(screen.getByRole('button', { name: 'Continuar' }))).toBe(false);
+    expect(fireEvent.mouseDown(screen.getByRole('button', { name: 'Otro' }))).toBe(true);
   });
 });

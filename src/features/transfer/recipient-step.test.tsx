@@ -116,6 +116,16 @@ describe('[TC-COMP-09] Recipient step', () => {
     await waitFor(() => expect(router.push).toHaveBeenCalledWith('/transfer/amount'));
     expect(draftProbe.current?.recipient).toMatchObject({ kind: 'contact', contactId: 'ct_new' });
     expect(draftProbe.current?.notice).toEqual({ kind: 'saved', name: 'Pedro Gómez' });
+    // AC-TX-06: back on this step in the same flow, the new favorite is listed (never used → last).
+    const names = within(screen.getByRole('region', { name: 'Favoritos' }))
+      .getAllByRole('button')
+      .map((b) => b.getAttribute('aria-label')?.split(',')[0]);
+    expect(names).toEqual([
+      'Enviar a Luis Pérez',
+      'Enviar a María Torres',
+      'Enviar a Pedro Gómez',
+      'Enviar a Sofía Díaz',
+    ]);
   });
 
   it('[UIR-TX-08][AC-TX-16] save failure continues as a one-off', async () => {

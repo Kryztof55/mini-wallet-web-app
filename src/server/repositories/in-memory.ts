@@ -1,5 +1,5 @@
 import 'server-only';
-import type { Contact } from '@/core/contact';
+import { compareByRecentUse, type Contact } from '@/core/contact';
 import { domainError } from '@/core/errors';
 import { Money } from '@/core/money';
 import { err, ok } from '@/core/result';
@@ -10,17 +10,8 @@ import type { Latency } from '@/server/mock/latency';
 import type { Transaction } from '@/core/transaction';
 import type { Attempt, Receipt, Repositories } from './ports';
 
-const byRecentUse = new Intl.Collator('es-MX');
-
 function sortContacts(contacts: readonly Contact[]): Contact[] {
-  return [...contacts].sort((a, b) => {
-    if (a.lastUsedAt !== b.lastUsedAt) {
-      if (a.lastUsedAt === null) return 1;
-      if (b.lastUsedAt === null) return -1;
-      return b.lastUsedAt.localeCompare(a.lastUsedAt);
-    }
-    return byRecentUse.compare(a.name, b.name);
-  });
+  return [...contacts].sort(compareByRecentUse);
 }
 
 /** Repositories over the in-memory datastore; every call waits the simulated latency. */

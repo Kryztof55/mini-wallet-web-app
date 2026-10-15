@@ -154,4 +154,97 @@ test.describe('[FS-03] New transaction', () => {
     await page.goto('/transfer/amount');
     await expect(page).toHaveURL('/transfer/recipient');
   });
+
+  test.describe('[TC-E2E-12] new contact variants', () => {
+    /** Ana → recipient step → "Nuevo contacto" open (she has favorites, so it starts closed). */
+    async function openNewContact(page: Page) {
+      await loginAs(page, 'ana@demo.mx');
+      await page.getByRole('link', { name: 'Enviar dinero' }).click();
+      await page.getByRole('button', { name: 'Nuevo contacto' }).click();
+    }
+
+    async function submitContact(page: Page, name: string, identifier: string, save = true) {
+      await page.getByRole('textbox', { name: 'Nombre' }).fill(name);
+      await page.getByRole('textbox', { name: 'Celular o correo electrónico' }).fill(identifier);
+      if (!save) await page.getByRole('checkbox', { name: 'Guardar en favoritos' }).uncheck();
+      await continueButton(page).click();
+    }
+
+    const favorite = (page: Page, name: string) =>
+      main(page).getByRole('button', { name: new RegExp(`^Enviar a ${name}`) });
+
+    test('[AC-TX-06] saved by default → notice → recipient → appears in favorites', async ({
+      page,
+    }) => {
+      await openNewContact(page);
+      await expect(page.getByRole('checkbox', { name: 'Guardar en favoritos' })).toBeChecked();
+      await submitContact(page, 'Pedro Gómez', '55 8765 4321');
+      await expect(page).toHaveURL('/transfer/amount');
+      await expect(main(page).getByText('Guardamos a Pedro Gómez en tus favoritos.')).toBeVisible();
+      await expect(main(page).getByText('Pedro Gómez', { exact: true })).toBeVisible();
+
+      await page.getByRole('link', { name: 'Cambiar destinatario' }).click();
+      await expect(favorite(page, 'Pedro Gómez')).toBeVisible();
+    });
+
+    test('[AC-TX-07] unchecked → one-off recipient, not added to favorites', async ({ page }) => {
+      await openNewContact(page);
+      await submitContact(page, 'Rosa Luna', 'rosa@correo.mx', false);
+      await expect(page).toHaveURL('/transfer/amount');
+      await expect(main(page).getByText('Rosa Luna', { exact: true })).toBeVisible();
+      await expect(main(page).getByText(/en tus favoritos/)).toHaveCount(0);
+
+      await page.getByRole('link', { name: 'Cambiar destinatario' }).click();
+      await expect(favorite(page, 'Luis Pérez')).toBeVisible();
+      await expect(favorite(page, 'Rosa Luna')).toHaveCount(0);
+    });
+
+    test('[AC-TX-08] duplicate identifier in another format → existing favorite, no duplicate', async ({
+      page,
+    }) => {
+      await openNewContact(page);
+      await submitContact(page, 'Luisito', '55 9876 5432');
+      await expect(page).toHaveURL('/transfer/amount');
+      await expect(main(page).getByText('Luis Pérez ya estaba en tus favoritos.')).toBeVisible();
+      await expect(main(page).getByText('Luis Pérez', { exact: true })).toBeVisible();
+
+      await page.getByRole('link', { name: 'Cambiar destinatario' }).click();
+      await expect(favorite(page, 'Luis Pérez')).toHaveCount(1);
+      await expect(favorite(page, 'Luisito')).toHaveCount(0);
+    });
+
+    test('[AC-TX-09] invalid fields → an error under each, focus on the first', async ({
+      page,
+    }) => {
+      await openNewContact(page);
+      await submitContact(page, '', '55123');
+      await expect(main(page).getByText('Ingresa el nombre del contacto.')).toBeVisible();
+      await expect(
+        main(page).getByText(/Revisa el dato: usa un celular a 10 dígitos/),
+      ).toBeVisible();
+      await expect(page.getByRole('textbox', { name: 'Nombre' })).toBeFocused();
+      await expect(page).toHaveURL('/transfer/recipient');
+    });
+
+    test('[AC-TX-10] my own number → "No puedes enviarte dinero a ti mismo."', async ({ page }) => {
+      await openNewContact(page);
+      await submitContact(page, 'Yo', '5512345678');
+      await expect(main(page).getByText('No puedes enviarte dinero a ti mismo.')).toBeVisible();
+      await expect(page).toHaveURL('/transfer/recipient');
+    });
+
+    test('[AC-TX-16] saving fails → notice, and the transfer continues with that contact', async ({
+      page,
+      forceOutcome,
+    }) => {
+      await openNewContact(page);
+      await forceOutcome('**/api/contacts', 'service_unavailable');
+      await submitContact(page, 'Pedro Gómez', '5587654321');
+      await expect(page).toHaveURL('/transfer/amount');
+      await expect(
+        main(page).getByText('No pudimos guardar el contacto. Puedes continuar con el envío.'),
+      ).toBeVisible();
+      await expect(main(page).getByText('Pedro Gómez', { exact: true })).toBeVisible();
+    });
+  });
 });

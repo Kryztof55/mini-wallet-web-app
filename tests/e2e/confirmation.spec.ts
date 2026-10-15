@@ -216,4 +216,24 @@ test.describe('[FS-04] Confirmation outcomes', () => {
     await expect(main(page)).not.toContainText(folio);
     await expect(main(page)).not.toContainText('Luis');
   });
+
+  test('[TC-E2E-23][NFR-04][UIR-CONF-11] the reference code is the start of the response request ID', async ({
+    page,
+    forceOutcome,
+  }) => {
+    await reachSummary(page);
+    await forceOutcome(TRANSFERS, 'unknown_error');
+    const responsePromise = page.waitForResponse(
+      (response) =>
+        response.url().endsWith('/api/transfers') && response.request().method() === 'POST',
+    );
+    await sendButton(page).click();
+    const response = await responsePromise;
+    const requestId = response.headers()['x-request-id'] ?? '';
+    expect(requestId).toMatch(/^[0-9a-f-]{36}$/);
+    const hex = requestId.replace(/-/g, '').slice(0, 8).toUpperCase();
+    await expect(main(page).getByText(/Referencia:/)).toContainText(
+      `${hex.slice(0, 4)}-${hex.slice(4, 8)}`,
+    );
+  });
 });

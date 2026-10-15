@@ -23,6 +23,6 @@ File name: `TASK-NN-kebab-case-name.md`. Generated from the [implementation plan
 | [TASK-17](./TASK-17-transfers-api.md) | Implement the transfers API | M4 | Done |
 | [TASK-18](./TASK-18-confirmation-flow.md) | Build the confirmation flow | M4 | Done |
 | [TASK-19](./TASK-19-receipt.md) | Build the receipt and post-transfer navigation | M4 | Done |
-| [TASK-20](./TASK-20-e2e-suite.md) | Write the E2E suite | M5 | Pending |
+| [TASK-20](./TASK-20-e2e-suite.md) | Write the E2E suite | M5 | In review |
 | [TASK-21](./TASK-21-a11y-responsive-pass.md) | Run the accessibility and responsive pass | M5 | Pending |
 | [TASK-22](./TASK-22-delivery-docs.md) | Write the delivery documents | M5 | Pending |

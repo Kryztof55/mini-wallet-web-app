@@ -30,3 +30,18 @@ export function validateContactName(
   }
   return ok(name);
 }
+
+const byName = new Intl.Collator('es-MX');
+
+/** UIR-TX-03: most recently used first; never-used ones last, by name. Server and client agree. */
+export function compareByRecentUse(
+  a: { readonly name: string; readonly lastUsedAt: string | null },
+  b: { readonly name: string; readonly lastUsedAt: string | null },
+): number {
+  if (a.lastUsedAt !== b.lastUsedAt) {
+    if (a.lastUsedAt === null) return 1;
+    if (b.lastUsedAt === null) return -1;
+    return b.lastUsedAt.localeCompare(a.lastUsedAt);
+  }
+  return byName.compare(a.name, b.name);
+}
