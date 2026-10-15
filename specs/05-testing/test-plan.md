@@ -93,15 +93,15 @@ Generated from the test cases in §6; every BR, UIR and AC is covered.
 | UIR-CONF-04 | Verifying | TC-PL-08, TC-COMP-14 | COMP, PL | ✅ |
 | UIR-CONF-05 | Verification results | TC-PL-08, TC-COMP-14 | COMP, PL | ✅ |
 | UIR-CONF-06 | Unresolved verification | TC-PL-08, TC-COMP-14 | COMP, PL | ✅ |
-| UIR-CONF-07 | Success view = receipt | TC-E2E-19 | E2E | ⬜ |
+| UIR-CONF-07 | Success view = receipt | TC-E2E-19 | E2E | ✅ |
 | UIR-CONF-08 | Network error view | TC-COMP-14 | COMP | ✅ |
 | UIR-CONF-09 | Insufficient-funds view | TC-COMP-14 | COMP | ✅ |
 | UIR-CONF-10 | Unknown-error view | TC-COMP-14 | COMP | ✅ |
 | UIR-CONF-11 | Reference code on every non-success | TC-UNIT-19, TC-COMP-14, TC-E2E-23 | COMP, E2E, UNIT | ⬜ |
-| UIR-CONF-12 | Receipt content | TC-COMP-15 | COMP | ⬜ |
-| UIR-CONF-13 | Copy folio | TC-COMP-15 | COMP | ⬜ |
-| UIR-CONF-14 | Receipt actions | TC-COMP-15 | COMP | ⬜ |
-| UIR-CONF-15 | Revisitable receipt | TC-COMP-15 | COMP | ⬜ |
+| UIR-CONF-12 | Receipt content | TC-COMP-15 | COMP | ✅ |
+| UIR-CONF-13 | Copy folio | TC-COMP-15 | COMP | ✅ |
+| UIR-CONF-14 | Receipt actions | TC-COMP-15 | COMP | ✅ |
+| UIR-CONF-15 | Revisitable receipt | TC-COMP-15 | COMP | ✅ |
 | UIR-CONF-16 | Leaving during processing | TC-PL-08 | PL | ✅ |
 | UIR-CONF-17 | Forced outcome (non-production) | TC-INT-10 | INT | ✅ |
 | UIR-HOME-01 | Independent sections | TC-COMP-08 | COMP | ✅ |
@@ -113,7 +113,7 @@ Generated from the test cases in §6; every BR, UIR and AC is covered.
 | UIR-HOME-07 | Direction is never color-only | TC-UNIT-17, TC-COMP-07 | COMP, UNIT | ✅ |
 | UIR-HOME-08 | Relative dates | TC-UNIT-17, TC-COMP-07 | COMP, UNIT | ✅ |
 | UIR-HOME-09 | Long names | TC-COMP-07 | COMP | ✅ |
-| UIR-HOME-10 | Fresh data on every visit | TC-E2E-11 | E2E | ⬜ |
+| UIR-HOME-10 | Fresh data on every visit | TC-E2E-11 | E2E | ✅ |
 | UIR-HOME-11 | Just-completed transfer | TC-COMP-08 | COMP | ✅ |
 | UIR-HOME-12 | Section error | TC-PL-03, TC-COMP-08 | COMP, PL | ✅ |
 | UIR-HOME-13 | Header actions | TC-COMP-08 | COMP | ✅ |
@@ -163,13 +163,13 @@ Generated from the test cases in §6; every BR, UIR and AC is covered.
 | AC-HOME-04 | Loading state | TC-COMP-08 | COMP | ✅ |
 | AC-HOME-05 | Empty state | TC-COMP-07, TC-E2E-09 | COMP, E2E | ✅ |
 | AC-HOME-06 | Independent section errors | TC-E2E-09 | E2E | ✅ |
-| AC-HOME-07 | Start a transaction | TC-E2E-11 | E2E | ⬜ |
+| AC-HOME-07 | Start a transaction | TC-E2E-11 | E2E | ✅ |
 | AC-HOME-08 | Hide balance persists | TC-E2E-10 | E2E | ✅ |
-| AC-HOME-09 | Reflect a completed transfer | TC-E2E-11 | E2E | ⬜ |
+| AC-HOME-09 | Reflect a completed transfer | TC-E2E-11 | E2E | ✅ |
 | AC-HOME-10 | Zero balance | TC-COMP-06, TC-E2E-09 | COMP, E2E | ✅ |
 | AC-HOME-11 | Pending and failed transactions | TC-COMP-07, TC-E2E-08 | COMP, E2E | ✅ |
 | AC-HOME-12 | Logout from Home | TC-E2E-06 | E2E | ✅ |
-| AC-TX-01 | Send to a favorite (happy path) | TC-E2E-11 | E2E | ⬜ |
+| AC-TX-01 | Send to a favorite (happy path) | TC-E2E-11 | E2E | ✅ |
 | AC-TX-02 | Amount must be greater than zero (BR-01) | TC-COMP-11, TC-E2E-13 | COMP, E2E | ✅ |
 | AC-TX-03 | Amount cannot exceed balance (BR-02) | TC-COMP-11, TC-E2E-13 | COMP, E2E | ✅ |
 | AC-TX-04 | Amount format (BR-04) | TC-COMP-11, TC-E2E-13 | COMP, E2E | ✅ |
@@ -185,7 +185,7 @@ Generated from the test cases in §6; every BR, UIR and AC is covered.
 | AC-TX-14 | Favorites error keeps new contact available | TC-COMP-09 | COMP | ✅ |
 | AC-TX-15 | Server enforces the rules (BR-06) | TC-INT-08 | INT | ✅ |
 | AC-TX-16 | Save failure does not block the transfer | TC-E2E-12 | E2E | ⬜ |
-| AC-CONF-01 | Success shows the receipt | TC-E2E-11 | E2E | ⬜ |
+| AC-CONF-01 | Success shows the receipt | TC-E2E-11 | E2E | ✅ |
 | AC-CONF-02 | Processing cannot be triggered twice | TC-PL-08, TC-E2E-20 | E2E, PL | ✅ |
 | AC-CONF-03 | Network error says money was not sent | TC-E2E-15 | E2E | ✅ |
 | AC-CONF-04 | Retry never duplicates | TC-INT-09, TC-E2E-15 | E2E, INT | ✅ |
@@ -195,13 +195,13 @@ Generated from the test cases in §6; every BR, UIR and AC is covered.
 | AC-CONF-08 | Timeout unresolved never asserts the result | TC-PL-08, TC-E2E-17 | E2E, PL | ✅ |
 | AC-CONF-09 | Unknown error fallback | TC-E2E-18 | E2E | ✅ |
 | AC-CONF-10 | Bounded wait | TC-PL-08, TC-E2E-17 | E2E, PL | ✅ |
-| AC-CONF-11 | Receipt cannot be resubmitted with Back | TC-E2E-19 | E2E | ⬜ |
-| AC-CONF-12 | Revisit receipt | TC-E2E-19 | E2E | ⬜ |
-| AC-CONF-13 | Copy folio | TC-E2E-19 | E2E | ⬜ |
-| AC-CONF-14 | Send again | TC-E2E-19 | E2E | ⬜ |
+| AC-CONF-11 | Receipt cannot be resubmitted with Back | TC-E2E-19 | E2E | ✅ |
+| AC-CONF-12 | Revisit receipt | TC-E2E-19 | E2E | ✅ |
+| AC-CONF-13 | Copy folio | TC-E2E-19 | E2E | ✅ |
+| AC-CONF-14 | Send again | TC-E2E-19 | E2E | ✅ |
 | AC-CONF-15 | Forced outcomes only outside production | TC-INT-10 | INT | ✅ |
 | AC-CONF-16 | Random outcomes in normal use | TC-INT-10 | INT | ✅ |
-| AC-CONF-17 | Receipt of another user | TC-INT-11, TC-E2E-19 | E2E, INT | ⬜ |
+| AC-CONF-17 | Receipt of another user | TC-INT-11, TC-E2E-19 | E2E, INT | ✅ |
 | A11Y-01 | — | TC-E2E-21 | E2E | ⬜ |
 | A11Y-02 | — | TC-E2E-21 | E2E | ⬜ |
 | A11Y-03 | — | TC-COMP-01, TC-MAN-01 | COMP, MAN | ⬜ |
@@ -322,7 +322,7 @@ Levels and IDs follow the [specs README](../README.md#24-ids). Tests reference t
 | TC-COMP-12 | Summary step | UIR-TX-16, UIR-TX-17, UIR-TX-18 | all details; resulting balance (masked when hidden); specific edit actions; confirm label 'Enviar $250.00' | `src/features/transfer/summary-step.test.tsx` | High | TASK-16 | ✅ |
 | TC-COMP-13 | CancelTransferDialog | UIR-TX-20, A11Y-24 | asks only when data entered; Escape = keep editing; focus returns to Cancel | `src/features/transfer/cancel-dialog.test.tsx` | Medium | TASK-15 | ✅ |
 | TC-COMP-14 | Confirmation views | UIR-CONF-01, UIR-CONF-02, UIR-CONF-04, UIR-CONF-05, UIR-CONF-06, UIR-CONF-08, UIR-CONF-09, UIR-CONF-10, UIR-CONF-11 | processing busy; slow and verifying announced; each outcome view: heading focus, copy, actions, reference code; unresolved never asserts result | `src/features/confirmation/outcome-views.test.tsx` | High | TASK-18 | ✅ |
-| TC-COMP-15 | Receipt | UIR-CONF-12, UIR-CONF-13, UIR-CONF-14, UIR-CONF-15 | all receipt fields; balance masked when hidden; copy folio → 'Folio copiado'; actions order; not-found view | `src/features/confirmation/receipt.test.tsx` | High | TASK-19 | ⬜ |
+| TC-COMP-15 | Receipt | UIR-CONF-12, UIR-CONF-13, UIR-CONF-14, UIR-CONF-15 | all receipt fields; balance masked when hidden; copy folio → 'Folio copiado'; actions order; not-found view | `src/features/confirmation/receipt.test.tsx`, `src/features/transfer/send-again.test.tsx` | High | TASK-19 | ✅ |
 
 ### 6.4 Integration
 
@@ -357,7 +357,7 @@ Levels and IDs follow the [specs README](../README.md#24-ids). Tests reference t
 | TC-E2E-08 | Home — normal user | AC-HOME-01, AC-HOME-02, AC-HOME-03, AC-HOME-11 | greeting, balance, exactly 10 newest items, item content and badges | `tests/e2e/home.spec.ts` | High | TASK-20 (written in TASK-13) | ✅ |
 | TC-E2E-09 | Home — states and section retry | AC-HOME-05, AC-HOME-06, AC-HOME-10, FR-HOME-06 | empty user; zero-balance user; balance-error and activity-error users; retry reloads only that section | `tests/e2e/home.spec.ts` | High | TASK-20 (written in TASK-13) | ✅ |
 | TC-E2E-10 | Hide balance | AC-HOME-08, UIR-HOME-05 | toggle, reload: still hidden; summary and receipt balances masked | `tests/e2e/home.spec.ts` | Medium | TASK-20 (written in TASK-13) | ✅ |
-| TC-E2E-11 | Transfer happy path | AC-TX-01, AC-CONF-01, AC-HOME-07, AC-HOME-09, UIR-HOME-10 | favorite → amount → summary → success receipt → Home shows new balance and first item | `tests/e2e/transfer.spec.ts` | High | TASK-20 | ⬜ |
+| TC-E2E-11 | Transfer happy path | AC-TX-01, AC-CONF-01, AC-HOME-07, AC-HOME-09, UIR-HOME-10 | favorite → amount → summary → success receipt → Home shows new balance and first item | `tests/e2e/transfer.spec.ts` | High | TASK-20 | ✅ |
 | TC-E2E-12 | New contact variants | AC-TX-06, AC-TX-07, AC-TX-08, AC-TX-09, AC-TX-10, AC-TX-16 | saved, one-off, duplicate, invalid fields, self-transfer, save failure (route-level forced 503) continues | `tests/e2e/transfer.spec.ts` | High | TASK-20 | ⬜ |
 | TC-E2E-13 | Amount rules, concept and edit | AC-TX-02, AC-TX-03, AC-TX-04, AC-TX-11, AC-TX-12 | zero, over balance (live), format, concept limit, edit amount from summary keeps recipient and concept | `tests/e2e/transfer.spec.ts` | High | TASK-20 | ✅ |
 | TC-E2E-14 | Cancel and step guard | AC-TX-05, AC-TX-13 | direct /transfer/summary → recipient; cancel dialog keep/confirm; no transfer made | `tests/e2e/transfer.spec.ts` | High | TASK-20 | ✅ |
@@ -365,7 +365,7 @@ Levels and IDs follow the [specs README](../README.md#24-ids). Tests reference t
 | TC-E2E-16 | Insufficient funds | AC-CONF-05 | forced insufficient_funds → updated balance → 'Cambiar monto' keeps amount with error | `tests/e2e/confirmation.spec.ts` | High | TASK-20 | ✅ |
 | TC-E2E-17 | Timeout sub-cases | AC-CONF-06, AC-CONF-07, AC-CONF-08, AC-CONF-10 | shortened timings; timeout-completed → receipt; timeout-not-processed → not sent; timeout-unresolved → no assertion of result; never stuck in 'Enviando…' | `tests/e2e/confirmation.spec.ts` | High | TASK-20 | ✅ |
 | TC-E2E-18 | Unknown error | AC-CONF-09 | forced unknown_error → fallback copy, reference, retry, Home | `tests/e2e/confirmation.spec.ts` | High | TASK-20 | ✅ |
-| TC-E2E-19 | Receipt navigation | AC-CONF-11, AC-CONF-12, AC-CONF-13, AC-CONF-14, AC-CONF-17, UIR-CONF-07 | Back → Home; reload same receipt, no new transaction; copy folio; send again pre-selects recipient; other user's receipt → not found | `tests/e2e/confirmation.spec.ts` | High | TASK-20 | ⬜ |
+| TC-E2E-19 | Receipt navigation | AC-CONF-11, AC-CONF-12, AC-CONF-13, AC-CONF-14, AC-CONF-17, UIR-CONF-07 | Back → Home; reload same receipt, no new transaction; copy folio; send again pre-selects recipient; other user's receipt → not found | `tests/e2e/confirmation.spec.ts` | High | TASK-20 | ✅ |
 | TC-E2E-20 | No double submission | AC-AUTH-05, AC-CONF-02 | double click Continue/Verify/Enviar → one request each (network log) | `tests/e2e/confirmation.spec.ts` | High | TASK-20 | ✅ |
 | TC-E2E-21 | Accessibility scan | NFR-14, A11Y-01, A11Y-02, A11Y-04, A11Y-06, A11Y-10, A11Y-11, A11Y-21, A11Y-23 | axe on every screen and outcome view in light and dark; page titles; focus to heading on navigation | `tests/e2e/a11y.spec.ts` | High | TASK-20 | ⬜ |
 | TC-E2E-22 | Theme | UX-22, A11Y-26 | no cookie + dark scheme → dark on first paint (before hydration); switching persists across reload | `tests/e2e/theme.spec.ts` | High | TASK-20 | ⬜ |

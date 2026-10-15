@@ -20,8 +20,9 @@ export async function logout(page: Page) {
 }
 
 /**
- * Assertions target the visible app inside <main>. When streamed Suspense content arrives
- * after hydration has started, React renders the section on the client and Next's streamed
- * copy can stay behind in a `<div hidden>` outside <main> (invisible, not in the a11y tree).
+ * Assertions target the visible app inside <main>. Outside it there are copies of texts that
+ * are not the UI: the screen-reader live region keeps the last announcement (e.g. a BR-02
+ * error after it was fixed), and a streamed Suspense segment can stay behind in a hidden
+ * `<div>` after hydration. Toasts are the exception: they render outside <main>.
  */
 export const main = (page: Page) => page.locator('#main');

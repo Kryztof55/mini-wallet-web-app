@@ -91,6 +91,21 @@ export function newFolio(): string {
   return `MW-${code}`;
 }
 
+/** Same shape as the client draft's `Recipient` (TS-03 §4). */
+export type SendAgainRecipient =
+  | {
+      readonly kind: 'contact';
+      readonly contactId: string;
+      readonly name: string;
+      readonly maskedIdentifier: string;
+    }
+  | {
+      readonly kind: 'oneOff';
+      readonly name: string;
+      readonly identifier: Identifier;
+      readonly maskedIdentifier: string;
+    };
+
 type ValidTransfer = {
   readonly amount: Money;
   readonly concept: string | null;
@@ -175,14 +190,17 @@ export function createTransfersService(deps: TransfersDeps) {
     transfer: ValidTransfer,
     startedAt: number,
   ): Promise<ConfirmResult> {
+    // The movement shares the transfer's ID, so Home can highlight it after the receipt.
+    const id = `trf_${crypto.randomUUID()}`;
     const committed = await repos.ledger.commitTransfer({
       userId,
-      transferId: `trf_${crypto.randomUUID()}` as TransferId,
-      transactionId: `txn_${crypto.randomUUID()}` as TransactionId,
+      transferId: id as TransferId,
+      transactionId: id as TransactionId,
       folio: newFolio(),
       amount: transfer.amount,
       recipient: {
         name: transfer.recipient.name,
+        identifier: transfer.recipient.identifier,
         maskedIdentifier: maskIdentifier(transfer.recipient.identifier),
         contactId: transfer.recipient.contactId,
       },
@@ -338,7 +356,26 @@ export function createTransfersService(deps: TransfersDeps) {
     return receipt ? ok(receipt) : err(domainError('NOT_FOUND'));
   }
 
-  return { confirm, getAttemptStatus, getReceipt };
+  /**
+   * "Enviar otra vez" (UIR-CONF-14): the recipient of one of the user's transfers, as a saved
+   * favorite if it still exists, otherwise as a one-off recipient. Not owned → NOT_FOUND.
+   */
+  async function getSendAgainRecipient(
+    userId: UserId,
+    transferId: string,
+  ): Promise<Result<SendAgainRecipient, DomainError<'NOT_FOUND'>>> {
+    const ref = await repos.receipts.getRecipient(userId, transferId as TransferId);
+    if (!ref) return err(domainError('NOT_FOUND'));
+    const contact = ref.contactId ? await repos.contacts.findById(userId, ref.contactId) : null;
+    const maskedIdentifier = maskIdentifier(ref.identifier);
+    return ok(
+      contact
+        ? { kind: 'contact', contactId: contact.id, name: contact.name, maskedIdentifier }
+        : { kind: 'oneOff', name: ref.name, identifier: ref.identifier, maskedIdentifier },
+    );
+  }
+
+  return { confirm, getAttemptStatus, getReceipt, getSendAgainRecipient };
 }
 
 export type TransfersService = ReturnType<typeof createTransfersService>;

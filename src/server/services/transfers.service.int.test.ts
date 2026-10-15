@@ -95,3 +95,46 @@ describe('transfers service details', () => {
     });
   });
 });
+
+describe('[TC-INT-11][UIR-CONF-14] send again', () => {
+  it('a favorite comes back as that contact; the movement shares the transfer ID', async () => {
+    const result = await service.confirm(ana, key(), VALID_BODY);
+    if (result.kind !== 'completed') throw new Error(`expected completed, got ${result.kind}`);
+    const { transferId } = result.receipt;
+
+    expect(await service.getSendAgainRecipient(ana, transferId)).toEqual({
+      ok: true,
+      value: {
+        kind: 'contact',
+        contactId: 'ctc_ana_luis',
+        name: 'Luis Pérez',
+        maskedIdentifier: '•••• 5432',
+      },
+    });
+    const recent = await getRepositories().transactions.listRecent(ana, 1);
+    expect(recent.ok && recent.value[0]?.id).toBe(transferId);
+  });
+
+  it('a one-off recipient comes back with its identifier, only for the owner', async () => {
+    const result = await service.confirm(ana, key(), {
+      recipient: { name: 'Pedro Gómez', identifier: '55 8765 4321' },
+      amount: { amountMinor: 100, currency: 'MXN' },
+    });
+    if (result.kind !== 'completed') throw new Error(`expected completed, got ${result.kind}`);
+    const { transferId } = result.receipt;
+
+    expect(await service.getSendAgainRecipient(ana, transferId)).toEqual({
+      ok: true,
+      value: {
+        kind: 'oneOff',
+        name: 'Pedro Gómez',
+        identifier: { kind: 'phone', value: '5587654321' },
+        maskedIdentifier: '•••• 4321',
+      },
+    });
+    expect(await service.getSendAgainRecipient(SEED_USER_IDS.nico as UserId, transferId)).toEqual({
+      ok: false,
+      error: { code: 'NOT_FOUND' },
+    });
+  });
+});

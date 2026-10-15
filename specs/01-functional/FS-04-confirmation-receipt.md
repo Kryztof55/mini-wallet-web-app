@@ -359,6 +359,9 @@ Then I see "No encontramos este comprobante." and no data from that transfer
 | `conf.receipt.home` | "Ir al inicio" | Primary action |
 | `conf.receipt.again` | "Enviar otra vez" | Secondary action |
 | `conf.receipt.not_found` | "No encontramos este comprobante." | Not found |
+| `conf.receipt.not_found_body` | "Revisa el enlace o busca el envío en tus movimientos." | Not found |
+| `conf.receipt.date` / `conf.receipt.status_label` | "Fecha y hora" / "Estado" | Receipt labels |
+| `conf.receipt.copy_failed` | "No pudimos copiar el folio. Selecciónalo para copiarlo." | Clipboard unavailable |
 | `conf.network.title` | "No pudimos conectarnos" | Network error |
 | `conf.network.body` | "Tu dinero no se envió. Revisa tu conexión e intenta de nuevo." | Network error |
 | `conf.not_processed.title` | "No se procesó tu envío" | After verification |
@@ -433,3 +436,4 @@ Applies: A11Y-01, 02, 03, 04, 08, 09, 10, 11, 12, 13, 16, 17, 18, 20, 22, 25, 26
 | 1.1 | 2026-10-14 | Claude (AI-assisted) | Traceability now points to the written TS (no behavior change) |
 | 1.2 | 2026-10-14 | Claude (AI-assisted) | TASK-04: toast copy keys (`common.close`, `common.notification`, `common.notifications_region`) |
 | 1.3 | 2026-10-14 | Claude (AI-assisted) | TASK-18: §12 adds the keys the build needed (rule-violation copy, no-balance variant, "Ir al inicio", redirecting); no behavior change |
+| 1.4 | 2026-10-14 | Claude (AI-assisted) | TASK-19: §12 adds receipt labels, not-found body and copy failure; no behavior change |

@@ -1,10 +1,10 @@
 'use client';
 
-import Link from 'next/link';
 import { useEffect } from 'react';
 import { buttonClasses } from '@/components/ui/button-classes';
 import { EmptyState } from '@/components/ui/empty-state';
 import { TransactionItem } from '@/components/wallet/transaction-item';
+import { StartTransferLink } from '@/features/transfer/start-transfer-link';
 import { t } from '@/lib/i18n/t';
 import type { ActivityItemView } from './activity-view';
 import { HIGHLIGHT_PARAM } from './constants';
@@ -34,12 +34,12 @@ export function ActivityList({
         description={t('home.activity.empty.body')}
         headingLevel={3}
         action={
-          <Link
+          <StartTransferLink
             href="/transfer/recipient"
             className={buttonClasses({ variant: 'secondary', size: 'sm' })}
           >
             {t('home.send')}
-          </Link>
+          </StartTransferLink>
         }
       />
     );

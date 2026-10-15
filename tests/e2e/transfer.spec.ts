@@ -22,6 +22,40 @@ async function startTransferToLuis(page: Page) {
 }
 
 test.describe('[FS-03] New transaction', () => {
+  test('[TC-E2E-11][AC-TX-01][AC-CONF-01][AC-HOME-09] happy path: favorite → amount → summary → receipt → Home updated', async ({
+    page,
+    forceOutcome,
+    expectNoA11yViolations,
+  }) => {
+    await startTransferToLuis(page);
+    await amountField(page).fill('250');
+    await conceptField(page).fill('Tacos');
+    await continueButton(page).click();
+    await forceOutcome('**/api/transfers', 'success');
+    await page.getByRole('button', { name: 'Enviar $250.00' }).click();
+
+    await expect(page).toHaveURL(/\/receipts\/trf_/);
+    await expect(page.getByRole('heading', { level: 1, name: 'Envío realizado' })).toBeFocused();
+    await expect(main(page).getByText('$250.00')).toBeVisible();
+    await expect(main(page).getByText(/a Luis Pérez/)).toBeVisible();
+    await expect(main(page).getByText('Tacos')).toBeVisible();
+    await expect(main(page).getByText('Completado')).toBeVisible();
+    await expect(main(page).getByText(/^MW-[A-Z0-9]{6}$/)).toBeVisible();
+    await expect(main(page).getByText('$12,095.67')).toBeVisible();
+    await expectNoA11yViolations();
+    await page.screenshot({ path: test.info().outputPath('receipt.png'), fullPage: true });
+
+    await page.getByRole('link', { name: 'Ir al inicio' }).click();
+    await expect(page).toHaveURL('/'); // the highlight parameter is dropped after it is shown
+    await expect(main(page).getByText('$12,095.67')).toBeVisible();
+    const first = main(page)
+      .getByRole('region', { name: 'Movimientos recientes' })
+      .getByRole('listitem')
+      .first();
+    await expect(first).toContainText('Luis Pérez');
+    await expect(first).toContainText('−$250.00');
+  });
+
   test('[TC-E2E-13] amount rules, concept limit and editing from the summary', async ({
     page,
     expectNoA11yViolations,
@@ -31,29 +65,31 @@ test.describe('[FS-03] New transaction', () => {
 
     // AC-TX-02: empty → BR-01 only on Continuar, focus on the amount.
     await continueButton(page).click();
-    await expect(page.getByText('Ingresa un monto mayor a $0.00.')).toBeVisible();
+    await expect(main(page).getByText('Ingresa un monto mayor a $0.00.')).toBeVisible();
     await expect(amountField(page)).toBeFocused();
     await expect(page).toHaveURL('/transfer/amount');
 
     // AC-TX-04: no letters, no third decimal, grouping while typing.
     await amountField(page).pressSequentially('1a2345.678');
     await expect(amountField(page)).toHaveValue('12,345.67');
-    await expect(page.getByText('Ingresa un monto mayor a $0.00.')).toHaveCount(0);
+    await expect(main(page).getByText('Ingresa un monto mayor a $0.00.')).toHaveCount(0);
 
     // AC-TX-03: BR-02 appears while typing and clears when valid.
     await amountField(page).press('End');
     await amountField(page).press('Backspace');
     await amountField(page).pressSequentially('8');
-    await expect(page.getByText('El monto supera tu saldo disponible ($12,345.67).')).toBeVisible();
+    await expect(
+      main(page).getByText('El monto supera tu saldo disponible ($12,345.67).'),
+    ).toBeVisible();
     await continueButton(page).click();
     await expect(page).toHaveURL('/transfer/amount');
     await amountField(page).fill('250');
-    await expect(page.getByText(/supera tu saldo/)).toHaveCount(0);
+    await expect(main(page).getByText(/supera tu saldo/)).toHaveCount(0);
 
     // AC-TX-11: the concept stops at 40 characters.
     await conceptField(page).pressSequentially('x'.repeat(45));
     await expect(conceptField(page)).toHaveValue('x'.repeat(40));
-    await expect(page.getByText('40/40')).toBeVisible();
+    await expect(main(page).getByText('40/40')).toBeVisible();
     await conceptField(page).fill('Tacos');
     await expectNoA11yViolations();
     await page.screenshot({ path: test.info().outputPath('amount.png'), fullPage: true });

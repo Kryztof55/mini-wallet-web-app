@@ -5,7 +5,7 @@ import type { Money } from '@/core/money';
 import type { OtpChallenge } from '@/core/otp';
 import type { Transaction } from '@/core/transaction';
 import type { User } from '@/core/user';
-import type { Attempt, Receipt, Session } from '@/server/repositories/ports';
+import type { Attempt, Receipt, Session, TransferRecipientRef } from '@/server/repositories/ports';
 import { createSeed, type MockBehaviors } from './seed';
 
 /** In-memory datastore behind the repositories (ASM-03). Lost on restart by design. */
@@ -18,7 +18,11 @@ export type MockDb = {
   readonly otp: Map<string, OtpChallenge>;
   readonly sessions: Map<SessionId, Session>;
   readonly attempts: Map<string, Attempt>;
-  readonly receipts: Map<string, Receipt>;
+  /** Receipt DTO plus who received it (internal, for "Enviar otra vez"). */
+  readonly receipts: Map<
+    string,
+    { readonly receipt: Receipt; readonly recipient: TransferRecipientRef }
+  >;
   readonly behaviors: Map<UserId, MockBehaviors>;
 };
 

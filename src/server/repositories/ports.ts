@@ -106,8 +106,17 @@ export interface AttemptRepository {
   save(attempt: Attempt): Promise<void>;
 }
 
+/** Who received a transfer; internal, never sent to the client as is (TS-03 §4). */
+export type TransferRecipientRef = {
+  readonly name: string;
+  readonly identifier: Identifier;
+  readonly contactId: ContactId | null;
+};
+
 export interface ReceiptRepository {
   get(userId: UserId, transferId: TransferId): Promise<Receipt | null>;
+  /** For "Enviar otra vez" (UIR-CONF-14): the recipient of one of the user's transfers. */
+  getRecipient(userId: UserId, transferId: TransferId): Promise<TransferRecipientRef | null>;
 }
 
 export type TransferCommit = {
@@ -116,11 +125,7 @@ export type TransferCommit = {
   readonly transactionId: TransactionId;
   readonly folio: string;
   readonly amount: Money;
-  readonly recipient: {
-    readonly name: string;
-    readonly maskedIdentifier: MaskedIdentifier;
-    readonly contactId: ContactId | null;
-  };
+  readonly recipient: TransferRecipientRef & { readonly maskedIdentifier: MaskedIdentifier };
   readonly concept: string | null;
   readonly at: string;
 };

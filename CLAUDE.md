@@ -118,14 +118,14 @@ all green. E2E when the task touches flows (TASK-20 owns the suite).
 
 ## 9. Current state
 
-- Done: TASK-01 to TASK-18. E2E: auth, home, transfer (13/14), confirmation (15–18, 20).
-- **Next: TASK-19** (receipt page `/receipts/[transferId]`, server-rendered via
-  `transfersService.getReceipt`; copy folio; "Enviar otra vez" = `seedRecipient` + clear the
-  completion marker; not-found view). Success already navigates there with
-  `router.replace` and sets the marker. Branch `feat/m4-confirmation-receipt`.
+- Done: TASK-01 to TASK-19 (the whole user flow). E2E written: 01–20 except 12 and 21–23.
+- **Next: TASK-20** (E2E suite: remaining TC-E2E-12 new-contact variants, 21 accessibility
+  scan, 22 theme, 23 reference-code correlation; mark the others already green). Branch per
+  `chore/m5-quality-delivery`.
 - Pending owner decision: demo-accounts hint on login step 1 and no demo code for
   unknown identifiers (non-production only).
-- Then: TASK-20/21/22.
+- Then: TASK-21 a11y/responsive pass (incl. Home masked-name spoken form) → TASK-22 delivery docs
+  (README with demo accounts, DECISIONS.md, AI_USAGE.md).
 
 ## 10. Known pitfalls
 
@@ -157,6 +157,9 @@ all green. E2E when the task touches flows (TASK-20 owns the suite).
 - Fake timers + route handlers: the request reaches its `setTimeout` only after real async
   work (session HMAC), and `vi.waitFor` advances fake timers while polling. Wait with
   `setImmediate` turns until `vi.getTimerCount() > 0` (see `outcomes.int.test.ts`).
+- E2E: scope text assertions to `main(page)` (`tests/e2e/session.ts`). Outside `<main>` the
+  live region keeps the last announcement (a fixed error can still "exist"), and streamed
+  Suspense segments can leave hidden copies. Only toasts are asserted at page level.
 - E2E: don't assert a transient view (e.g. "verificando…", ~200 ms with E2E timings); Playwright
   polls at ~500 ms by then and misses it intermittently. Assert durable evidence instead
   (the network requests it makes, the final screen) and cover the view in component tests.

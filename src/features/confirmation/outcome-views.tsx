@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useRef, type ReactNode } from 'react';
+import type { ReactNode } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { AlertIcon, Spinner } from '@/components/ui/icons';
@@ -15,26 +15,13 @@ import { CancelTransfer } from '@/features/transfer/cancel-transfer';
 import { messages } from '@/lib/i18n/messages.es-MX';
 import { t } from '@/lib/i18n/t';
 import type { FinalState } from './confirm-state';
+import { ViewHeading } from './view-heading';
 
 export type TransferDetails = {
   readonly recipient: { readonly name: string; readonly maskedIdentifier: string };
   readonly amount: Money;
   readonly concept: string;
 };
-
-/** Heading that takes focus on arrival and names the view (A11Y-01, A11Y-02). */
-function ViewHeading({ children }: { readonly children: string }) {
-  const heading = useRef<HTMLHeadingElement>(null);
-  useEffect(() => {
-    heading.current?.focus();
-    document.title = `${children} · Mini Wallet`;
-  }, [children]);
-  return (
-    <h1 ref={heading} tabIndex={-1} className="text-2xl font-bold tracking-tight outline-none">
-      {children}
-    </h1>
-  );
-}
 
 /** What the user was sending, repeated on processing, verifying and error views. */
 export function DetailsList({ details }: { readonly details: TransferDetails }) {

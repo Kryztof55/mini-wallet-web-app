@@ -154,7 +154,11 @@ export function createInMemoryRepositories(db: MockDb, latency: Latency): Reposi
     receipts: {
       async get(userId, transferId) {
         await latency();
-        return db.receipts.get(receiptKey(userId, transferId)) ?? null;
+        return db.receipts.get(receiptKey(userId, transferId))?.receipt ?? null;
+      },
+      async getRecipient(userId, transferId) {
+        await latency();
+        return db.receipts.get(receiptKey(userId, transferId))?.recipient ?? null;
       },
     },
     ledger: {
@@ -204,7 +208,14 @@ export function createInMemoryRepositories(db: MockDb, latency: Latency): Reposi
           completedAt: commit.at,
           balanceAfter: after.value,
         };
-        db.receipts.set(receiptKey(commit.userId, commit.transferId), receipt);
+        db.receipts.set(receiptKey(commit.userId, commit.transferId), {
+          receipt,
+          recipient: {
+            name: commit.recipient.name,
+            identifier: commit.recipient.identifier,
+            contactId: commit.recipient.contactId,
+          },
+        });
         return ok(receipt);
       },
     },
